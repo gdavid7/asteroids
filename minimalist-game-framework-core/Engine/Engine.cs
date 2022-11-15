@@ -28,8 +28,14 @@ static partial class Engine
         // Hide the console window as quickly as possible
         // ======================================================================================
 
-        ShowWindow(GetConsoleWindow(), 0);
-
+        try
+        {
+            ShowWindow(GetConsoleWindow(), 0);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
         // ======================================================================================
         // Copy assets and libraries into the working directory
         // ======================================================================================
