@@ -9,6 +9,9 @@ class Game
     Texture ship = Engine.LoadTexture("ship.png");
 
 
+    float rot = 0;
+    Vector2 mov = Vector2.Zero;
+
     public Game()
     {
 
@@ -17,7 +20,20 @@ class Game
     public void Update()
     {
 
-        Engine.DrawTexture(ship, new Vector2(100, 100), size: new Vector2(100, 100));
+        Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
 
+        if (Engine.GetKeyDown(Key.Left,allowAutorepeat: true))
+        {
+            rot -= 7;
+        } else if (Engine.GetKeyDown(Key.Right, allowAutorepeat: true))
+        {
+            rot += 7;
+        }
+
+
+        if(Engine.GetKeyDown(Key.Up,allowAutorepeat: true))
+        {
+            mov = new Vector2(mov.X + 10, mov.Y + 10);
+        }
     }
 }
