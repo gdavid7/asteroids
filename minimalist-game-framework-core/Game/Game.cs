@@ -22,19 +22,20 @@ class Game
 
         Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
 
-        if (Engine.GetKeyDown(Key.Left,allowAutorepeat: true))
+        if(Engine.GetKeyHeld(Key.Up))
+        {
+            mov = new Vector2((float)(Convert.ToDouble(mov.X) + 10*Math.Cos(ConvertDegreesToRadians(rot))), (float)(Convert.ToDouble(mov.Y) + 10 * Math.Sin(ConvertDegreesToRadians(rot))));
+        }
+
+        if (Engine.GetKeyHeld(Key.Left))
         {
             rot -= 7;
-        } else if (Engine.GetKeyDown(Key.Right, allowAutorepeat: true))
+        }
+        else if (Engine.GetKeyHeld(Key.Right))
         {
             rot += 7;
         }
 
-
-        if(Engine.GetKeyDown(Key.Up,allowAutorepeat: true))
-        {
-            mov = new Vector2((float)(Convert.ToDouble(mov.X) + 10*Math.Cos(ConvertDegreesToRadians(rot))), (float)(Convert.ToDouble(mov.Y) + 10 * Math.Sin(ConvertDegreesToRadians(rot))));
-        }
     }
 
 
@@ -51,3 +52,4 @@ class Game
         return (radians);
     }
 }
+
