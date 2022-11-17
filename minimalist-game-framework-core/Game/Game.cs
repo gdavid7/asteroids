@@ -33,7 +33,21 @@ class Game
 
         if(Engine.GetKeyDown(Key.Up,allowAutorepeat: true))
         {
-            mov = new Vector2(mov.X + 10, mov.Y + 10);
+            mov = new Vector2((float)(Convert.ToDouble(mov.X) + 10*Math.Cos(ConvertDegreesToRadians(rot))), (float)(Convert.ToDouble(mov.Y) + 10 * Math.Sin(ConvertDegreesToRadians(rot))));
         }
+    }
+
+
+    public Vector2 getDirectionalVector(Vector2 cur, float rotation, float adv)
+    {
+
+
+        return Vector2.Zero;
+    }
+
+    public static double ConvertDegreesToRadians(double degrees)
+    {
+        double radians = (Math.PI / 180) * degrees;
+        return (radians);
     }
 }
