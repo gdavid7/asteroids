@@ -4,14 +4,14 @@ using System.Collections.Generic;
 class Game
 {
     public static readonly string Title = "Minimalist Game Framework";
-    public static readonly Vector2 Resolution = new Vector2(640, 480);
+    public static readonly Vector2 Resolution = new Vector2(1920, 1080);
 
     Texture ship = Engine.LoadTexture("ship.png");
 
 
     float rot = 0;
     Vector2 mov = Vector2.Zero;
-    float inertia = 50;
+    float inertia = 100;
     bool fly = false;
 
     public Game()
@@ -43,7 +43,7 @@ class Game
         {
 
             fly = true;
-            inertia = 50;
+            inertia = 100;
 
         }
 
