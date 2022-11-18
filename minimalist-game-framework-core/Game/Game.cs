@@ -22,11 +22,6 @@ class Game
 
         Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
 
-        if(Engine.GetKeyHeld(Key.Up))
-        {
-            mov = new Vector2((float)(Convert.ToDouble(mov.X) + 10*Math.Cos(ConvertDegreesToRadians(rot))), (float)(Convert.ToDouble(mov.Y) + 10 * Math.Sin(ConvertDegreesToRadians(rot))));
-        }
-
         if (Engine.GetKeyHeld(Key.Left))
         {
             rot -= 7;
@@ -36,14 +31,23 @@ class Game
             rot += 7;
         }
 
+        if (Engine.GetKeyHeld(Key.Up))
+        {
+            mov = getDirectionalVector(mov, rot, 5);
+        }
+
+        
+
     }
 
 
-    public Vector2 getDirectionalVector(Vector2 cur, float rotation, float adv)
+    public Vector2 getDirectionalVector(Vector2 cur, float rotation, float moveFactor)
     {
+        float x = (float)(Convert.ToDouble(cur.X) + moveFactor * Math.Cos(ConvertDegreesToRadians(rotation)));
+        float y = (float)(Convert.ToDouble(cur.Y) + moveFactor * Math.Sin(ConvertDegreesToRadians(rotation)));
+        Vector2 ret = new Vector2(x,y);
+        return ret;
 
-
-        return Vector2.Zero;
     }
 
     public static double ConvertDegreesToRadians(double degrees)
