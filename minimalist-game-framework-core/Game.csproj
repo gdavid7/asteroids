@@ -40,6 +40,14 @@
     <None Remove="README.md" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Assets\Starjedi.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Assets\Oswald-Regular.ttf" />
+  </ItemGroup>
+
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 
 </Project>
