@@ -60,6 +60,10 @@ class Game
             }
         }
 
+        
+        
+        
+
 
         //x wraparound
         if (mov.X <= -80)

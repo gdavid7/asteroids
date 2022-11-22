@@ -1,4 +1,12 @@
-﻿using System;
+﻿/* SCOREBOARD
+ * Keeps track of high scores
+ * Author: David
+ * Last Edited: Nov. 17
+ * 
+ * */
+
+
+using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
