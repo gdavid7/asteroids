@@ -10,7 +10,7 @@ class Game
 
 
     float rot = 0;
-    Vector2 mov = Vector2.Zero;
+    Vector2 mov = new Vector2(100,100);
     float inertia = 100;
     bool fly = false;
 
@@ -47,6 +47,8 @@ class Game
 
         }
 
+
+        //moves with intertia
         if(fly == true)
         {
             mov = getDirectionalVector(mov, rot, inertia/10);
@@ -61,6 +63,29 @@ class Game
         
         
         
+
+
+        //x wraparound
+        if (mov.X <= -80)
+        {
+            mov.X = 1810;
+        } else if(mov.X >= 1820)
+        {
+            mov.X = -50;
+        }
+
+        //y wraparound
+        if (mov.Y <= -80)
+        {
+            mov.Y = 970;
+        }
+        else if (mov.Y >= 980)
+        {
+            mov.Y = -50;
+        }
+
+
+
 
     }
 
