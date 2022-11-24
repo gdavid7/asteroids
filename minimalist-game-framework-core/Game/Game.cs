@@ -5,6 +5,8 @@ class Game
 {
     public static readonly string Title = "Minimalist Game Framework";
     public static readonly Vector2 Resolution = new Vector2(1920, 1080);
+    EntryScreen es = new EntryScreen(Resolution);
+    
 
     Texture ship = Engine.LoadTexture("ship.png");
 
@@ -14,6 +16,7 @@ class Game
     float inertia = 100;
     bool fly = false;
 
+
     public Game()
     {
 
@@ -21,6 +24,8 @@ class Game
 
     public void Update()
     {
+        es.draw();
+
         
         Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
 
@@ -105,6 +110,7 @@ class Game
     {
         double radians = (Math.PI / 180) * degrees;
         return (radians);
+
     }
 }
 
