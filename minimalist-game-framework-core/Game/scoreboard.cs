@@ -12,8 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Game
-{
+
     public class scoreboard
     {
         static String _FILE;
@@ -21,31 +20,31 @@ namespace Game
         {
 
             _FILE = "assets/Scores.txt";
-                // THIS MAY HAVE TO BE CHANGED [ONLY THING TO CHANGE]
+            // THIS MAY HAVE TO BE CHANGED [ONLY THING TO CHANGE]
         }
-        
-        public static void Main(String[] args)
-        {
-            append("Nigerian", "57");
-            append("Fella", "86");
-            append("Nindroz", "420");
-            append("broski", "63");
 
-            //Nindroz -> Fella -> broski -> Nigerian
+        //public static void Main(String[] args)
+        //{
+        //    append("dsfjk", "57");
+        //    append("dkjshf", "86");
+        //    append("Njksd", "420");
+        //    append("kdjs", "63");
 
-             String a = retrieve("Nindroz");
-             Console.WriteLine(a);
-                    // 420
+        //    //Nindroz -> Fella -> broski -> Nigerian
 
-             String b = retrieve("Heigui");
-             Console.WriteLine("b");
-                    // null
+        //    String a = retrieve("Nindroz");
+        //    Console.WriteLine(a);
+        //    // 420
 
-             clear();
-                    // Null
+        //    String b = retrieve("David");
+        //    Console.WriteLine("b");
+        //    // null
 
-                }
-                
+        //    clear();
+        //    // Null
+
+        //}
+
 
         public static void append(String name, String score)
         {
@@ -117,4 +116,3 @@ namespace Game
             System.IO.File.WriteAllText(filePath, null);
         }
     }
-}

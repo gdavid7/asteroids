@@ -9,8 +9,7 @@
 using System;
 using System.Collections;
 
-namespace Game
-{
+
 	public class Controller
 	{
 		public Controller()
@@ -54,5 +53,4 @@ namespace Game
         }
 
     }
-}
 
