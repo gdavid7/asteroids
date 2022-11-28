@@ -1,9 +1,9 @@
-﻿/* SCOREBOARD
- * Keeps track of high scores
- * Author: David
- * Last Edited: Nov. 17
- * 
- * */
+﻿///* SCOREBOARD
+// * Keeps track of high scores
+// * Author: David
+// * Last Edited: Nov. 17
+// * 
+// * */
 
 
 using System;
@@ -12,8 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Game
-{
+
     public class scoreboard
     {
         static String _FILE;
@@ -21,9 +20,9 @@ namespace Game
         {
 
             _FILE = "assets/Scores.txt";
-                // THIS MAY HAVE TO BE CHANGED [ONLY THING TO CHANGE]
+            // THIS MAY HAVE TO BE CHANGED [ONLY THING TO CHANGE]
         }
-        
+
         public static void Main(String[] args)
         {
             append("Nigerian", "57");
@@ -33,19 +32,19 @@ namespace Game
 
             //Nindroz -> Fella -> broski -> Nigerian
 
-             String a = retrieve("Nindroz");
-             Console.WriteLine(a);
-                    // 420
+            String a = retrieve("Nindroz");
+            Console.WriteLine(a);
+            // 420
 
-             String b = retrieve("Heigui");
-             Console.WriteLine("b");
-                    // null
+            String b = retrieve("Heigui");
+            Console.WriteLine("b");
+            // null
 
-             clear();
-                    // Null
+            clear();
+            // Null
 
-                }
-                
+        }
+
 
         public static void append(String name, String score)
         {
@@ -117,4 +116,3 @@ namespace Game
             System.IO.File.WriteAllText(filePath, null);
         }
     }
-}
