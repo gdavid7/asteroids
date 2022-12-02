@@ -15,10 +15,15 @@ class Game
 
 
     float rot = 0;
-    Vector2 mov = new Vector2(100,100);
-    Vector2 amov = new Vector2(600, 600);
+    Vector2 mov = new Vector2(100, 100);
     float inertia = 100;
     bool fly = false;
+
+
+
+
+    Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
+
 
 
     public Game()
@@ -33,8 +38,8 @@ class Game
 
         
         Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
-        Engine.DrawTexture(asteroid,amov, size: new Vector2(100, 100)) ;
-        amov = getDirectionalVector(amov, 120, 2);
+        Engine.DrawTexture(asteroid,a.getMov(), size: a.getSize());
+        a.setMov(getDirectionalVector(a.getMov(), 120, 2));
 
         if (Engine.GetKeyHeld(Key.Left))
         {
@@ -62,6 +67,7 @@ class Game
         }
 
 
+
         //moves with intertia
         if(fly == true)
         {
@@ -75,10 +81,6 @@ class Game
         }
 
         
-        
-        
-
-
         //x wraparound
         if (mov.X <= -80)
         {
@@ -100,27 +102,24 @@ class Game
 
 
         //x wraparound asteroid
-        if (amov.X <= -80)
+        if (a.getMov().X <= -80)
         {
-            amov.X = 1810;
+            a.setMov(new Vector2(1810,a.getMov().Y));
         }
-        else if (amov.X >= 1820)
+        else if (a.getMov().X >= 1820)
         {
-            amov.X = -50;
+            a.setMov(new Vector2(-50, a.getMov().Y));
         }
 
         //y wraparound asteroid 
-        if (amov.Y <= -80)
+        if (a.getMov().Y <= -80)
         {
-            amov.Y = 970;
+            a.setMov(new Vector2(a.getMov().X, 970));
         }
-        else if (amov.Y >= 980)
+        else if (a.getMov().Y >= 980)
         {
-            amov.Y = -50;
+            a.setMov(new Vector2(a.getMov().X, -50));
         }
-
-
-
 
     }
 
