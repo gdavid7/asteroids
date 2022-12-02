@@ -99,6 +99,27 @@ class Game
         }
 
 
+        //x wraparound asteroid
+        if (amov.X <= -80)
+        {
+            amov.X = 1810;
+        }
+        else if (amov.X >= 1820)
+        {
+            amov.X = -50;
+        }
+
+        //y wraparound asteroid 
+        if (amov.Y <= -80)
+        {
+            amov.Y = 970;
+        }
+        else if (amov.Y >= 980)
+        {
+            amov.Y = -50;
+        }
+
+
 
 
     }
