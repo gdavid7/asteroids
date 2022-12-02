@@ -19,7 +19,7 @@ using System.Threading.Tasks;
         public scoreboard()
         {
 
-            _FILE = "assets/Scores.txt";
+            _FILE = "assets/scores.txt";
             // THIS MAY HAVE TO BE CHANGED [ONLY THING TO CHANGE]
         }
 
@@ -78,18 +78,24 @@ using System.Threading.Tasks;
             // inserting scores into txt file
             String finalScores = String.Join(",", newArr.Cast<string>().ToArray());
             String directory = Directory.GetCurrentDirectory();
-            String filePath = System.IO.Path.Combine(directory, _FILE);
-            System.IO.File.WriteAllText(filePath, finalScores);
+        //String filePath = System.IO.Path.Combine(directory, _FILE);
+        String filePath = "./assets/scores.txt";
+        System.IO.File.WriteAllText(filePath, finalScores);
             Console.WriteLine(name + " successfully added!");
 
         }
         public static string[] getScoreboard()
         {
+            System.Diagnostics.Debug.WriteLine("Hello World");
+
             // get an STRING array of all the scores in order
             // FORMAT: ["NAME/SCORE", "NAME2/SCORE2", "NAME3/SCORE3"...]
 
             String directory = Directory.GetCurrentDirectory();
-            String filePath = System.IO.Path.Combine(directory, _FILE);
+            System.Diagnostics.Debug.WriteLine(directory);
+            System.Diagnostics.Debug.WriteLine("NIGERIAN");
+            //String filePath = System.IO.Path.Combine(directory, _FILE);
+            String filePath = "./assets/scores.txt";
             string[] scores = System.IO.File.ReadAllText(filePath).Split(",");
             return scores;
         }
@@ -108,11 +114,16 @@ using System.Threading.Tasks;
             return null;
         }
 
+
+
+
         public static void clear()
         {
             //Clear the entire scoreboard
             String directory = Directory.GetCurrentDirectory();
-            String filePath = System.IO.Path.Combine(directory, _FILE);
-            System.IO.File.WriteAllText(filePath, null);
+        //String filePath = System.IO.Path.Combine(directory, _FILE);
+        String filePath = "./assets/scores.txt";
+
+        System.IO.File.WriteAllText(filePath, null);
         }
     }

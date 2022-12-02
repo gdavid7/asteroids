@@ -16,7 +16,6 @@ class Game
     float inertia = 100;
     bool fly = false;
 
-
     public Game()
     {
 
@@ -32,6 +31,7 @@ class Game
         if (Engine.GetKeyHeld(Key.Left))
         {
             rot -= 7;
+
         }
         else if (Engine.GetKeyHeld(Key.Right))
         {
@@ -112,5 +112,6 @@ class Game
         return (radians);
 
     }
+
 }
 
