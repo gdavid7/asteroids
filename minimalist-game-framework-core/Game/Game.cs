@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 
 class Game
@@ -7,10 +7,14 @@ class Game
     public static readonly Vector2 Resolution = new Vector2(1920, 1080);
 
     Texture ship = Engine.LoadTexture("ship.png");
+    Texture asteroid = Engine.LoadTexture("asteroid.png");
+
+
 
 
     float rot = 0;
     Vector2 mov = new Vector2(100,100);
+    Vector2 amov = new Vector2(600, 600);
     float inertia = 100;
     bool fly = false;
 
@@ -21,13 +25,17 @@ class Game
 
     public void Update()
     {
-        
+
         Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
+        Engine.DrawTexture(asteroid,amov, size: new Vector2(100, 100)) ;
+        amov = getDirectionalVector(amov, 120, 2);
 
         if (Engine.GetKeyHeld(Key.Left))
         {
             rot -= 7;
+            
         }
+
         else if (Engine.GetKeyHeld(Key.Right))
         {
             rot += 7;
@@ -35,7 +43,7 @@ class Game
 
         if (Engine.GetKeyHeld(Key.Up))
         {
-            mov = getDirectionalVector(mov, rot, 5);
+            mov = getDirectionalVector(mov, rot, 10);
             
         }
 
