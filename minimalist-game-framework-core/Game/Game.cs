@@ -80,7 +80,8 @@ class Game
 
         if (shoot)
         {
-            smov = getDirectionalVector(mov, rot, 2);
+            smov = getDirectionalVector(smov, rot, 30);
+            shoot = false;
         }
 
 
