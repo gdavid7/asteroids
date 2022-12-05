@@ -22,8 +22,10 @@ class Game
 
 
 
+
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
     Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100, 100));
+
 
 
     public Game()
@@ -45,7 +47,7 @@ class Game
         if (Engine.GetKeyHeld(Key.Left))
         {
             rot -= 7;
-            
+
         }
 
         else if (Engine.GetKeyHeld(Key.Right))
@@ -129,5 +131,6 @@ class Game
         return (radians);
 
     }
+
 }
 
