@@ -10,6 +10,7 @@ class Game
 
     Texture ship = Engine.LoadTexture("ship.png");
     Texture asteroid = Engine.LoadTexture("asteroid.png");
+    Texture shot = Engine.LoadTexture("projectile.png");
 
 
 
@@ -18,8 +19,10 @@ class Game
     Vector2 mov = new Vector2(100, 100);
     float inertia = 100;
     bool fly = false;
+    bool shoot = false;
 
 
+    Vector2 smov = new Vector2(400, 400);
 
 
 
@@ -42,6 +45,7 @@ class Game
         Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
         Engine.DrawTexture(asteroid,a.getMov(), size: a.getSize());
         Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
+        Engine.DrawTexture(shot, smov, size: new Vector2(100, 100));
 
 
         if (Engine.GetKeyHeld(Key.Left))
@@ -69,6 +73,15 @@ class Game
 
         }
 
+        if (Engine.GetKeyDown(Key.Space) && !shoot)
+        {
+            shoot = true;
+        }
+
+        if (shoot)
+        {
+            smov = getDirectionalVector(mov, rot, 2);
+        }
 
 
         //moves with intertia
