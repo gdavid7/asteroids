@@ -33,8 +33,31 @@
 		return size;
 	}
 
+	public void wraparound()
+	{
+        //x wraparound asteroid
+        if (this.getMov().X <= -80)
+        {
+            this.setMov(new Vector2(1810, this.getMov().Y));
+        }
+        else if (this.getMov().X >= 1820)
+        {
+            this.setMov(new Vector2(-50, this.getMov().Y));
+        }
 
-		
-	}
+        //y wraparound asteroid 
+        if (this.getMov().Y <= -80)
+        {
+            this.setMov(new Vector2(this.getMov().X, 970));
+        }
+        else if (this.getMov().Y >= 980)
+        {
+            this.setMov(new Vector2(this.getMov().X, -50));
+        }
+
+    }
+
+
+}
 
 

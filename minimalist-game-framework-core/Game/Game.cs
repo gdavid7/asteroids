@@ -23,7 +23,7 @@ class Game
 
 
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
-
+    Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100, 100));
 
 
     public Game()
@@ -39,7 +39,8 @@ class Game
         
         Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
         Engine.DrawTexture(asteroid,a.getMov(), size: a.getSize());
-        a.setMov(getDirectionalVector(a.getMov(), 120, 2));
+        Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
+
 
         if (Engine.GetKeyHeld(Key.Left))
         {
@@ -100,26 +101,13 @@ class Game
             mov.Y = -50;
         }
 
+        a.setMov(getDirectionalVector(a.getMov(), 120, 2));
+        a.wraparound();
 
-        //x wraparound asteroid
-        if (a.getMov().X <= -80)
-        {
-            a.setMov(new Vector2(1810,a.getMov().Y));
-        }
-        else if (a.getMov().X >= 1820)
-        {
-            a.setMov(new Vector2(-50, a.getMov().Y));
-        }
+        b.setMov(getDirectionalVector(b.getMov(), 40, 2));
+        b.wraparound();
 
-        //y wraparound asteroid 
-        if (a.getMov().Y <= -80)
-        {
-            a.setMov(new Vector2(a.getMov().X, 970));
-        }
-        else if (a.getMov().Y >= 980)
-        {
-            a.setMov(new Vector2(a.getMov().X, -50));
-        }
+
 
     }
 
