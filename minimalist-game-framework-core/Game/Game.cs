@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 
 class Game
@@ -9,12 +9,24 @@ class Game
     
 
     Texture ship = Engine.LoadTexture("ship.png");
+    Texture asteroid = Engine.LoadTexture("asteroid.png");
+
+
 
 
     float rot = 0;
-    Vector2 mov = new Vector2(100,100);
+    Vector2 mov = new Vector2(100, 100);
     float inertia = 100;
     bool fly = false;
+
+
+
+
+
+    Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
+    Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100, 100));
+
+
 
     public Game()
     {
@@ -23,16 +35,21 @@ class Game
 
     public void Update()
     {
+
         es.draw();
 
         
         Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
+        Engine.DrawTexture(asteroid,a.getMov(), size: a.getSize());
+        Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
+
 
         if (Engine.GetKeyHeld(Key.Left))
         {
             rot -= 7;
 
         }
+
         else if (Engine.GetKeyHeld(Key.Right))
         {
             rot += 7;
@@ -40,7 +57,7 @@ class Game
 
         if (Engine.GetKeyHeld(Key.Up))
         {
-            mov = getDirectionalVector(mov, rot, 5);
+            mov = getDirectionalVector(mov, rot, 10);
             
         }
 
@@ -51,6 +68,7 @@ class Game
             inertia = 100;
 
         }
+
 
 
         //moves with intertia
@@ -66,10 +84,6 @@ class Game
         }
 
         
-        
-        
-
-
         //x wraparound
         if (mov.X <= -80)
         {
@@ -89,6 +103,11 @@ class Game
             mov.Y = -50;
         }
 
+        a.setMov(getDirectionalVector(a.getMov(), 120, 2));
+        a.wraparound();
+
+        b.setMov(getDirectionalVector(b.getMov(), 40, 2));
+        b.wraparound();
 
 
 
