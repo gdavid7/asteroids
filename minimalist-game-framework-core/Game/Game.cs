@@ -12,18 +12,18 @@ class Game
     Texture asteroid = Engine.LoadTexture("asteroid.png");
     Texture shot = Engine.LoadTexture("projectile.png");
 
+    float time = 0;
 
-
-
+    //ship vars
     float rot = 0;
     Vector2 mov = new Vector2(100, 100);
     float inertia = 100;
     bool fly = false;
-    bool shoot = false;
-
-
+    
+    //shot variables
     Vector2 smov = new Vector2(400, 400);
-
+    bool shoot = false;
+    float rotLock = 0;
 
 
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
@@ -38,7 +38,7 @@ class Game
 
     public void Update()
     {
-
+        time += Engine.TimeDelta;
         es.draw();
 
         
@@ -47,6 +47,40 @@ class Game
         Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
         Engine.DrawTexture(shot, smov, size: new Vector2(100, 100));
 
+
+        
+
+
+        // SHOT SHOOTING //
+
+
+        if (Engine.GetKeyDown(Key.Space) && !shoot)
+        {
+            shoot = true;
+            rotLock = rot;
+            
+        }
+
+        if (shoot)
+        {
+            smov = getDirectionalVector(smov, rotLock, 30);
+        } else
+        {
+            smov = mov;
+        }
+
+        if ((time % .5 > -0.08 && time % .5 < 0.08) && shoot)
+        {
+            shoot = false;
+            smov = mov;
+        }
+
+
+
+        // SHIP MOVEMENT //
+
+
+        //moves ship with intertia
 
         if (Engine.GetKeyHeld(Key.Left))
         {
@@ -62,7 +96,7 @@ class Game
         if (Engine.GetKeyHeld(Key.Up))
         {
             mov = getDirectionalVector(mov, rot, 10);
-            
+
         }
 
         if (Engine.GetKeyUp(Key.Up))
@@ -73,20 +107,7 @@ class Game
 
         }
 
-        if (Engine.GetKeyDown(Key.Space) && !shoot)
-        {
-            shoot = true;
-        }
-
-        if (shoot)
-        {
-            smov = getDirectionalVector(smov, rot, 30);
-            shoot = false;
-        }
-
-
-        //moves with intertia
-        if(fly == true)
+        if (fly == true)
         {
             mov = getDirectionalVector(mov, rot, inertia/10);
             inertia--;
@@ -97,7 +118,6 @@ class Game
             }
         }
 
-        
         //x wraparound
         if (mov.X <= -80)
         {
@@ -116,6 +136,8 @@ class Game
         {
             mov.Y = -50;
         }
+
+        // ASTEROID MOVEMENT //
 
         a.setMov(getDirectionalVector(a.getMov(), 120, 2));
         a.wraparound();
