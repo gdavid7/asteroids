@@ -173,6 +173,13 @@ class Game
     }
 
 
+    public Boolean isCollide(Vector2 pos1, Vector2 size1, Vector2 po2, Vector2 size2)
+    {
+
+        return false;
+    }
+
+
     public Vector2 getDirectionalVector(Vector2 cur, float rotation, float moveFactor)
     {
         float x = (float)(Convert.ToDouble(cur.X) + moveFactor * Math.Cos(ConvertDegreesToRadians(rotation)));
