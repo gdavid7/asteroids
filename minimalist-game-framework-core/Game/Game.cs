@@ -36,6 +36,29 @@ class Game
 
     }
 
+
+    public void log(int score)
+    {
+        // log score, print top 10 highest scores, print score history of user
+
+
+        System.Diagnostics.Debug.WriteLine("Your Score is: " + score + ". If you would like to save your score, please enter your name in the console. If not, type N.");
+        String name = Console.ReadLine();
+        if(name.Equals("N") == false)
+        {
+            scoreboard.append(name, score.ToString());
+            System.Diagnostics.Debug.WriteLine(name + "'s Scores:");
+            System.Diagnostics.Debug.WriteLine(scoreboard.retrieve(name));
+        }
+        System.Diagnostics.Debug.WriteLine("HIGH SCORES: ");
+        String[] scores = scoreboard.getScoreboard();
+        for(int i = 0; i <scores.Length; i++)
+        {
+            System.Diagnostics.Debug.WriteLine(scores[i]);
+        }
+
+    }
+
     public void Update()
     {
         time += Engine.TimeDelta;
