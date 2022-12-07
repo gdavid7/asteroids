@@ -19,7 +19,9 @@ class Game
     Vector2 mov = new Vector2(100, 100);
     float inertia = 100;
     bool fly = false;
-    
+    Bounds2 shipBounds = new Bounds2(100, 100, 100, 100);
+
+
     //shot variables
     Vector2 smov = new Vector2(400, 400);
     bool shoot = false;
@@ -33,6 +35,7 @@ class Game
     //game vars
     bool spawnAst = true;
     bool entry = true;
+    bool end = false;
 
     public Game()
     {
@@ -74,9 +77,12 @@ class Game
             {
                 entry = false;
             }
-        }
-        else
+        } else if (end)
         {
+            Engine.DrawString("GAME OVER",new Vector2 (1000,500) , Color.White, Engine.LoadFont("Starjedi.ttf", 72), TextAlignment.Center);
+        } else
+        {
+            shipBounds = new Bounds2(mov, new Vector2(100, 100));
             Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
             //creates a set of bounds simulating the shots for hitboxes
             shotBounds = new Bounds2(smov, new Vector2(100, 100));
@@ -192,12 +198,20 @@ class Game
         b.wraparound();
 
 
-        //collision tracking
+        // COLLISION HANDLING //
+
+
         if (a.getBounds().Overlaps(shotBounds) )
-        {
-            
+        { 
             spawnAst = false;
         }
+
+        if(a.getBounds().Overlaps(shipBounds) || b.getBounds().Overlaps(shipBounds))
+        {
+            end = true;   
+        }
+
+
 
     }
 
