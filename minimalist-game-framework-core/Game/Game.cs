@@ -24,12 +24,14 @@ class Game
     Vector2 smov = new Vector2(400, 400);
     bool shoot = false;
     float rotLock = 0;
+    Bounds2 shotBounds = new Bounds2(400,400, 100, 100);
 
 
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
     Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100, 100));
 
 
+    bool spawnAst = true;
 
     public Game()
     {
@@ -64,11 +66,20 @@ class Game
         time += Engine.TimeDelta;
         es.draw();
 
-        
+
         Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
-        Engine.DrawTexture(asteroid,a.getMov(), size: a.getSize());
-        Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
+        //creates a set of bounds simulating the shots for hitboxes
+        shotBounds = new Bounds2(smov, new Vector2(100, 100));
         Engine.DrawTexture(shot, smov, size: new Vector2(100, 100));
+
+        if (spawnAst) {
+        a.resetBounds();
+        b.resetBounds();
+        Engine.DrawTexture(asteroid, a.getMov(), size: a.getSize());
+        Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
+        }
+
+        
 
 
         
@@ -169,15 +180,17 @@ class Game
         b.wraparound();
 
 
+        //collision tracking
+        if (a.getBounds().Overlaps(shotBounds) )
+        {
+            System.Diagnostics.Debug.WriteLine("hit");
+            spawnAst = false;
+        }
 
     }
 
 
-    public Boolean isCollide(Vector2 pos1, Vector2 size1, Vector2 po2, Vector2 size2)
-    {
 
-        return false;
-    }
 
 
     public Vector2 getDirectionalVector(Vector2 cur, float rotation, float moveFactor)

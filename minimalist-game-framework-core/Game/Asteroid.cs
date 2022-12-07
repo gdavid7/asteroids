@@ -5,12 +5,14 @@
 		private Vector2 move;
 		private float rotation;
 		private Vector2 size;
+	private Bounds2 bounds;
 
-		public Asteroid(Vector2 move, float rot, Vector2 size)
+	public Asteroid(Vector2 move, float rot, Vector2 size)
 		{
 		this.move = move;
 		this.rotation = rot;
 		this.size = size;
+		this.bounds = new Bounds2(move,size);
 		}
 		
 		public Vector2 getMov()
@@ -33,7 +35,18 @@
 		return size;
 	}
 
-	public void wraparound()
+    public Bounds2 getBounds()
+    {
+        return bounds;
+    }
+
+	public void resetBounds()
+	{
+		bounds = new Bounds2(move, size);
+	}
+
+
+    public void wraparound()
 	{
         //x wraparound asteroid
         if (this.getMov().X <= -80)
