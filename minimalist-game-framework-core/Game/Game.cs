@@ -30,8 +30,9 @@ class Game
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
     Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100, 100));
 
-
+    //game vars
     bool spawnAst = true;
+    bool entry = true;
 
     public Game()
     {
@@ -64,31 +65,38 @@ class Game
     public void Update()
     {
         time += Engine.TimeDelta;
-        es.draw();
+        
 
+        if (entry)
+        {
+            es.draw();
+            if (es.isStartClicked())
+            {
+                entry = false;
+            }
+        }
+        else
+        {
+            Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
+            //creates a set of bounds simulating the shots for hitboxes
+            shotBounds = new Bounds2(smov, new Vector2(100, 100));
+            Engine.DrawTexture(shot, smov, size: new Vector2(100, 100));
 
-        Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
-        //creates a set of bounds simulating the shots for hitboxes
-        shotBounds = new Bounds2(smov, new Vector2(100, 100));
-        Engine.DrawTexture(shot, smov, size: new Vector2(100, 100));
+            if (spawnAst)
+            {
+                a.resetBounds();
+                b.resetBounds();
+                Engine.DrawTexture(asteroid, a.getMov(), size: a.getSize());
+                Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
+            }
 
-        if (spawnAst) {
-        a.resetBounds();
-        b.resetBounds();
-        Engine.DrawTexture(asteroid, a.getMov(), size: a.getSize());
-        Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
         }
 
 
 
 
 
-
-
         // SHOT SHOOTING //
-        System.Diagnostics.Debug.WriteLine(time);
-
-
 
         if (Engine.GetKeyDown(Key.Space) && !shoot)
         {
@@ -187,7 +195,7 @@ class Game
         //collision tracking
         if (a.getBounds().Overlaps(shotBounds) )
         {
-            System.Diagnostics.Debug.WriteLine("hit");
+            
             spawnAst = false;
         }
 
