@@ -79,31 +79,35 @@ class Game
         Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
         }
 
-        
 
 
-        
+
+
 
 
         // SHOT SHOOTING //
+        System.Diagnostics.Debug.WriteLine(time);
+
 
 
         if (Engine.GetKeyDown(Key.Space) && !shoot)
         {
             shoot = true;
             rotLock = rot;
-            
+            time = 0;
+
         }
 
         if (shoot)
         {
             smov = getDirectionalVector(smov, rotLock, 30);
+            
         } else
         {
             smov = mov;
         }
 
-        if ((time % .5 > -0.08 && time % .5 < 0.08) && shoot)
+        if (time > 0.3 && shoot)
         {
             shoot = false;
             smov = mov;
