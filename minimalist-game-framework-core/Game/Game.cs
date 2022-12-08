@@ -4,7 +4,7 @@ using System.Collections.Generic;
 class Game
 {
     public static readonly string Title = "Minimalist Game Framework";
-    public static readonly Vector2 Resolution = new Vector2(1920, 1080);
+    public static readonly Vector2 Resolution = new Vector2(1280, 720);
     EntryScreen es = new EntryScreen(Resolution);
     
 
@@ -79,7 +79,7 @@ class Game
             }
         } else if (end)
         {
-            Engine.DrawString("GAME OVER",new Vector2 (1000,500) , Color.White, Engine.LoadFont("Starjedi.ttf", 72), TextAlignment.Center);
+            Engine.DrawString("game over",new Vector2 (1000,500) , Color.White, Engine.LoadFont("Starjedi.ttf", 72), TextAlignment.Center);
         } else
         {
             shipBounds = new Bounds2(mov, new Vector2(100, 100));
@@ -94,6 +94,10 @@ class Game
                 b.resetBounds();
                 Engine.DrawTexture(asteroid, a.getMov(), size: a.getSize());
                 Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
+            } else
+            {
+                a.killBounds();
+                b.killBounds();
             }
 
         }

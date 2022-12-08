@@ -45,6 +45,11 @@
 		bounds = new Bounds2(move, size);
 	}
 
+	public void killBounds()
+	{
+		bounds = new Bounds2(Vector2.Zero, Vector2.Zero);
+    }
+
 
     public void wraparound()
 	{
