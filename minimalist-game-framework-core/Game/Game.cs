@@ -10,23 +10,28 @@ class Game
 
     Texture ship = Engine.LoadTexture("ship.png");
     Texture asteroid = Engine.LoadTexture("asteroid.png");
+    Texture shot = Engine.LoadTexture("projectile.png");
 
+    float time = 0;
 
-
-
+    //ship vars
     float rot = 0;
     Vector2 mov = new Vector2(100, 100);
     float inertia = 100;
     bool fly = false;
-
-
-
+    
+    //shot variables
+    Vector2 smov = new Vector2(400, 400);
+    bool shoot = false;
+    float rotLock = 0;
+    Bounds2 shotBounds = new Bounds2(400,400, 100, 100);
 
 
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
     Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100, 100));
 
 
+    bool spawnAst = true;
 
     public Game()
     {
@@ -58,14 +63,58 @@ class Game
 
     public void Update()
     {
-
+        time += Engine.TimeDelta;
         es.draw();
 
-        
-        Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
-        Engine.DrawTexture(asteroid,a.getMov(), size: a.getSize());
-        Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
 
+        Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
+        //creates a set of bounds simulating the shots for hitboxes
+        shotBounds = new Bounds2(smov, new Vector2(100, 100));
+        Engine.DrawTexture(shot, smov, size: new Vector2(100, 100));
+
+        if (spawnAst) {
+        a.resetBounds();
+        b.resetBounds();
+        Engine.DrawTexture(asteroid, a.getMov(), size: a.getSize());
+        Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
+        }
+
+        
+
+
+        
+
+
+        // SHOT SHOOTING //
+
+
+        if (Engine.GetKeyDown(Key.Space) && !shoot)
+        {
+            shoot = true;
+            rotLock = rot;
+            
+        }
+
+        if (shoot)
+        {
+            smov = getDirectionalVector(smov, rotLock, 30);
+        } else
+        {
+            smov = mov;
+        }
+
+        if ((time % .5 > -0.08 && time % .5 < 0.08) && shoot)
+        {
+            shoot = false;
+            smov = mov;
+        }
+
+
+
+        // SHIP MOVEMENT //
+
+
+        //moves ship with intertia
 
         if (Engine.GetKeyHeld(Key.Left))
         {
@@ -81,7 +130,7 @@ class Game
         if (Engine.GetKeyHeld(Key.Up))
         {
             mov = getDirectionalVector(mov, rot, 10);
-            
+
         }
 
         if (Engine.GetKeyUp(Key.Up))
@@ -92,10 +141,7 @@ class Game
 
         }
 
-
-
-        //moves with intertia
-        if(fly == true)
+        if (fly == true)
         {
             mov = getDirectionalVector(mov, rot, inertia/10);
             inertia--;
@@ -106,7 +152,6 @@ class Game
             }
         }
 
-        
         //x wraparound
         if (mov.X <= -80)
         {
@@ -126,6 +171,8 @@ class Game
             mov.Y = -50;
         }
 
+        // ASTEROID MOVEMENT //
+
         a.setMov(getDirectionalVector(a.getMov(), 120, 2));
         a.wraparound();
 
@@ -133,8 +180,17 @@ class Game
         b.wraparound();
 
 
+        //collision tracking
+        if (a.getBounds().Overlaps(shotBounds) )
+        {
+            System.Diagnostics.Debug.WriteLine("hit");
+            spawnAst = false;
+        }
 
     }
+
+
+
 
 
     public Vector2 getDirectionalVector(Vector2 cur, float rotation, float moveFactor)
