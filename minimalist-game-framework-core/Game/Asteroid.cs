@@ -6,6 +6,7 @@
 		private float rotation;
 		private Vector2 size;
 	private Bounds2 bounds;
+	private bool spawn;
 
 	public Asteroid(Vector2 move, float rot, Vector2 size)
 		{
@@ -13,6 +14,7 @@
 		this.rotation = rot;
 		this.size = size;
 		this.bounds = new Bounds2(move,size);
+		this.spawn = true;
 		}
 		
 		public Vector2 getMov()
@@ -33,6 +35,20 @@
 		public Vector2 getSize()
 	{
 		return size;
+	}
+
+	public Boolean getSpawn()
+	{
+		if (!spawn)
+		{
+			killBounds();
+		}
+		return spawn;
+	}
+
+	public void setSpawn(Boolean a)
+	{
+		spawn = a;
 	}
 
     public Bounds2 getBounds()
@@ -56,9 +72,9 @@
         //x wraparound asteroid
         if (this.getMov().X <= -80)
         {
-            this.setMov(new Vector2(1810, this.getMov().Y));
+            this.setMov(new Vector2(1170, this.getMov().Y));
         }
-        else if (this.getMov().X >= 1820)
+        else if (this.getMov().X >= 1180)
         {
             this.setMov(new Vector2(-50, this.getMov().Y));
         }
@@ -66,9 +82,9 @@
         //y wraparound asteroid 
         if (this.getMov().Y <= -80)
         {
-            this.setMov(new Vector2(this.getMov().X, 970));
+            this.setMov(new Vector2(this.getMov().X, 610));
         }
-        else if (this.getMov().Y >= 980)
+        else if (this.getMov().Y >= 620)
         {
             this.setMov(new Vector2(this.getMov().X, -50));
         }
