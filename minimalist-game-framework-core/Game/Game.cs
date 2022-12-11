@@ -13,6 +13,7 @@ class Game
     Texture shot = Engine.LoadTexture("projectile.png");
 
     float time = 0;
+    float asteroidTime = 0;
 
     //ship vars
     float rot = 0;
@@ -69,6 +70,7 @@ class Game
     public void Update()
     {
         time += Engine.TimeDelta;
+        asteroidTime += Engine.TimeDelta;
         Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
 
         if (entry)
@@ -81,6 +83,7 @@ class Game
         } else if (end)
         {
             Engine.DrawString("game over",new Vector2 (640,360) , Color.White, Engine.LoadFont("Starjedi.ttf", 72), TextAlignment.Center);
+            Engine.DrawString("Score: " + score, new Vector2(640, 450), Color.White, Engine.LoadFont("Starjedi.ttf", 40), TextAlignment.Center);
             Engine.DrawString("SPACE to exit game", new Vector2(640, 320), Color.White, Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
             if (Engine.GetKeyDown(Key.Space))
             {
@@ -130,7 +133,7 @@ class Game
             
         } else
         {
-            smov = mov;
+            smov = new Vector2(mov.X+50,mov.Y+50);
         }
 
         if (time > 0.3 && shoot)
@@ -227,10 +230,17 @@ class Game
 
         if (a.getBounds().Overlaps(shipBounds) || b.getBounds().Overlaps(shipBounds))
         {
-            end = true;   
-        } else if (!a.getSpawn() && !b.getSpawn())
-        {
             end = true;
+        }
+        //} else if (!a.getSpawn() && !b.getSpawn())
+        //{
+        //    end = true;
+        //}
+
+        if (asteroidTime % 5 < 0.1)
+        {
+            a.setSpawn(true);
+            b.setSpawn(true);
         }
 
 
