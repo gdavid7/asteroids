@@ -1,10 +1,10 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 
 class Game
 {
     public static readonly string Title = "Minimalist Game Framework";
-    public static readonly Vector2 Resolution = new Vector2(1920, 1080);
+    public static readonly Vector2 Resolution = new Vector2(1280, 720);
     EntryScreen es = new EntryScreen(Resolution);
     
 
@@ -13,13 +13,16 @@ class Game
     Texture shot = Engine.LoadTexture("projectile.png");
 
     float time = 0;
+    float asteroidTime = 0;
 
     //ship vars
     float rot = 0;
     Vector2 mov = new Vector2(100, 100);
     float inertia = 100;
     bool fly = false;
-    
+    Bounds2 shipBounds = new Bounds2(100, 100, 100, 100);
+
+
     //shot variables
     Vector2 smov = new Vector2(400, 400);
     bool shoot = false;
@@ -30,8 +33,11 @@ class Game
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
     Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100, 100));
 
-
+    //game vars
     bool spawnAst = true;
+    bool entry = true;
+    bool end = false;
+    int score = 0;
 
     public Game()
     {
@@ -64,46 +70,73 @@ class Game
     public void Update()
     {
         time += Engine.TimeDelta;
-        es.draw();
+        asteroidTime += Engine.TimeDelta;
+        Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
 
+        if (entry)
+        {
+            es.draw();
+            if (es.isStartClicked())
+            {
+                entry = false;
+            }
+        } else if (end)
+        {
+            Engine.DrawString("game over",new Vector2 (640,360) , Color.White, Engine.LoadFont("Starjedi.ttf", 72), TextAlignment.Center);
+            Engine.DrawString("Score: " + score, new Vector2(640, 450), Color.White, Engine.LoadFont("Starjedi.ttf", 40), TextAlignment.Center);
+            Engine.DrawString("SPACE to exit game", new Vector2(640, 320), Color.White, Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
+            if (Engine.GetKeyDown(Key.Space))
+            {
+                Environment.Exit(1);
+            }
+        } else
+        {
+            shipBounds = new Bounds2(mov, new Vector2(100, 100));
+            Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
+            //creates a set of bounds simulating the shots for hitboxes
+            shotBounds = new Bounds2(smov, new Vector2(10, 10));
+            Engine.DrawTexture(shot, smov, size: new Vector2(10, 10));
 
-        Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
-        //creates a set of bounds simulating the shots for hitboxes
-        shotBounds = new Bounds2(smov, new Vector2(100, 100));
-        Engine.DrawTexture(shot, smov, size: new Vector2(100, 100));
+            if (a.getSpawn())
+            {
+                a.resetBounds();
+                
+                Engine.DrawTexture(asteroid, a.getMov(), size: a.getSize());
+                
+            }
 
-        if (spawnAst) {
-        a.resetBounds();
-        b.resetBounds();
-        Engine.DrawTexture(asteroid, a.getMov(), size: a.getSize());
-        Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
+            if (b.getSpawn())
+            {
+                b.resetBounds();
+                Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
+            }
+            
         }
 
-        
 
 
-        
 
 
         // SHOT SHOOTING //
-
 
         if (Engine.GetKeyDown(Key.Space) && !shoot)
         {
             shoot = true;
             rotLock = rot;
-            
+            time = 0;
+
         }
 
         if (shoot)
         {
             smov = getDirectionalVector(smov, rotLock, 30);
+            
         } else
         {
-            smov = mov;
+            smov = new Vector2(mov.X+50,mov.Y+50);
         }
 
-        if ((time % .5 > -0.08 && time % .5 < 0.08) && shoot)
+        if (time > 0.3 && shoot)
         {
             shoot = false;
             smov = mov;
@@ -155,8 +188,8 @@ class Game
         //x wraparound
         if (mov.X <= -80)
         {
-            mov.X = 1810;
-        } else if(mov.X >= 1820)
+            mov.X = 1170;
+        } else if(mov.X >= 1180)
         {
             mov.X = -50;
         }
@@ -164,9 +197,9 @@ class Game
         //y wraparound
         if (mov.Y <= -80)
         {
-            mov.Y = 970;
+            mov.Y = 610;
         }
-        else if (mov.Y >= 980)
+        else if (mov.Y >= 620)
         {
             mov.Y = -50;
         }
@@ -180,12 +213,36 @@ class Game
         b.wraparound();
 
 
-        //collision tracking
+        // COLLISION HANDLING //
+
+
         if (a.getBounds().Overlaps(shotBounds) )
         {
-            System.Diagnostics.Debug.WriteLine("hit");
-            spawnAst = false;
+            score++;
+            a.setSpawn(false);
         }
+        if (b.getBounds().Overlaps(shotBounds))
+        {
+            score++;
+            b.setSpawn(false);
+        }
+
+
+        if (a.getBounds().Overlaps(shipBounds) || b.getBounds().Overlaps(shipBounds))
+        {
+            end = true;
+        }
+        //} else if (!a.getSpawn() && !b.getSpawn())
+        //{
+        //    end = true;
+        //}
+
+        if (asteroidTime % 5 < 0.1)
+        {
+            a.setSpawn(true);
+            b.setSpawn(true);
+        }
+
 
     }
 
