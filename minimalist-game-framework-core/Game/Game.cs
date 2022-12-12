@@ -11,6 +11,7 @@ class Game
     Texture ship = Engine.LoadTexture("ship.png");
     Texture asteroid = Engine.LoadTexture("asteroid.png");
     Texture shot = Engine.LoadTexture("projectile.png");
+    Texture bg = Engine.LoadTexture("background.png");
 
     float time = 0;
     float asteroidTime = 0;
@@ -31,7 +32,8 @@ class Game
 
 
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
-    Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100, 100));
+    Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(30,30));
+
 
     //game vars
     bool spawnAst = true;
@@ -69,6 +71,7 @@ class Game
 
     public void Update()
     {
+        Engine.DrawTexture(bg, Vector2.Zero);
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
         Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
