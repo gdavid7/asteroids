@@ -30,10 +30,11 @@ class Game
     float rotLock = 0;
     Bounds2 shotBounds = new Bounds2(400,400, 100, 100);
 
-
+    //asteroid inits
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
     Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(30,30));
-
+    
+    
 
     //game vars
     bool spawnAst = true;
@@ -100,19 +101,20 @@ class Game
             shotBounds = new Bounds2(smov, new Vector2(10, 10));
             Engine.DrawTexture(shot, smov, size: new Vector2(10, 10));
 
-            if (a.getSpawn())
-            {
-                a.resetBounds();
+            AsteroidCollection.handleAsteroidSpawning();
+            //if (a.getSpawn())
+            //{
+            //    a.resetBounds();
                 
-                Engine.DrawTexture(asteroid, a.getMov(), size: a.getSize());
+            //    Engine.DrawTexture(asteroid, a.getMov(), size: a.getSize());
                 
-            }
+            //}
 
-            if (b.getSpawn())
-            {
-                b.resetBounds();
-                Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
-            }
+            //if (b.getSpawn())
+            //{
+            //    b.resetBounds();
+            //    Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
+            //}
             
         }
 

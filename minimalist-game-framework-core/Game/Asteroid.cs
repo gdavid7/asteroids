@@ -7,14 +7,17 @@
 		private Vector2 size;
 	private Bounds2 bounds;
 	private bool spawn;
+    Texture asteroid = Engine.LoadTexture("asteroid.png");
 
-	public Asteroid(Vector2 move, float rot, Vector2 size)
+
+    public Asteroid(Vector2 move, float rot, Vector2 size)
 		{
 		this.move = move;
 		this.rotation = rot;
 		this.size = size;
 		this.bounds = new Bounds2(move,size);
 		this.spawn = true;
+		AsteroidCollection.add(this);
 		}
 		
 		public Vector2 getMov()
@@ -50,6 +53,16 @@
 	{
 		spawn = a;
 	}
+
+	public void handleSpawns()
+	{
+        if (getSpawn())
+        {
+            resetBounds();
+            Engine.DrawTexture(asteroid, getMov(), size:getSize());
+
+        }
+    }
 
     public Bounds2 getBounds()
     {
