@@ -101,20 +101,9 @@ class Game
             shotBounds = new Bounds2(smov, new Vector2(10, 10));
             Engine.DrawTexture(shot, smov, size: new Vector2(10, 10));
 
-            AsteroidCollection.handleAsteroidSpawning();
-            //if (a.getSpawn())
-            //{
-            //    a.resetBounds();
-                
-            //    Engine.DrawTexture(asteroid, a.getMov(), size: a.getSize());
-                
-            //}
 
-            //if (b.getSpawn())
-            //{
-            //    b.resetBounds();
-            //    Engine.DrawTexture(asteroid, b.getMov(), size: b.getSize());
-            //}
+            AsteroidCollection.handleAsteroidSpawning();
+          
             
         }
 
@@ -210,37 +199,19 @@ class Game
         }
 
         // ASTEROID MOVEMENT //
-
-        a.setMov(getDirectionalVector(a.getMov(), 120, 2));
-        a.wraparound();
-
-        b.setMov(getDirectionalVector(b.getMov(), 40, 2));
-        b.wraparound();
-
+        AsteroidCollection.handleAsteroidMoving();
 
         // COLLISION HANDLING //
-
-
-        if (a.getBounds().Overlaps(shotBounds) )
+        if (AsteroidCollection.handleAsteroidShotCollisions(shotBounds))
         {
             score++;
-            a.setSpawn(false);
-        }
-        if (b.getBounds().Overlaps(shotBounds))
-        {
-            score++;
-            b.setSpawn(false);
         }
 
-
-        if (a.getBounds().Overlaps(shipBounds) || b.getBounds().Overlaps(shipBounds))
+        if (AsteroidCollection.handleAsteroidShipCollisions(shipBounds))
         {
             end = true;
         }
-        //} else if (!a.getSpawn() && !b.getSpawn())
-        //{
-        //    end = true;
-        //}
+
 
         if (asteroidTime % 5 < 0.1)
         {
@@ -255,7 +226,7 @@ class Game
 
 
 
-    public Vector2 getDirectionalVector(Vector2 cur, float rotation, float moveFactor)
+    public static Vector2 getDirectionalVector(Vector2 cur, float rotation, float moveFactor)
     {
         float x = (float)(Convert.ToDouble(cur.X) + moveFactor * Math.Cos(ConvertDegreesToRadians(rotation)));
         float y = (float)(Convert.ToDouble(cur.Y) + moveFactor * Math.Sin(ConvertDegreesToRadians(rotation)));

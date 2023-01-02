@@ -64,6 +64,12 @@
         }
     }
 
+	public void handleMoves()
+	{
+        setMov(Game.getDirectionalVector(getMov(), 120, 2));
+        wraparound();
+    }
+
     public Bounds2 getBounds()
     {
         return bounds;
@@ -79,6 +85,24 @@
 		bounds = new Bounds2(Vector2.Zero, Vector2.Zero);
     }
 
+	public bool handleShotCollisions(Bounds2 shot)
+	{
+        if (getBounds().Overlaps(shot))
+        {
+            setSpawn(false);
+			return true;
+        }
+		return false;
+    }
+
+	public bool handleShipCollisions(Bounds2 ship)
+	{
+        if (getBounds().Overlaps(ship))
+        {
+			return true;
+        }
+		return false;
+    }
 
     public void wraparound()
 	{

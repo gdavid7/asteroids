@@ -15,7 +15,38 @@ using System.Collections;
 			}
 		}
 
-		public static void add(Asteroid a)
+    public static void handleAsteroidMoving()
+    {
+        foreach (Asteroid ast in collection)
+        {
+            ast.handleMoves();
+        }
+    }
+
+	public static bool handleAsteroidShotCollisions(Bounds2 shot)
+	{
+        foreach (Asteroid ast in collection)
+        {
+            if (ast.handleShotCollisions(shot)){
+				return true;
+			}
+        }
+        return false;
+    }
+
+    public static bool handleAsteroidShipCollisions(Bounds2 ship)
+    {
+        foreach (Asteroid ast in collection)
+        {
+            if (ast.handleShipCollisions(ship))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void add(Asteroid a)
 		{
 			collection.Add(a);
 		}
