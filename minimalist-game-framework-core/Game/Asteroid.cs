@@ -5,18 +5,22 @@
 		private Vector2 move;
 		private float rotation;
 		private Vector2 size;
-	private Bounds2 bounds;
-	private bool spawn;
-    Texture asteroid = Engine.LoadTexture("asteroid.png");
+		private Bounds2 bounds;
+		private bool spawn;
+		Texture asteroid = Engine.LoadTexture("asteroid.png");
 
+	// splitting vars
+	int stage;
+    
 
-    public Asteroid(Vector2 move, float rot, Vector2 size)
+    public Asteroid(Vector2 move, float rot, Vector2 size, int stage)
 		{
 		this.move = move;
 		this.rotation = rot;
 		this.size = size;
 		this.bounds = new Bounds2(move,size);
 		this.spawn = true;
+		this.stage = stage;
 		AsteroidCollection.add(this);
 		}
 		
@@ -38,6 +42,11 @@
 		public Vector2 getSize()
 	{
 		return size;
+	}
+
+	public int getStage()
+	{
+		return stage;
 	}
 
 	public Boolean getSpawn()

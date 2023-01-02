@@ -31,8 +31,8 @@ class Game
     Bounds2 shotBounds = new Bounds2(400,400, 100, 100);
 
     //asteroid inits
-    Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100));
-    Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(30,30));
+    Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100),1);
+    Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(30,30),1);
     
     
 
@@ -212,7 +212,7 @@ class Game
             end = true;
         }
 
-
+        //ASTEROID RESPAWNING (TEMP) //
         if (asteroidTime % 5 < 0.1)
         {
             a.setSpawn(true);
