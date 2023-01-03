@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 class Theme
 {
-    static Font font = Engine.LoadFont("Oswald-Regular.ttf", 36);
+    static Font font = Engine.LoadFont("Oswald-Regular.ttf", 48);
     static int count = 0; // total number of themes
     public static int current = 0; // the current theme applied
     private int num;  
@@ -18,9 +18,6 @@ class Theme
     public Theme() // only for testing
     {
         num = count;
-        //title = Engine.LoadTexture("title.PNG");
-        //rocketShip = Engine.LoadTexture("rocketship.jfif");
-        //asteroid = Engine.LoadTexture("asteroid.jfif");
         count++;
     }
     
@@ -50,7 +47,7 @@ class Theme
     /// <returns></returns>
     public Bounds2 drawThemeIcon(Vector2 position)
     {
-        return Engine.DrawString("Theme " + num, position, Color.White, font);
+        return Engine.DrawString("Theme " + (num+1), position, Color.White, font);
     }
 
 

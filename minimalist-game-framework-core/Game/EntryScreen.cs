@@ -22,10 +22,10 @@ class EntryScreen
     {
         this.resolution = resolution;
         this.themes = themes;
-        titleFont = Engine.LoadFont("Starjedi.ttf", 72);
+        titleFont = Engine.LoadFont("Starjedi.ttf", 128);
         titleLocation = new Vector2(resolution.X / 2, resolution.Y / 5);
 
-        buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 36);
+        buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 48);
         startLocation = new Vector2(resolution.X / 2, resolution.Y / 2);
         highLocation = new Vector2(resolution.X / 2, resolution.Y * 2 / 3);
 
@@ -47,8 +47,11 @@ class EntryScreen
         highBounds = Engine.DrawString("HIGH SCORE", highLocation, Color.White, buttonFont, TextAlignment.Center);
         themeMenuBounds = Engine.DrawString("THEME", Vector2.Zero, Color.White, buttonFont);
 
+        drawHoverRect();
+
+
         // temp
-        Engine.DrawString("Current Theme: " + Theme.current, new Vector2(resolution.X, 0), Color.White, buttonFont, TextAlignment.Right);
+        Engine.DrawString("Current Theme: " + (Theme.current+1), new Vector2(resolution.X, 0), Color.White, buttonFont, TextAlignment.Right);
        
         // show theme menu if it is clicked on
         if (isThemeMenuClicked())
@@ -88,12 +91,36 @@ class EntryScreen
         return Engine.GetMouseButtonDown(MouseButton.Left) && themeMenuBounds.Contains(Engine.MousePosition);
     }
 
+    /// <summary>
+    /// Draws a rectangle around buttons if the mouse is hovered over
+    /// </summary>
+    private void drawHoverRect()
+    {
+        drawHoverRect(startBounds);
+        drawHoverRect(highBounds);
+        drawHoverRect(themeMenuBounds);
+    }
+
+    /// <summary>
+    /// Draws a rectangle if the mouse is hovered over a button
+    /// </summary>
+    /// <param name="bounds"> the bounds of the button</param>
+    private void drawHoverRect(Bounds2 bounds)
+    {
+        if (bounds.Contains(Engine.MousePosition))
+        {
+            Bounds2 rectBounds = new Bounds2(bounds.Position.X-5, bounds.Position.Y+5, bounds.Size.X+10, bounds.Size.Y-10);
+            Engine.DrawRectEmpty(rectBounds, Color.White);
+        }
+    }
+
     public void drawThemeMenu()
     {
         for(int i=0; i<themes.Count; i++)
         {
             Theme t = themes[i];
-            t.setBounds(t.drawThemeIcon(new Vector2(0,50*(i+1))));
+            t.setBounds(t.drawThemeIcon(new Vector2(0,70*(i+1))));
+            drawHoverRect(t.getBounds());
         }
     }
 

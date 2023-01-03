@@ -12,6 +12,8 @@ class Game
     {
         themes = new List<Theme>();
         themes.Add(new Theme());
+        themes.Add(new Theme());
+
 
         es = new EntryScreen(Resolution, themes);
     }
