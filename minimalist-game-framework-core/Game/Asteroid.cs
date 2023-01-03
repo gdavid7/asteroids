@@ -75,7 +75,7 @@
 
 	public void handleMoves()
 	{
-        setMov(Game.getDirectionalVector(getMov(), 120, 2));
+        setMov(Game.getDirectionalVector(getMov(), rotation, 2));
         wraparound();
     }
 
