@@ -205,6 +205,7 @@ class Game
         if (AsteroidCollection.handleAsteroidShotCollisions(shotBounds))
         {
             score++;
+            shoot = false;
         }
 
         if (AsteroidCollection.handleAsteroidShipCollisions(shipBounds))
