@@ -5,16 +5,23 @@
 		private Vector2 move;
 		private float rotation;
 		private Vector2 size;
-	private Bounds2 bounds;
-	private bool spawn;
+		private Bounds2 bounds;
+		private bool spawn;
+		Texture asteroid = Engine.LoadTexture("asteroid.png");
 
-	public Asteroid(Vector2 move, float rot, Vector2 size)
+	// splitting vars
+	int stage;
+    
+
+    public Asteroid(Vector2 move, float rot, Vector2 size, int stage)
 		{
 		this.move = move;
 		this.rotation = rot;
 		this.size = size;
 		this.bounds = new Bounds2(move,size);
 		this.spawn = true;
+		this.stage = stage;
+		AsteroidCollection.add(this);
 		}
 		
 		public Vector2 getMov()
@@ -37,6 +44,11 @@
 		return size;
 	}
 
+	public int getStage()
+	{
+		return stage;
+	}
+
 	public Boolean getSpawn()
 	{
 		if (!spawn)
@@ -50,6 +62,22 @@
 	{
 		spawn = a;
 	}
+
+	public void handleSpawns()
+	{
+        if (getSpawn())
+        {
+            resetBounds();
+            Engine.DrawTexture(asteroid, getMov(), size:getSize());
+
+        }
+    }
+
+	public void handleMoves()
+	{
+        setMov(Game.getDirectionalVector(getMov(), rotation, 2));
+        wraparound();
+    }
 
     public Bounds2 getBounds()
     {
@@ -66,6 +94,24 @@
 		bounds = new Bounds2(Vector2.Zero, Vector2.Zero);
     }
 
+	public bool handleShotCollisions(Bounds2 shot)
+	{
+        if (getBounds().Overlaps(shot))
+        {
+            setSpawn(false);
+			return true;
+        }
+		return false;
+    }
+
+	public bool handleShipCollisions(Bounds2 ship)
+	{
+        if (getBounds().Overlaps(ship))
+        {
+			return true;
+        }
+		return false;
+    }
 
     public void wraparound()
 	{
