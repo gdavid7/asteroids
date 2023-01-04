@@ -214,10 +214,11 @@ class Game
         }
 
         //ASTEROID RESPAWNING (TEMP) //
-        if (asteroidTime % 5 < 0.1)
+        if (asteroidTime > 5)
         {
-            a.setSpawn(true);
-            b.setSpawn(true);
+            System.Diagnostics.Debug.WriteLine("This is a log");
+            AsteroidCollection.spawn();
+            asteroidTime = 0;
         }
 
 

@@ -5,7 +5,7 @@ using System.Collections;
 	static class AsteroidCollection
 	{
 		private static readonly ArrayList collection =  new ArrayList();
- 
+    private static Random r = new Random();
 
 		public static void handleAsteroidSpawning()
 		{
@@ -52,6 +52,14 @@ using System.Collections;
 		{
 			collection.Add(a);
 		}
+
+    public static void spawn()
+    {
+        Asteroid a = new Asteroid(new Vector2(r.Next(1280),r.Next(720) ), 100, new Vector2(100, 100), 1);
+        collection.Add(a);
+    }
+
+
 
     private static void split(int stage, Asteroid ast)
     {
