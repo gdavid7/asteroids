@@ -91,7 +91,12 @@ class Game
             Engine.DrawString("SPACE to exit game", new Vector2(640, 320), Color.White, Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
             if (Engine.GetKeyDown(Key.Space))
             {
-                Environment.Exit(1);
+                end = false;
+                entry = true;
+                score = 0;
+                AsteroidCollection.clearAll();
+                AsteroidCollection.spawn();
+
             }
         } else
         {
@@ -103,8 +108,6 @@ class Game
 
 
             AsteroidCollection.handleAsteroidSpawning();
-          
-            
         }
 
 

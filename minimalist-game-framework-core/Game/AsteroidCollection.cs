@@ -55,7 +55,7 @@ using System.Collections;
 
     public static void spawn()
     {
-        Asteroid a = new Asteroid(new Vector2(r.Next(1280),r.Next(720) ), 100, new Vector2(100, 100), 1);
+        Asteroid a = new Asteroid(new Vector2(r.Next(1280),r.Next(720) ), r.Next(360), new Vector2(100, 100), 1);
         collection.Add(a);
     }
 
@@ -65,9 +65,15 @@ using System.Collections;
     {
         if (stage < 2)
         {
-            add(new Asteroid(new Vector2(ast.getMov().X+50, ast.getMov().Y+50), 100, new Vector2(100 / stage+1, 100 / stage+1),stage+1));
-            add(new Asteroid(new Vector2(ast.getMov().X - 50, ast.getMov().Y - 50), 20, new Vector2(100 / stage+1, 100 / stage+1),stage+1));
+            add(new Asteroid(new Vector2(ast.getMov().X+50, ast.getMov().Y+50), 100, new Vector2(100 / (stage+1), 100 / (stage+1)),stage+1));
+            add(new Asteroid(new Vector2(ast.getMov().X - 50, ast.getMov().Y - 50), 20, new Vector2(100 / (stage+1), 100 / (stage+1)),stage+1));
         }       
+    }
+
+    public static void clearAll()
+    {
+        collection.Clear();
+        
     }
 
     
