@@ -32,7 +32,7 @@ class Game
 
     //asteroid inits
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100),1);
-    Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(30,30),1);
+    Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100,100),1);
     
     
 
@@ -106,7 +106,6 @@ class Game
           
             
         }
-
 
 
 
