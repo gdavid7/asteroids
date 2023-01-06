@@ -5,9 +5,10 @@ using System.Collections;
 	static class AsteroidCollection
 	{
 		private static readonly ArrayList collection =  new ArrayList();
-    private static Random r = new Random();
+        private static Random r = new Random();
 
-		public static void handleAsteroidSpawning()
+        //handles spawning code for all asteroids in the game
+        public static void handleAsteroidSpawning()
 		{
 			foreach (Asteroid ast in collection)
 			{
@@ -15,16 +16,18 @@ using System.Collections;
 			}
 		}
 
-    public static void handleAsteroidMoving()
-    {
+        //handles movement for all asteroids in the game
+        public static void handleAsteroidMoving()
+        {
         foreach (Asteroid ast in collection)
         {
             ast.handleMoves();
         }
-    }
+        }
 
-	public static bool handleAsteroidShotCollisions(Bounds2 shot)
-	{
+        //handles shot collisions for all asteroids in the game
+	    public static bool handleAsteroidShotCollisions(Bounds2 shot)
+	    {
         foreach (Asteroid ast in collection)
         {
             if (ast.handleShotCollisions(shot)){
@@ -34,10 +37,11 @@ using System.Collections;
 			}
         }
         return false;
-    }
+        }
 
-    public static bool handleAsteroidShipCollisions(Bounds2 ship)
-    {
+        //handles ship collisions for all asteroids in the game
+        public static bool handleAsteroidShipCollisions(Bounds2 ship)
+        {
         foreach (Asteroid ast in collection)
         {
             if (ast.handleShipCollisions(ship))
@@ -46,7 +50,8 @@ using System.Collections;
             }
         }
         return false;
-    }
+        }
+
 
     public static void add(Asteroid a)
 		{
@@ -60,7 +65,7 @@ using System.Collections;
     }
 
 
-
+    //spawns 2 smaller asteroids based on current destroyed asteroid
     private static void split(int stage, Asteroid ast)
     {
         if (stage < 2)
