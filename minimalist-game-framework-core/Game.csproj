@@ -41,7 +41,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\asteroid.png" />
+    <Content Include="Assets\asteroid2.png" />
+    <Content Include="Assets\background.png" />
+    <Content Include="Assets\background2.png" />
+    <Content Include="Assets\backgroundGrid1.png" />
+    <Content Include="Assets\backgroundGrid2.png" />
+    <Content Include="Assets\rocket.png" />
+    <Content Include="Assets\rocket2.png" />
     <Content Include="Assets\Starjedi.ttf" />
+    <Content Include="Assets\title.PNG" />
   </ItemGroup>
 
   <ItemGroup>
