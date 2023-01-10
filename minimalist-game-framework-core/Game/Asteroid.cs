@@ -63,6 +63,7 @@
 		spawn = a;
 	}
 
+	//spawns the asteroid every frame in its new position
 	public void handleSpawns()
 	{
         if (getSpawn())
@@ -73,27 +74,32 @@
         }
     }
 
+	//moves the asteroid by a factor of 2
 	public void handleMoves()
 	{
         setMov(Game.getDirectionalVector(getMov(), rotation, 2));
         wraparound();
     }
 
+	//returns bounds
     public Bounds2 getBounds()
     {
         return bounds;
     }
 
+	//resets bounds to asteroid position
 	public void resetBounds()
 	{
 		bounds = new Bounds2(move, size);
 	}
 
+	//deletes the bound
 	public void killBounds()
 	{
 		bounds = new Bounds2(Vector2.Zero, Vector2.Zero);
     }
 
+	//returns if a shot has collided with the asteroid
 	public bool handleShotCollisions(Bounds2 shot)
 	{
         if (getBounds().Overlaps(shot))
@@ -104,6 +110,7 @@
 		return false;
     }
 
+	//returns if a ship has collided with the asteroid
 	public bool handleShipCollisions(Bounds2 ship)
 	{
         if (getBounds().Overlaps(ship))

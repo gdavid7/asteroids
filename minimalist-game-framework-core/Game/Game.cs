@@ -32,7 +32,7 @@ class Game
 
     //asteroid inits
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100),1);
-    Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(30,30),1);
+    Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100,100),1);
     
     
 
@@ -91,7 +91,12 @@ class Game
             Engine.DrawString("SPACE to exit game", new Vector2(640, 320), Color.White, Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
             if (Engine.GetKeyDown(Key.Space))
             {
-                Environment.Exit(1);
+                end = false;
+                entry = true;
+                score = 0;
+                AsteroidCollection.clearAll();
+                AsteroidCollection.spawn();
+
             }
         } else
         {
@@ -103,10 +108,7 @@ class Game
 
 
             AsteroidCollection.handleAsteroidSpawning();
-          
-            
         }
-
 
 
 
@@ -160,6 +162,7 @@ class Game
 
         }
 
+        //starts inertia when up is released
         if (Engine.GetKeyUp(Key.Up))
         {
 
@@ -168,6 +171,7 @@ class Game
 
         }
 
+        //handles inertia movement
         if (fly == true)
         {
             mov = getDirectionalVector(mov, rot, inertia/10);
@@ -213,7 +217,7 @@ class Game
             end = true;
         }
 
-        //ASTEROID RESPAWNING (TEMP) //
+        //ASTEROID RESPAWNING//
         if (asteroidTime > 5)
         {
             System.Diagnostics.Debug.WriteLine("This is a log");
@@ -226,8 +230,8 @@ class Game
 
 
 
-
-
+     
+    //returns a new vector with movement in a direction of choice
     public static Vector2 getDirectionalVector(Vector2 cur, float rotation, float moveFactor)
     {
         float x = (float)(Convert.ToDouble(cur.X) + moveFactor * Math.Cos(ConvertDegreesToRadians(rotation)));
