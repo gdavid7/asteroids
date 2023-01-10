@@ -22,6 +22,7 @@ class Game
     float inertia = 100;
     bool fly = false;
     Bounds2 shipBounds = new Bounds2(100, 100, 100, 100);
+    int lives = 3;
 
 
     //shot variables
@@ -214,7 +215,12 @@ class Game
 
         if (AsteroidCollection.handleAsteroidShipCollisions(shipBounds))
         {
-            end = true;
+            lives--;
+            if (lives <= 0)
+            {
+                end = true;
+            } 
+            
         }
 
         //ASTEROID RESPAWNING//
