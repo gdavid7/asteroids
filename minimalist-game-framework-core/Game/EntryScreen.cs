@@ -5,34 +5,35 @@ using System.Text;
 class EntryScreen
 {
     Vector2 resolution;
-    Font titleFont;
-    Vector2 titleLocation;
-    Font buttonFont;
+    Font buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 48);
     Vector2 startLocation;
     Vector2 highLocation;
     Vector2 gridLocation;
+
+    
     Bounds2 startBounds;
     Bounds2 highBounds;
     Bounds2 gridBounds;
+    Bounds2 darkModeBounds;
 
-    Bounds2 themeMenuBounds;
-    Boolean themeMenu; // whether to show the theme menu or not
+    Theme theme;
+    Color color;
 
-    List<Theme> themes = new List<Theme>();
+    float degrees;
 
-    public EntryScreen(Vector2 resolution, List<Theme> themes)
+    public EntryScreen(Vector2 resolution, Theme theme)
     {
         this.resolution = resolution;
-        this.themes = themes;
-        titleFont = Engine.LoadFont("Starjedi.ttf", 128);
-        titleLocation = new Vector2(resolution.X / 2, resolution.Y / 5);
-
-        buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 48);
+        this.theme = theme;
+        color = theme.getColor();
         startLocation = new Vector2(resolution.X / 2, resolution.Y / 2);
         highLocation = new Vector2(resolution.X / 2, resolution.Y * 2 / 3);
         gridLocation = new Vector2(0, resolution.Y * 10/11);
 
-        themeMenu = false;
+        startBounds = Engine.DrawString("START", startLocation, color, buttonFont, TextAlignment.Center);
+        highBounds = Engine.DrawString("HIGH SCORE", highLocation, color, buttonFont, TextAlignment.Center);
+
+        degrees = 0;
     }
 
     /// <summary>
@@ -40,55 +41,46 @@ class EntryScreen
     /// </summary>
     public void draw()
     {
-        Color currentColor = Theme.getCurrentColor();
+        theme.drawStartBackground();
 
-        Theme.drawCurrentBackground();
-        //Engine.DrawRectSolid(new Bounds2(Vector2.Zero, resolution), Color.Black) ;
-        //currentTheme.drawTitle(titleLocation);
+        // draws buttons
+        Engine.DrawString("START", startLocation, color, buttonFont, TextAlignment.Center);
+        Engine.DrawString("HIGH SCORE", highLocation, color, buttonFont, TextAlignment.Center);
 
-        Engine.DrawString("Asteroids", titleLocation, currentColor, titleFont, TextAlignment.Center);
-        startBounds = Engine.DrawString("START", startLocation, currentColor, buttonFont, TextAlignment.Center);
-        highBounds = Engine.DrawString("HIGH SCORE", highLocation, currentColor, buttonFont, TextAlignment.Center);
-        themeMenuBounds = Engine.DrawString("THEME", Vector2.Zero, currentColor, buttonFont);
-        if (Theme.drawGrid)
+        // draws button for changing grid layout
+        if (theme.isGridOn())
         {
-            gridBounds = Engine.DrawString("GRID: ON", gridLocation, currentColor, buttonFont);
+            gridBounds = Engine.DrawString("GRID: ON", gridLocation, color, buttonFont);
         }
         else
         {
-            gridBounds = Engine.DrawString("GRID: OFF", gridLocation, currentColor, buttonFont);
+            gridBounds = Engine.DrawString("GRID: OFF", gridLocation, color, buttonFont);
         }
-
-        Theme.drawCurrentAsteroid(Vector2.Zero, 250);
-        Theme.drawCurrentRocketShip(Vector2.Zero);
-
-        drawHoverRect(currentColor);
-
         if (isGridClicked())
         {
-            Theme.drawGrid = !Theme.drawGrid;
+            theme.changeGridLayout();
         }
-       
-        // show theme menu if it is clicked on
-        if (isThemeMenuClicked())
+        
+        // draws button for changing color mode
+        if (theme.isDarkMode())
         {
-            themeMenu = true;
+            darkModeBounds = Engine.DrawString("Dark Mode", Vector2.Zero, color, buttonFont);
+        }
+        else
+        {
+            darkModeBounds = Engine.DrawString("Light Mode", Vector2.Zero, color, buttonFont);
+        }
+        if (isDarkModeClicked())
+        {
+            color = theme.changeColorMode();
         }
 
-        if (themeMenu)
-        {
-            drawThemeMenu(currentColor);
+        // temp
+        theme.drawAsteroid(Vector2.Zero, 250);
+        theme.drawRocketShip(new Vector2(50,80), 100);
 
-            int action = isThemeOptionsClicked();
-            if (action == -1) // outside is clicked
-            {
-                themeMenu = false;
-            } else if (action >= 0) // one of the options is clicked
-            {
-                themeMenu = false;
-                Theme.current = action;
-            }
-        }
+        drawHoverRect(color);
+
 
     }
 
@@ -102,16 +94,15 @@ class EntryScreen
         return Engine.GetMouseButtonDown(MouseButton.Left) && highBounds.Contains(Engine.MousePosition);
     }
 
-    public Boolean isThemeMenuClicked()
-    {
-        return Engine.GetMouseButtonDown(MouseButton.Left) && themeMenuBounds.Contains(Engine.MousePosition);
-    }
-
     public Boolean isGridClicked()
     {
         return Engine.GetMouseButtonDown(MouseButton.Left) && gridBounds.Contains(Engine.MousePosition);
     }
 
+    public Boolean isDarkModeClicked()
+    {
+        return Engine.GetMouseButtonDown(MouseButton.Left) && darkModeBounds.Contains(Engine.MousePosition);
+    }
     /// <summary>
     /// Draws a rectangle around buttons if the mouse is hovered over
     /// </summary>
@@ -119,8 +110,8 @@ class EntryScreen
     {
         drawHoverRect(startBounds, color);
         drawHoverRect(highBounds, color);
-        drawHoverRect(themeMenuBounds, color);
         drawHoverRect(gridBounds, color);
+        drawHoverRect(darkModeBounds, color);
     }
 
     /// <summary>
@@ -136,38 +127,7 @@ class EntryScreen
         }
     }
 
-    public void drawThemeMenu(Color color)
-    {
-        for(int i=0; i<themes.Count; i++)
-        {
-            Theme t = themes[i];
-            t.setBounds(t.drawThemeIcon(new Vector2(0,70*(i+1)), color));
-            drawHoverRect(t.getBounds(), color);
-        }
-    }
 
-    public int isThemeOptionsClicked()
-    {
-        if (Engine.GetMouseButtonDown(MouseButton.Left))
-        {
-            if (themeMenuBounds.Contains(Engine.MousePosition))
-            {
-                return -2; // if theme menu is clicked, acts as if no clicking happened
-                // prevents immediately closing the menu once opened
-            }
-            for (int i=0; i<themes.Count; i++)
-            {
-                if (themes[i].getBounds().Contains(Engine.MousePosition))
-                {
-                    return i; // one of the themes is clicked
-                }
-            }
-
-            return -1; // outside is clicked
-        }
-
-        return -2; // no clicking
-    }
 
     
 }
