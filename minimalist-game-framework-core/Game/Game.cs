@@ -15,6 +15,7 @@ class Game
 
     float time = 0;
     float asteroidTime = 0;
+    float invinTime = 0;
 
     //ship vars
     float rot = 0;
@@ -23,6 +24,8 @@ class Game
     bool fly = false;
     Bounds2 shipBounds = new Bounds2(100, 100, 100, 100);
     int lives = 3;
+    bool invincible = false;
+
 
 
     //shot variables
@@ -76,7 +79,9 @@ class Game
         Engine.DrawTexture(bg, Vector2.Zero);
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
+        invinTime += Engine.TimeDelta;
         Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
+        Engine.DrawString("Lives: " + lives, new Vector2(100, 50), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
 
         if (entry)
         {
@@ -89,12 +94,14 @@ class Game
         {
             Engine.DrawString("game over",new Vector2 (640,360) , Color.White, Engine.LoadFont("Starjedi.ttf", 72), TextAlignment.Center);
             Engine.DrawString("Score: " + score, new Vector2(640, 450), Color.White, Engine.LoadFont("Starjedi.ttf", 40), TextAlignment.Center);
+
             Engine.DrawString("SPACE to exit game", new Vector2(640, 320), Color.White, Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
             if (Engine.GetKeyDown(Key.Space))
             {
                 end = false;
                 entry = true;
                 score = 0;
+                lives = 3;
                 AsteroidCollection.clearAll();
                 AsteroidCollection.spawn();
 
@@ -127,7 +134,7 @@ class Game
         if (shoot)
         {
             smov = getDirectionalVector(smov, rotLock, 30);
-            
+           
         } else
         {
             smov = new Vector2(mov.X+50,mov.Y+50);
@@ -215,12 +222,28 @@ class Game
 
         if (AsteroidCollection.handleAsteroidShipCollisions(shipBounds))
         {
-            lives--;
-            if (lives <= 0)
+            if (!invincible)
             {
-                end = true;
-            } 
+                lives--;
+                invincible = true;
+                if (lives <= 0)
+                {
+                    end = true;
+                }
+            }
             
+            
+        }
+
+        if (invincible)
+        {
+            mov = new Vector2(640, 360);
+            if (invinTime > 5)
+            {
+                invinTime = 0;
+                invincible = false;
+                
+            }
         }
 
         //ASTEROID RESPAWNING//
