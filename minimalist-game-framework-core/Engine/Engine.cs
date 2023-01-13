@@ -23,6 +23,7 @@ static partial class Engine
     }
 
     private static void Start()
+
     {
         // ======================================================================================
         // Hide the console window as quickly as possible
