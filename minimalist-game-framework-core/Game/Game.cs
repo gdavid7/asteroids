@@ -9,7 +9,6 @@ class Game
     EntryScreen es;
     
 
-    Texture ship = Engine.LoadTexture("ship.png");
     Texture shot = Engine.LoadTexture("projectile.png");
     Texture bg = Engine.LoadTexture("background.png");
 
@@ -17,7 +16,7 @@ class Game
     float asteroidTime = 0;
 
     //ship vars
-    float rot = 0;
+    float rot = 180;
     Vector2 mov = new Vector2(100, 100);
     float inertia = 100;
     bool fly = false;
@@ -112,7 +111,8 @@ class Game
         } else
         {
             shipBounds = new Bounds2(mov, new Vector2(100, 100));
-            Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
+            //Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
+            theme.drawRocketShip(mov, 100, rot);
             //creates a set of bounds simulating the shots for hitboxes
             shotBounds = new Bounds2(smov, new Vector2(10, 10));
             Engine.DrawTexture(shot, smov, size: new Vector2(10, 10));
