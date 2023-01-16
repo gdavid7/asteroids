@@ -45,10 +45,12 @@ class Game
     {
         List<String> startBackgrounds = new List<String>() { "startBackgroundD.png", "startBackgroundL.png", "startBackgroundDG.png", "startBackgroundLG.png" };
         List<String> gameBackgrounds = new List<String>() { "gameBackgroundD.png", "gameBackgroundL.png", "gameBackgroundDG.png", "gameBackgroundLG.png" };
+        List<String> endBackgrounds = new List<String>() { "endBackgroundD.png", "endBackgroundL.png" };
         List<String> rocketShips = new List<String>() { "rocketshipD.png", "rocketshipL.png" };
-        List<String> asteroids = new List<String>() {"awhite.png", "ablack.png"};
-
-        theme = new Theme(Resolution, startBackgrounds, gameBackgrounds, startBackgrounds, rocketShips, asteroids, asteroids);
+        List<String> asteroids = new List<String>() {"asteroidD1.png", "asteroidL1.png"};
+        List<String> powerups = new List<String>() { "powerupD.png", "powerupL.png"};
+        
+        theme = new Theme(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups);
 
         
         
