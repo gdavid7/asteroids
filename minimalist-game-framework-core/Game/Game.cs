@@ -14,6 +14,7 @@ class Game
 
     float time = 0;
     float asteroidTime = 0;
+    float powerupTime = 0;
 
     //ship vars
     float rot = 180;
@@ -29,11 +30,15 @@ class Game
     float rotLock = 0;
     Bounds2 shotBounds = new Bounds2(400,400, 100, 100);
 
+    //powerup vars
+    float delay = 10;
+    Vector2 pPos = new Vector2(300, 300);
+
     //asteroid inits
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100),1);
     Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100,100),1);
     
-    
+     
 
     //game vars
     bool spawnAst = true;
@@ -41,14 +46,17 @@ class Game
     bool end = false;
     int score = 0;
 
+    Random rd = new Random();
+
     public Game()
     {
         List<String> startBackgrounds = new List<String>() { "startBackgroundD.png", "startBackgroundL.png", "startBackgroundDG.png", "startBackgroundLG.png" };
         List<String> gameBackgrounds = new List<String>() { "gameBackgroundD.png", "gameBackgroundL.png", "gameBackgroundDG.png", "gameBackgroundLG.png" };
         List<String> rocketShips = new List<String>() { "rocketshipD.png", "rocketshipL.png" };
         List<String> asteroids = new List<String>() {"awhite.png", "ablack.png"};
+        List<String> powerups = new List<String>() { "pwhite.png", "pblack.png" };
 
-        theme = new Theme(Resolution, startBackgrounds, gameBackgrounds, startBackgrounds, rocketShips, asteroids, asteroids);
+        theme = new Theme(Resolution, startBackgrounds, gameBackgrounds, startBackgrounds, rocketShips, asteroids, powerups);
 
         
         
@@ -85,6 +93,7 @@ class Game
         theme.drawGameBackground();
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
+        powerupTime += Engine.TimeDelta;
         Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
 
         if (entry)
@@ -117,7 +126,7 @@ class Game
             shotBounds = new Bounds2(smov, new Vector2(10, 10));
             Engine.DrawTexture(shot, smov, size: new Vector2(10, 10));
 
-
+            
             AsteroidCollection.handleAsteroidSpawning();
         }
 
@@ -236,7 +245,18 @@ class Game
             asteroidTime = 0;
         }
 
-
+        // POWERUP HANDLING //
+        
+        if (powerupTime > delay)
+        {
+            powerupTime = 0;
+            delay = rd.Next(10, 20);
+            pPos = new Vector2(rd.Next(100, 1180), rd.Next(100, 620)); ;
+            spawnPowerup(theme,pPos);
+        } else
+        {
+            spawnPowerup(theme, pPos);
+        }
     }
 
 
@@ -259,6 +279,13 @@ class Game
         double radians = (Math.PI / 180) * degrees;
         return (radians);
 
+    }
+
+
+    public static void spawnPowerup(Theme t, Vector2 pos)
+    {
+        
+        t.drawPowerup(pos, 100, 0);
     }
 
 }
