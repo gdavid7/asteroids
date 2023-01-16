@@ -10,7 +10,6 @@ class Game
     
 
     Texture ship = Engine.LoadTexture("ship.png");
-    Texture asteroid = Engine.LoadTexture("asteroid.png");
     Texture shot = Engine.LoadTexture("projectile.png");
     Texture bg = Engine.LoadTexture("background.png");
 
@@ -48,7 +47,7 @@ class Game
         List<String> startBackgrounds = new List<String>() { "startBackgroundD.png", "startBackgroundL.png", "startBackgroundDG.png", "startBackgroundLG.png" };
         List<String> gameBackgrounds = new List<String>() { "gameBackgroundD.png", "gameBackgroundL.png", "gameBackgroundDG.png", "gameBackgroundLG.png" };
         List<String> rocketShips = new List<String>() { "rocketshipD.png", "rocketshipL.png" };
-        List<String> asteroids = new List<String>() {"asteroid2.png", "asteroid.png"};
+        List<String> asteroids = new List<String>() {"awhite.png", "ablack.png"};
 
         theme = new Theme(Resolution, startBackgrounds, gameBackgrounds, startBackgrounds, rocketShips, asteroids, asteroids);
 
@@ -84,7 +83,7 @@ class Game
 
     public void Update()
     {
-        Engine.DrawTexture(bg, Vector2.Zero);
+        theme.drawGameBackground();
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
         Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);

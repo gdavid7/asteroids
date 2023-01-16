@@ -60,7 +60,7 @@ using System.Collections;
 
     public static void spawn()
     {
-        Asteroid a = new Asteroid(new Vector2(r.Next(1280),r.Next(720) ), r.Next(360), new Vector2(500, 500), 1);
+        Asteroid a = new Asteroid(new Vector2(r.Next(1280),r.Next(720) ), r.Next(360), new Vector2(100, 100), 1);
         collection.Add(a);
     }
 
