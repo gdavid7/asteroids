@@ -75,10 +75,7 @@ class EntryScreen
             color = theme.changeColorMode();
         }
 
-        // temp
-        theme.drawAsteroid(new Vector2(250,80), 100);
-        theme.drawRocketShip(new Vector2(50,80), 100);
-        theme.drawPowerup(new Vector2(150, 80), 100);
+        
         drawHoverRect(color);
 
 
