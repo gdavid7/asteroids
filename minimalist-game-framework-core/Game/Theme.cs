@@ -78,7 +78,7 @@ class Theme
     /// </summary>
     public void drawEndBackground()
     {
-        drawBackground(endBackgrounds);
+        Engine.DrawTexture(endBackgrounds[darkMode], Vector2.Zero, null, resolution);
     }
 
     /// <summary>
