@@ -41,7 +41,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Starjedi.ttf" />
+    <Content Include="Assets\asteroid.png" />
+    <Content Include="Assets\asteroid2.png" />
+    <Content Include="Assets\gameBackgroundD.png" />
+    <Content Include="Assets\gameBackgroundDG.png" />
+    <Content Include="Assets\gameBackgroundL.png" />
+    <Content Include="Assets\gameBackgroundLG.png" />
+    <Content Include="Assets\rocket.png" />
+    <Content Include="Assets\rocket2.png" />
+    <Content Include="Assets\rocketshipD.png" />
+    <Content Include="Assets\rocketshipL.png" />
+    <Content Include="Assets\startBackgroundD.png" />
+    <Content Include="Assets\startBackgroundDG.png" />
+    <Content Include="Assets\startBackgroundL.png" />
+    <Content Include="Assets\startBackgroundLG.png" />
+    <Content Include="Assets\title.PNG" />
   </ItemGroup>
 
   <ItemGroup>

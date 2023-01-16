@@ -5,11 +5,10 @@ class Game
 {
     public static readonly string Title = "Minimalist Game Framework";
     public static readonly Vector2 Resolution = new Vector2(1280, 720);
-    EntryScreen es = new EntryScreen(Resolution);
+    Theme theme;
+    EntryScreen es;
     
 
-    Texture ship = Engine.LoadTexture("ship.png");
-    Texture asteroid = Engine.LoadTexture("asteroid.png");
     Texture shot = Engine.LoadTexture("projectile.png");
     Texture bg = Engine.LoadTexture("background.png");
 
@@ -17,7 +16,7 @@ class Game
     float asteroidTime = 0;
 
     //ship vars
-    float rot = 0;
+    float rot = 180;
     Vector2 mov = new Vector2(100, 100);
     float inertia = 100;
     bool fly = false;
@@ -44,7 +43,17 @@ class Game
 
     public Game()
     {
+        List<String> startBackgrounds = new List<String>() { "startBackgroundD.png", "startBackgroundL.png", "startBackgroundDG.png", "startBackgroundLG.png" };
+        List<String> gameBackgrounds = new List<String>() { "gameBackgroundD.png", "gameBackgroundL.png", "gameBackgroundDG.png", "gameBackgroundLG.png" };
+        List<String> rocketShips = new List<String>() { "rocketshipD.png", "rocketshipL.png" };
+        List<String> asteroids = new List<String>() {"awhite.png", "ablack.png"};
 
+        theme = new Theme(Resolution, startBackgrounds, gameBackgrounds, startBackgrounds, rocketShips, asteroids, asteroids);
+
+        
+        
+
+        es = new EntryScreen(Resolution, theme);
     }
 
 
@@ -68,11 +77,12 @@ class Game
             System.Diagnostics.Debug.WriteLine(scores[i]);
         }
 
+
     }
 
     public void Update()
     {
-        Engine.DrawTexture(bg, Vector2.Zero);
+        theme.drawGameBackground();
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
         Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
@@ -101,7 +111,8 @@ class Game
         } else
         {
             shipBounds = new Bounds2(mov, new Vector2(100, 100));
-            Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
+            //Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
+            theme.drawRocketShip(mov, 100, rot);
             //creates a set of bounds simulating the shots for hitboxes
             shotBounds = new Bounds2(smov, new Vector2(10, 10));
             Engine.DrawTexture(shot, smov, size: new Vector2(10, 10));

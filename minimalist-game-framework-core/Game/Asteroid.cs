@@ -7,7 +7,7 @@
 		private Vector2 size;
 		private Bounds2 bounds;
 		private bool spawn;
-		Texture asteroid = Engine.LoadTexture("asteroid.png");
+		Texture asteroid = Engine.LoadTexture("awhite.png");
 
 	// splitting vars
 	int stage;
@@ -69,6 +69,7 @@
         if (getSpawn())
         {
             resetBounds();
+			
             Engine.DrawTexture(asteroid, getMov(), size:getSize());
 
         }
