@@ -39,7 +39,7 @@ class Game
     bool powerUp3Engaged = false;
 
     //additional constants
-    public float shotCoolDownTime = 0.3;
+    public double shotCoolDownTime = 0.3;
     public float shotBoundSizeFactor = 10;
 
     public float powerUpCounter = 0;
@@ -115,11 +115,11 @@ class Game
         // UPON PICKUP CONDITION:
         Random rnd = new Random();
         int whichPowerUp = rnd.Next(1, 4);
-        if (whichPowerUp = 1)
+        if (whichPowerUp == 1)
         {
             powerUp1Engaged = true;
         }
-        else if (whichPowerUp = 2)
+        else if (whichPowerUp == 2)
         {
             powerUp2Engaged = true;
         }
@@ -146,10 +146,10 @@ class Game
 
         if (powerUp3Engaged)
         {
-            asteroidMovFactor = 3;
+            Asteroid.asteroidMovFactor = 1;
         } else
         {
-            asteroidMovFactor = 2;
+            Asteroid.asteroidMovFactor = 2;
         }
 
         if (entry)

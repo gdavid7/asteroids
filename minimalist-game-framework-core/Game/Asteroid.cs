@@ -9,7 +9,7 @@
 		private bool spawn;
 		Texture asteroid = Engine.LoadTexture("awhite.png");
 
-		public float asteroidMovFactor = 2;
+		public static float asteroidMovFactor = 2;
 
 	// splitting vars
 	int stage;
