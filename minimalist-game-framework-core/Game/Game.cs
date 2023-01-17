@@ -14,12 +14,11 @@ class Game
 
 
     Texture shot = Engine.LoadTexture("projectile.png");
-    Texture bg = Engine.LoadTexture("background.png");
 
     float time = 0;
     float asteroidTime = 0;
     float powerupTime = 0;
-
+        
     //ship vars
     float rot = 180;
     Vector2 mov = new Vector2(100, 100);
