@@ -294,13 +294,13 @@ class Game
             powerUpCounter++;
 
             //ui display for powerup info
-            if (powerUp1Engaged)
+            if (powerUp1Engaged && !powerUp2Engaged && !powerUp3Engaged)
             {
                 Engine.DrawString("Powerup Activated: FASTER SHOOTING", location, Theme.getColor(), buttonFont, TextAlignment.Left);
-            } else if (powerUp2Engaged)
+            } else if (powerUp2Engaged && !powerUp1Engaged && !powerUp3Engaged)
             {
                 Engine.DrawString("Powerup Activated: BIGGER HITS", location, Theme.getColor(), buttonFont, TextAlignment.Left);
-            } else if (powerUp3Engaged)
+            } else if (powerUp3Engaged && !powerUp2Engaged && !powerUp2Engaged)
             {
                 Engine.DrawString("Powerup Activated: SLOWDOWN", location, Theme.getColor(), buttonFont, TextAlignment.Left);
             }
@@ -323,14 +323,20 @@ class Game
             if (whichPowerUp == 1)
             {
                 powerUp1Engaged = true;
+                powerUp2Engaged = false;
+                powerUp3Engaged = false;
             }
             else if (whichPowerUp == 2)
             {
                 powerUp2Engaged = true;
+                powerUp1Engaged = false;
+                powerUp3Engaged = false;
             }
             else
             {
                 powerUp3Engaged = true;
+                powerUp1Engaged = false;
+                powerUp2Engaged = false;
             }
 
             if (powerUp1Engaged)
