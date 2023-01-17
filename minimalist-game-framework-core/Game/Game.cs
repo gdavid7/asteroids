@@ -18,6 +18,7 @@ class Game
 
     float time = 0;
     float asteroidTime = 0;
+    float invinTime = 0;
     float powerupTime = 0;
 
     //ship vars
@@ -26,6 +27,9 @@ class Game
     float inertia = 100;
     bool fly = false;
     Bounds2 shipBounds = new Bounds2(100, 100, 100, 100);
+    int lives = 3;
+    bool invincible = false;
+
 
 
     //shot variables
@@ -47,7 +51,7 @@ class Game
     float delay = 10;
     Vector2 pPos = new Vector2(300, 300);
     Bounds2 pBounds = new Bounds2(300,300,100,100);
-    Boolean pVis = true;
+    bool pVis = true;
 
     //additional constants
     public double shotCoolDownTime = 0.3;
@@ -110,8 +114,8 @@ class Game
         
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
+        invinTime += Engine.TimeDelta;
         powerupTime += Engine.TimeDelta;
-        Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
 
        
         if (entry)
@@ -132,6 +136,7 @@ class Game
                 end = false;
                 entry = true;
                 score = 0;
+                lives = 3;
                 AsteroidCollection.clearAll();
                 AsteroidCollection.spawn();
 
@@ -139,9 +144,9 @@ class Game
         } else
         {
             Theme.drawGameBackground();
+            Engine.DrawString("Lives: " + lives, new Vector2(100, 50), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             Engine.DrawString("Score: " + score, new Vector2(100, 10), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             shipBounds = new Bounds2(mov, new Vector2(100, 100));
-            //Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
             Theme.drawRocketShip(mov, 100, rot);
             //creates a set of bounds simulating the shots for hitboxes
             shotBounds = new Bounds2(smov, new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
@@ -167,7 +172,7 @@ class Game
         if (shoot)
         {
             smov = getDirectionalVector(smov, rotLock, 30);
-            
+           
         } else
         {
             smov = new Vector2(mov.X+50,mov.Y+50);
@@ -255,7 +260,28 @@ class Game
 
         if (AsteroidCollection.handleAsteroidShipCollisions(shipBounds))
         {
-            end = true;
+            if (!invincible)
+            {
+                lives--;
+                invincible = true;
+                if (lives <= 0)
+                {
+                    end = true;
+                }
+            }
+            
+            
+        }
+
+        if (invincible)
+        {
+            mov = new Vector2(640, 360);
+            if (invinTime > 5)
+            {
+                invinTime = 0;
+                invincible = false;
+                
+            }
         }
 
         //ASTEROID RESPAWNING//
