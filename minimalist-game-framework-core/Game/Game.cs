@@ -18,6 +18,8 @@ class Game
 
     float time = 0;
     float asteroidTime = 0;
+    float invinTime = 0;
+    float powerupTime = 0;
 
     //ship vars
     float rot = 180;
@@ -25,6 +27,9 @@ class Game
     float inertia = 100;
     bool fly = false;
     Bounds2 shipBounds = new Bounds2(100, 100, 100, 100);
+    int lives = 3;
+    bool invincible = false;
+
 
 
     //shot variables
@@ -33,6 +38,8 @@ class Game
     float rotLock = 0;
     Bounds2 shotBounds = new Bounds2(400,400, 100, 100);
 
+    //powerup vars
+    
     //asteroid inits
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100),1);
     Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100,100),1);
@@ -41,11 +48,14 @@ class Game
     bool powerUp1Engaged = false;
     bool powerUp2Engaged = false;
     bool powerUp3Engaged = false;
+    float delay = 10;
+    Vector2 pPos = new Vector2(300, 300);
+    Bounds2 pBounds = new Bounds2(300,300,100,100);
+    bool pVis = true;
 
     //additional constants
     public double shotCoolDownTime = 0.3;
     public float shotBoundSizeFactor = 10;
-
     public float powerUpCounter = 0;
 
     //game vars
@@ -54,6 +64,9 @@ class Game
     bool highScore = false;
     bool end = false;
     int score = 0;
+    int spawnDelay = 5;
+
+    Random rd = new Random();
 
     public Game()
     {
@@ -61,16 +74,20 @@ class Game
         List<String> gameBackgrounds = new List<String>() { "gameBackgroundD.png", "gameBackgroundL.png", "gameBackgroundDG.png", "gameBackgroundLG.png" };
         List<String> endBackgrounds = new List<String>() { "endBackgroundD.png", "endBackgroundL.png" };
         List<String> rocketShips = new List<String>() { "rocketshipD.png", "rocketshipL.png" };
-        List<String> asteroids = new List<String>() {"asteroidD1.png", "asteroidL1.png"};
+        List<String> asteroidsD = new List<String>() { "asteroidD1.png", "asteroidD2.png", "asteroidD3.png", "asteroidD4.png" };
+        List<String> asteroidsL = new List<String>() { "asteroidL1.png", "asteroidL2.png", "asteroidL3.png", "asteroidL4.png" };
+        List<List<String>> asteroids = new List<List<String>>() {asteroidsD, asteroidsL};
         List<String> powerups = new List<String>() { "powerupD.png", "powerupL.png"};
         
-        theme = new Theme(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups);
+       Theme.setUp(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups);
+
 
 
 
 
         es = new EntryScreen(Resolution, theme);
         hs = new highscorescreen(Resolution, theme, s.getScoreboard());
+
     }
 
     /*
@@ -134,67 +151,13 @@ class Game
 
     public void Update()
     {
-        theme.drawGameBackground();
+        
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
-        Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
+        invinTime += Engine.TimeDelta;
+        powerupTime += Engine.TimeDelta;
 
-        //powerup checks
-        if(!powerUp1Engaged && !powerUp2Engaged && !powerUp3Engaged)
-        {
-            powerUpCounter = 0;
-        } else
-        {
-            powerUpCounter ++;
-            if(powerUpCounter > 1000)
-            {
-                powerUp1Engaged = false;
-                powerUp2Engaged = false;
-                powerUp3Engaged = false;
-                powerUpCounter = 0;
-            }
-        }
-
-        // UPON PICKUP CONDITION:
-        Random rnd = new Random();
-        int whichPowerUp = rnd.Next(1, 4);
-        if (whichPowerUp == 1)
-        {
-            powerUp1Engaged = true;
-        }
-        else if (whichPowerUp == 2)
-        {
-            powerUp2Engaged = true;
-        }
-        else
-        {
-            powerUp3Engaged = true;
-        }
-
-        if (powerUp1Engaged)
-        {
-            shotCoolDownTime = 0.15;
-        } else
-        {
-            shotCoolDownTime = 0.3;
-        }
-
-        if (powerUp2Engaged)
-        {
-            shotBoundSizeFactor = 15;
-        } else
-        {
-            shotBoundSizeFactor = 15;
-        }
-
-        if (powerUp3Engaged)
-        {
-            Asteroid.asteroidMovFactor = 1;
-        } else
-        {
-            Asteroid.asteroidMovFactor = 2;
-        }
-
+       
         if (entry)
         {
             es.draw();
@@ -219,28 +182,32 @@ class Game
         }
         else if (end)
         {
-            Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
-            Engine.DrawString("Score: " + score, new Vector2(640, 450), Color.White, Engine.LoadFont("Starjedi.ttf", 40), TextAlignment.Center);
-            Engine.DrawString("SPACE to exit game", new Vector2(640, 320), Color.White, Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
+            Theme.drawEndBackground();
+            //Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
+            Engine.DrawString("Score: " + score, Vector2.Zero, Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 40));
+            Engine.DrawString("SPACE to exit game", new Vector2(640, 280), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
             if (Engine.GetKeyDown(Key.Space))
             {
                 end = false;
                 entry = true;
                 score = 0;
+                lives = 3;
                 AsteroidCollection.clearAll();
                 AsteroidCollection.spawn();
 
             }
         } else
         {
+            Theme.drawGameBackground();
+            Engine.DrawString("Lives: " + lives, new Vector2(100, 50), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
+            Engine.DrawString("Score: " + score, new Vector2(100, 10), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             shipBounds = new Bounds2(mov, new Vector2(100, 100));
-            //Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
-            theme.drawRocketShip(mov, 100, rot);
+            Theme.drawRocketShip(mov, 100, rot);
             //creates a set of bounds simulating the shots for hitboxes
             shotBounds = new Bounds2(smov, new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
             Engine.DrawTexture(shot, smov, size: new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
 
-
+            
             AsteroidCollection.handleAsteroidSpawning();
         }
 
@@ -260,7 +227,7 @@ class Game
         if (shoot)
         {
             smov = getDirectionalVector(smov, rotLock, 30);
-            
+           
         } else
         {
             smov = new Vector2(mov.X+50,mov.Y+50);
@@ -348,23 +315,132 @@ class Game
 
         if (AsteroidCollection.handleAsteroidShipCollisions(shipBounds))
         {
-            end = true;
+            if (!invincible)
+            {
+                lives--;
+                invincible = true;
+                if (lives <= 0)
+                {
+                    end = true;
+                }
+            }
+            
+            
+        }
+
+        if (invincible)
+        {
+            mov = new Vector2(640, 360);
+            if (invinTime > 5)
+            {
+                invinTime = 0;
+                invincible = false;
+                
+            }
         }
 
         //ASTEROID RESPAWNING//
-        if (asteroidTime > 5)
+        if (asteroidTime > spawnDelay)
         {
             System.Diagnostics.Debug.WriteLine("This is a log");
             AsteroidCollection.spawn();
             asteroidTime = 0;
         }
 
+        if (score > 30)
+        {
+            spawnDelay=2;
+        } else if (score > 20)
+        {
+            spawnDelay = 3;
+        } else if (score > 10)
+        {
+            spawnDelay = 4;
+        }
 
+        // POWERUP HANDLING //
+        
+        if (powerupTime > delay)
+        {
+            powerupTime = 0;
+            delay = rd.Next(10, 20);
+            pPos = new Vector2(rd.Next(100, 1180), rd.Next(100, 620));
+            pBounds = new Bounds2(pPos, new Vector2(100,100));
+            pVis = true;
+            spawnPowerup(pPos);
+        } else if(pVis)
+        {
+            spawnPowerup(pPos);
+        }
+
+        //powerup checks
+        if (!powerUp1Engaged && !powerUp2Engaged && !powerUp3Engaged)
+        {
+            powerUpCounter = 0;
+        }
+        else
+        {
+            powerUpCounter++;
+            if (powerUpCounter > 1000)
+            {
+                powerUp1Engaged = false;
+                powerUp2Engaged = false;
+                powerUp3Engaged = false;
+                powerUpCounter = 0;
+            }
+        }
+
+        // UPON PICKUP CONDITION:
+        if (shipBounds.Overlaps(pBounds))
+        {
+            pVis = false;
+            Random rnd = new Random();
+            int whichPowerUp = rnd.Next(1, 4);
+            if (whichPowerUp == 1)
+            {
+                powerUp1Engaged = true;
+            }
+            else if (whichPowerUp == 2)
+            {
+                powerUp2Engaged = true;
+            }
+            else
+            {
+                powerUp3Engaged = true;
+            }
+
+            if (powerUp1Engaged)
+            {
+                shotCoolDownTime = 0.15;
+            }
+            else
+            {
+                shotCoolDownTime = 0.3;
+            }
+
+            if (powerUp2Engaged)
+            {
+                shotBoundSizeFactor = 15;
+            }
+            else
+            {
+                shotBoundSizeFactor = 15;
+            }
+
+            if (powerUp3Engaged)
+            {
+                Asteroid.asteroidMovFactor = 1;
+            }
+            else
+            {
+                Asteroid.asteroidMovFactor = 2;
+            }
+        }
     }
 
 
 
-     
+
     //returns a new vector with movement in a direction of choice
     public static Vector2 getDirectionalVector(Vector2 cur, float rotation, float moveFactor)
     {
@@ -382,6 +458,13 @@ class Game
         double radians = (Math.PI / 180) * degrees;
         return (radians);
 
+    }
+
+
+    public static void spawnPowerup( Vector2 pos)
+    {
+        
+        Theme.drawPowerup(pos, 100, 0);
     }
 
 }

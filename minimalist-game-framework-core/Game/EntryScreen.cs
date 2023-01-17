@@ -9,26 +9,25 @@ class EntryScreen
     Vector2 startLocation;
     Vector2 highLocation;
     Vector2 gridLocation;
-
+    Vector2 darkModeLocation;
     
     Bounds2 startBounds;
     Bounds2 highBounds;
     Bounds2 gridBounds;
     Bounds2 darkModeBounds;
 
-    Theme theme;
     Color color;
 
     float degrees;
 
-    public EntryScreen(Vector2 resolution, Theme theme)
+    public EntryScreen(Vector2 resolution)
     {
         this.resolution = resolution;
-        this.theme = theme;
-        color = theme.getColor();
-        startLocation = new Vector2(resolution.X / 2, resolution.Y / 2);
+        color = Theme.getColor();
+        startLocation = new Vector2(resolution.X / 2, resolution.Y * 11 / 21);
         highLocation = new Vector2(resolution.X / 2, resolution.Y * 2 / 3);
-        gridLocation = new Vector2(0, resolution.Y * 10/11);
+        gridLocation = new Vector2(25, resolution.Y * 9/10);
+        darkModeLocation = new Vector2(20, 17);
 
         startBounds = Engine.DrawString("START", startLocation, color, buttonFont, TextAlignment.Center);
         highBounds = Engine.DrawString("HIGH SCORE", highLocation, color, buttonFont, TextAlignment.Center);
@@ -41,14 +40,14 @@ class EntryScreen
     /// </summary>
     public void draw()
     {
-        theme.drawStartBackground();
+        Theme.drawStartBackground();
 
         // draws buttons
         Engine.DrawString("START", startLocation, color, buttonFont, TextAlignment.Center);
         Engine.DrawString("HIGH SCORE", highLocation, color, buttonFont, TextAlignment.Center);
-
+        
         // draws button for changing grid layout
-        if (theme.isGridOn())
+        if (Theme.isGridOn())
         {
             gridBounds = Engine.DrawString("GRID: ON", gridLocation, color, buttonFont);
         }
@@ -58,21 +57,21 @@ class EntryScreen
         }
         if (isGridClicked())
         {
-            theme.changeGridLayout();
+            Theme.changeGridLayout();
         }
         
         // draws button for changing color mode
-        if (theme.isDarkMode())
+        if (Theme.isDarkMode())
         {
-            darkModeBounds = Engine.DrawString("Dark Mode", Vector2.Zero, color, buttonFont);
+            darkModeBounds = Engine.DrawString("Dark Mode", darkModeLocation, color, buttonFont);
         }
         else
         {
-            darkModeBounds = Engine.DrawString("Light Mode", Vector2.Zero, color, buttonFont);
+            darkModeBounds = Engine.DrawString("Light Mode", darkModeLocation, color, buttonFont);
         }
         if (isDarkModeClicked())
         {
-            color = theme.changeColorMode();
+            color = Theme.changeColorMode();
         }
 
         
