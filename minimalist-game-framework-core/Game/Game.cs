@@ -60,15 +60,17 @@ class Game
         List<String> gameBackgrounds = new List<String>() { "gameBackgroundD.png", "gameBackgroundL.png", "gameBackgroundDG.png", "gameBackgroundLG.png" };
         List<String> endBackgrounds = new List<String>() { "endBackgroundD.png", "endBackgroundL.png" };
         List<String> rocketShips = new List<String>() { "rocketshipD.png", "rocketshipL.png" };
-        List<String> asteroids = new List<String>() {"asteroidD1.png", "asteroidL1.png"};
+        List<String> asteroidsD = new List<String>() { "asteroidD1.png", "asteroidD2.png", "asteroidD3.png", "asteroidD4.png" };
+        List<String> asteroidsL = new List<String>() { "asteroidL1.png", "asteroidL2.png", "asteroidL3.png", "asteroidL4.png" };
+        List<List<String>> asteroids = new List<List<String>>() {asteroidsD, asteroidsL};
         List<String> powerups = new List<String>() { "powerupD.png", "powerupL.png"};
         
-        theme = new Theme(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups);
+       Theme.setUp(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups);
 
         
         
 
-        es = new EntryScreen(Resolution, theme);
+        es = new EntryScreen(Resolution);
     }
 
     /*
@@ -97,10 +99,10 @@ class Game
     */
     public void Update()
     {
-        theme.drawGameBackground();
+        
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
-        Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
+        
 
         //powerup checks
         if(!powerUp1Engaged && !powerUp2Engaged && !powerUp3Engaged)
@@ -167,9 +169,10 @@ class Game
             }
         } else if (end)
         {
-            Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
-            Engine.DrawString("Score: " + score, new Vector2(640, 450), Color.White, Engine.LoadFont("Starjedi.ttf", 40), TextAlignment.Center);
-            Engine.DrawString("SPACE to exit game", new Vector2(640, 320), Color.White, Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
+            Theme.drawEndBackground();
+            //Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
+            Engine.DrawString("Score: " + score, Vector2.Zero, Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 40));
+            Engine.DrawString("SPACE to exit game", new Vector2(640, 280), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
             if (Engine.GetKeyDown(Key.Space))
             {
                 end = false;
@@ -181,9 +184,11 @@ class Game
             }
         } else
         {
+            Theme.drawGameBackground();
+            Engine.DrawString("Score: " + score, new Vector2(100, 10), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             shipBounds = new Bounds2(mov, new Vector2(100, 100));
             //Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
-            theme.drawRocketShip(mov, 100, rot);
+            Theme.drawRocketShip(mov, 100, rot);
             //creates a set of bounds simulating the shots for hitboxes
             shotBounds = new Bounds2(smov, new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
             Engine.DrawTexture(shot, smov, size: new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));

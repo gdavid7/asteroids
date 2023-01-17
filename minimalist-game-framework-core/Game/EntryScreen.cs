@@ -16,16 +16,14 @@ class EntryScreen
     Bounds2 gridBounds;
     Bounds2 darkModeBounds;
 
-    Theme theme;
     Color color;
 
     float degrees;
 
-    public EntryScreen(Vector2 resolution, Theme theme)
+    public EntryScreen(Vector2 resolution)
     {
         this.resolution = resolution;
-        this.theme = theme;
-        color = theme.getColor();
+        color = Theme.getColor();
         startLocation = new Vector2(resolution.X / 2, resolution.Y / 2);
         highLocation = new Vector2(resolution.X / 2, resolution.Y * 2 / 3);
         gridLocation = new Vector2(0, resolution.Y * 10/11);
@@ -41,14 +39,14 @@ class EntryScreen
     /// </summary>
     public void draw()
     {
-        theme.drawStartBackground();
+        Theme.drawStartBackground();
 
         // draws buttons
         Engine.DrawString("START", startLocation, color, buttonFont, TextAlignment.Center);
         Engine.DrawString("HIGH SCORE", highLocation, color, buttonFont, TextAlignment.Center);
-
+        
         // draws button for changing grid layout
-        if (theme.isGridOn())
+        if (Theme.isGridOn())
         {
             gridBounds = Engine.DrawString("GRID: ON", gridLocation, color, buttonFont);
         }
@@ -58,11 +56,11 @@ class EntryScreen
         }
         if (isGridClicked())
         {
-            theme.changeGridLayout();
+            Theme.changeGridLayout();
         }
         
         // draws button for changing color mode
-        if (theme.isDarkMode())
+        if (Theme.isDarkMode())
         {
             darkModeBounds = Engine.DrawString("Dark Mode", Vector2.Zero, color, buttonFont);
         }
@@ -72,7 +70,7 @@ class EntryScreen
         }
         if (isDarkModeClicked())
         {
-            color = theme.changeColorMode();
+            color = Theme.changeColorMode();
         }
 
         
