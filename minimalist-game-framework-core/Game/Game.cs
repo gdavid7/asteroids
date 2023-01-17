@@ -62,6 +62,9 @@ class Game
 
     Random rd = new Random();
 
+    Font buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 20);
+    Vector2 location = new Vector2(10, Resolution.Y* 10/11);
+
     public Game()
     {
         List<String> startBackgrounds = new List<String>() { "startBackgroundD.png", "startBackgroundL.png", "startBackgroundDG.png", "startBackgroundLG.png" };
@@ -289,6 +292,19 @@ class Game
         else
         {
             powerUpCounter++;
+
+            //ui display for powerup info
+            if (powerUp1Engaged)
+            {
+                Engine.DrawString("Powerup Activated: FASTER SHOOTING", location, Theme.getColor(), buttonFont, TextAlignment.Left);
+            } else if (powerUp2Engaged)
+            {
+                Engine.DrawString("Powerup Activated: BIGGER HITS", location, Theme.getColor(), buttonFont, TextAlignment.Left);
+            } else if (powerUp3Engaged)
+            {
+                Engine.DrawString("Powerup Activated: SLOWDOWN", location, Theme.getColor(), buttonFont, TextAlignment.Left);
+            }
+
             if (powerUpCounter > 1000)
             {
                 powerUp1Engaged = false;
@@ -319,27 +335,27 @@ class Game
 
             if (powerUp1Engaged)
             {
-                shotCoolDownTime = 0.15;
+                shotCoolDownTime = 0.25;
             }
-            else
+            else if(!powerUp1Engaged)
             {
-                shotCoolDownTime = 0.3;
+                shotCoolDownTime = 0.4;
             }
 
-            if (powerUp2Engaged)
+            else if (powerUp2Engaged)
+            {
+                shotBoundSizeFactor = 25;
+            }
+            else if(!powerUp2Engaged)
             {
                 shotBoundSizeFactor = 15;
             }
-            else
-            {
-                shotBoundSizeFactor = 15;
-            }
 
-            if (powerUp3Engaged)
+            else if (powerUp3Engaged)
             {
                 Asteroid.asteroidMovFactor = 1;
             }
-            else
+            else if (!powerUp3Engaged)
             {
                 Asteroid.asteroidMovFactor = 2;
             }
