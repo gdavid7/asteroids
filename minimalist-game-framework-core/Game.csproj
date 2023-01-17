@@ -43,7 +43,33 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Starjedi.ttf" />
+    <Content Include="Assets\asteroid.png" />
+    <Content Include="Assets\asteroid2.png" />
+    <Content Include="Assets\asteroidL1.png" />
+    <Content Include="Assets\asteroidD2.png" />
+    <Content Include="Assets\asteroidD3.png" />
+    <Content Include="Assets\asteroidD4.png" />
+    <Content Include="Assets\asteroidD1.png" />
+    <Content Include="Assets\asteroidL2.png" />
+    <Content Include="Assets\asteroidL3.png" />
+    <Content Include="Assets\asteroidL4.png" />
+    <Content Include="Assets\startBackgroundD.png" />
+    <Content Include="Assets\startBackgroundDG.png" />
+    <Content Include="Assets\startBackgroundL.png" />
+    <Content Include="Assets\startBackgroundLG.png" />
+    <Content Include="Assets\endBackgroundD.png" />
+    <Content Include="Assets\endBackgroundL.png" />
+    <Content Include="Assets\powerupD.png" />
+    <Content Include="Assets\powerupL.png" />
+    <Content Include="Assets\gameBackgroundD.png" />
+    <Content Include="Assets\gameBackgroundDG.png" />
+    <Content Include="Assets\gameBackgroundL.png" />
+    <Content Include="Assets\gameBackgroundLG.png" />
+    <Content Include="Assets\rocket.png" />
+    <Content Include="Assets\rocket2.png" />
+    <Content Include="Assets\rocketshipD.png" />
+    <Content Include="Assets\rocketshipL.png" />
+    <Content Include="Assets\title.PNG" />
   </ItemGroup>
 
   <ItemGroup>
