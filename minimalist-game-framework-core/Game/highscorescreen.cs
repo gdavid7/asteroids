@@ -142,17 +142,15 @@ class highscorescreen
     Bounds2 highBounds;
     Bounds2 gridBounds;
 
-    Theme theme;
     Color color;
 
     float degrees;
 
-    public highscorescreen(Vector2 resolution, Theme theme, Dictionary<String, String> dict)
+    public highscorescreen(Vector2 resolution, Dictionary<String, String> dict)
     {
         this.resolution = resolution;
-        this.theme = theme;
         this.dict = dict;
-        color = theme.getColor();
+        color = Theme.getColor();
         startLocation = new Vector2(resolution.X / 2, resolution.Y / 6);
         highLocation = new Vector2(resolution.X / 2, resolution.Y * 1 / 3);
         gridLocation = new Vector2(0, resolution.Y * 10/11);
@@ -168,7 +166,7 @@ class highscorescreen
     /// </summary>
     public void draw()
     {
-        theme.drawGameBackground();
+        Theme.drawGameBackground();
 
         // draws buttons
         Engine.DrawString("HIGH SCORES:", startLocation, color, buttonFont, TextAlignment.Center);

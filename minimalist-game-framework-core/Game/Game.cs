@@ -85,8 +85,8 @@ class Game
 
 
 
-        es = new EntryScreen(Resolution, theme);
-        hs = new highscorescreen(Resolution, theme, s.getScoreboard());
+        es = new EntryScreen(Resolution);
+        hs = new highscorescreen(Resolution, s.getScoreboard());
 
     }
 
