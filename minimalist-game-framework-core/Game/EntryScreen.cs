@@ -80,6 +80,7 @@ class EntryScreen
 
     }
 
+
     public Boolean isStartClicked()
     {
         return Engine.GetMouseButtonDown(MouseButton.Left) && startBounds.Contains(Engine.MousePosition);
