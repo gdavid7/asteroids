@@ -22,6 +22,10 @@ public class scoreboard
      *  
      * getScoreboard()
      *  returns the top 5 high scores in a dictionary form: {"01": "score/name/timestamp", "02":"score/name/timestamp"...}
+     *  
+     *  
+     *  retrieveUser(String name):
+     *      gets all past games of a specific person, returns in the form of a Dictionary<String, String> where key is timestamp and value is score.
      * */
 
     static String _FILE;
@@ -30,8 +34,6 @@ public class scoreboard
     public scoreboard()
     {
 
-        System.Diagnostics.Debug.WriteLine("DAVID IS HERE");
-        _FILE = "assets/Scores.txt";
         // THIS MAY HAVE TO BE CHANGED [ONLY THING TO CHANGE]
 
         fcon = new FirebaseConfig()
@@ -43,10 +45,12 @@ public class scoreboard
         if (client != null)
         {
             System.Diagnostics.Debug.WriteLine("Firebase Connection is Established");
+            /*
             updateUser("Nigerian", DateTime.Now.ToString("yyyyMMddHHmmssffff"), "54");
             updateUser("Nigerian", DateTime.Now.ToString("yyyyMMddHHmmssffff"), "57");
             Dictionary<String, String> r = retrieveUser("Nigerian");
             System.Diagnostics.Debug.WriteLine(string.Join(Environment.NewLine, r));
+            */
 
         }
     }
@@ -94,7 +98,7 @@ public class scoreboard
             respDict[entry.Key] = q.Dequeue();
         }
         SetResponse updateBoard = client.Set<Dictionary<String, String>>("scoreboard", respDict);
-        System.Diagnostics.Debug.WriteLine(string.Join(Environment.NewLine, respDict));
+        System.Diagnostics.Debug.WriteLine("SCOREBOARD UPDATED");
     }
 
     public static Dictionary<String, String> getScoreboard()
@@ -106,7 +110,7 @@ public class scoreboard
         return respDict;
     }
 
-    /*
+
 
     // retrieve stats of a specific person, returns in DICTIONARY form {timestamp: score, timestamp:score}
 
@@ -129,7 +133,7 @@ public class scoreboard
     }
 
 
-
+    /*
 
 
 
