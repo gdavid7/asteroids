@@ -7,7 +7,10 @@
 		private Vector2 size;
 		private Bounds2 bounds;
 		private bool spawn;
-		Texture asteroid = Engine.LoadTexture("asteroid.png");
+		private int assetNum = new Random().Next(0,4);
+		//Texture asteroid = Engine.LoadTexture("awhite.png");
+
+		public static float asteroidMovFactor = 2;
 
 	// splitting vars
 	int stage;
@@ -69,7 +72,9 @@
         if (getSpawn())
         {
             resetBounds();
-            Engine.DrawTexture(asteroid, getMov(), size:getSize());
+			
+            //Engine.DrawTexture(asteroid, getMov(), size:getSize());
+			Theme.drawAsteroid(getMov(), assetNum, getSize());
 
         }
     }
@@ -77,7 +82,7 @@
 	//moves the asteroid by a factor of 2
 	public void handleMoves()
 	{
-        setMov(Game.getDirectionalVector(getMov(), rotation, 2));
+        setMov(Game.getDirectionalVector(getMov(), rotation, asteroidMovFactor));
         wraparound();
     }
 

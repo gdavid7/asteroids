@@ -15,7 +15,7 @@ static partial class Engine
     /// The amount of time (in seconds) since the last frame.
     /// </summary>
     public static float TimeDelta { get; private set; }
-
+    
     private static void Main(string[] args)
     {
         Start();
@@ -23,6 +23,7 @@ static partial class Engine
     }
 
     private static void Start()
+
     {
         // ======================================================================================
         // Hide the console window as quickly as possible
@@ -36,6 +37,7 @@ static partial class Engine
         {
             Console.WriteLine(e);
         }
+
         // ======================================================================================
         // Copy assets and libraries into the working directory
         // ======================================================================================
