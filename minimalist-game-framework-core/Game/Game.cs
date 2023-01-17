@@ -317,6 +317,7 @@ class Game
         if (shipBounds.Overlaps(pBounds))
         {
             pVis = false;
+            pBounds = new Bounds2(0, 0, 0, 0);
             Random rnd = new Random();
             int whichPowerUp = rnd.Next(1, 4);
             if (whichPowerUp == 1)
@@ -342,25 +343,25 @@ class Game
             {
                 shotCoolDownTime = 0.25;
             }
-            else if(!powerUp1Engaged)
+            else 
             {
                 shotCoolDownTime = 0.4;
             }
 
-            else if (powerUp2Engaged)
+            if (powerUp2Engaged)
             {
                 shotBoundSizeFactor = 25;
             }
-            else if(!powerUp2Engaged)
+            else
             {
                 shotBoundSizeFactor = 15;
             }
 
-            else if (powerUp3Engaged)
+            if (powerUp3Engaged)
             {
                 Asteroid.asteroidMovFactor = 1;
             }
-            else if (!powerUp3Engaged)
+            else 
             {
                 Asteroid.asteroidMovFactor = 2;
             }
