@@ -32,6 +32,8 @@
     <None Remove="Assets\**" />
     <None Remove="Docs\**" />
     <None Remove="Libraries\**" />
+    <None Remove="FireSharp" />
+    <None Remove="Newtonsoft.Json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +50,10 @@
     <None Include="Assets\Oswald-Regular.ttf" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FireSharp" Version="2.0.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+  </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 
 </Project>

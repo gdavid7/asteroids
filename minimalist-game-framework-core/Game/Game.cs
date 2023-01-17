@@ -6,7 +6,7 @@ class Game
     public static readonly string Title = "Minimalist Game Framework";
     public static readonly Vector2 Resolution = new Vector2(1280, 720);
     EntryScreen es = new EntryScreen(Resolution);
-    
+    scoreboard s = new scoreboard();
 
     Texture ship = Engine.LoadTexture("ship.png");
     Texture asteroid = Engine.LoadTexture("asteroid.png");
@@ -47,7 +47,7 @@ class Game
 
     }
 
-
+    /*
     public void log(int score)
     {
         // log score, print top 10 highest scores, print score history of user
@@ -69,7 +69,7 @@ class Game
         }
 
     }
-
+    */
     public void Update()
     {
         Engine.DrawTexture(bg, Vector2.Zero);

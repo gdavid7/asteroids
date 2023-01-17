@@ -15,7 +15,7 @@ static partial class Engine
     /// The amount of time (in seconds) since the last frame.
     /// </summary>
     public static float TimeDelta { get; private set; }
-
+    
     private static void Main(string[] args)
     {
         Start();
