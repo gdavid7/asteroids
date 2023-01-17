@@ -10,7 +10,7 @@ class Game
 
     Theme theme;
     EntryScreen es;
-    
+    highscorescreen hs;
 
 
     Texture shot = Engine.LoadTexture("projectile.png");
@@ -51,6 +51,7 @@ class Game
     //game vars
     bool spawnAst = true;
     bool entry = true;
+    bool highScore = false;
     bool end = false;
     int score = 0;
 
@@ -65,10 +66,11 @@ class Game
         
         theme = new Theme(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups);
 
-        
-        
+
+
 
         es = new EntryScreen(Resolution, theme);
+        hs = new highscorescreen(Resolution, theme, s.getScoreboard());
     }
 
     /*
@@ -95,6 +97,41 @@ class Game
 
     }
     */
+
+    // ENDING SCREEN - Enter Username
+
+    /*
+    // HIGH SCORES SCREEN
+    public void highScores()
+    {
+        Dictionary<String, String> board = s.getScoreboard();
+        foreach (KeyValuePair<string, string> entry in board)
+        {
+            // do something with entry.Value or entry.Key
+            String value = entry.Value;
+            String place = entry.Key; // 1, 2, 3, 4...
+            String score = value.Split(";")[0];
+            String name = value.Split(";")[1];
+            String date = timestamp_to_string(value.Split(";")[2]);
+        }
+    }
+
+    public String timestamp_to_string(String timestamp)
+    {
+        Double ts;
+        if(Double.TryParse(timestamp, out ts) == true)
+        {
+            System.DateTime dat_Time = new System.DateTime(1965, 1, 1, 0, 0, 0, 0);
+            dat_Time = dat_Time.AddSeconds(ts);
+            string print_the_Date = dat_Time.ToShortDateString() + " " + dat_Time.ToShortTimeString();
+            return print_the_Date;
+        }
+        return "EMPTY";
+    }
+
+
+    */
+
     public void Update()
     {
         theme.drawGameBackground();
@@ -163,9 +200,24 @@ class Game
             es.draw();
             if (es.isStartClicked())
             {
-                entry = false;
+            entry = false;
             }
-        } else if (end)
+            if (es.isHighScoreClicked())
+            {
+                entry = false;
+                highScore = true;
+            }
+
+        }else if (highScore)
+        {
+            hs.draw();
+            if (hs.isGridClicked())
+            {
+                highScore = false;
+                entry = true;
+            }
+        }
+        else if (end)
         {
             Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
             Engine.DrawString("Score: " + score, new Vector2(640, 450), Color.White, Engine.LoadFont("Starjedi.ttf", 40), TextAlignment.Center);

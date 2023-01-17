@@ -21,7 +21,7 @@ public class scoreboard
      *  adds a score to the database. Make sure that the time is in the form of a timestamp: DateTime.Now.ToString("yyyyMMddHHmmssffff")
      *  
      * getScoreboard()
-     *  returns the top 5 high scores in a dictionary form: {"01": "score/name/timestamp", "02":"score/name/timestamp"...}
+     *  returns the top 5 high scores in a dictionary form: {"01": "score;name;timestamp", "02":"score;name;timestamp"...}
      *  
      *  
      *  retrieveUser(String name):
@@ -56,7 +56,7 @@ public class scoreboard
     }
 
     // add a score instance to the realtime database
-    public static void updateUser(String name, String time, String score)
+    public void updateUser(String name, String time, String score)
     {
 
 
@@ -66,7 +66,7 @@ public class scoreboard
     }
     // DO NOT call this method - it is used in update user
     // Keeps a list of the top 10 high scores
-    public static void updateScoreboard(String name, String time, String score)
+    public void updateScoreboard(String name, String time, String score)
     {
 
 
@@ -101,7 +101,7 @@ public class scoreboard
         System.Diagnostics.Debug.WriteLine("SCOREBOARD UPDATED");
     }
 
-    public static Dictionary<String, String> getScoreboard()
+    public Dictionary<String, String> getScoreboard()
     {
         FirebaseResponse response = client.Get("scoreboard");
         var p1 = response.GetType().GetProperties().First(o => o.Name == "Body").GetValue(response, null);
@@ -116,7 +116,7 @@ public class scoreboard
 
 
 
-    public static Dictionary<String, String> retrieveUser(String name)
+    public Dictionary<String, String> retrieveUser(String name)
     {
         FirebaseResponse response = client.Get("users/" + name);
         //Dictionary<String, int> r = response.ResultAs<Dictionary<String, int>>();
