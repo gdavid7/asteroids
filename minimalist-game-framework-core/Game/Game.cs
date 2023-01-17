@@ -275,10 +275,10 @@ class Game
             pPos = new Vector2(rd.Next(100, 1180), rd.Next(100, 620));
             pBounds = new Bounds2(pPos, new Vector2(100,100));
             pVis = true;
-            spawnPowerup(theme,pPos);
+            spawnPowerup(pPos);
         } else if(pVis)
         {
-            spawnPowerup(theme, pPos);
+            spawnPowerup(pPos);
         }
 
         //powerup checks
@@ -369,10 +369,10 @@ class Game
     }
 
 
-    public static void spawnPowerup(Theme t, Vector2 pos)
+    public static void spawnPowerup( Vector2 pos)
     {
         
-        t.drawPowerup(pos, 100, 0);
+        Theme.drawPowerup(pos, 100, 0);
     }
 
 }
