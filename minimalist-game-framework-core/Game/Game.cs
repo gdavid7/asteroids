@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 class Game
 {
-    public static readonly string Title = "Minimalist Game Framework";
+    public static readonly string Title = "DRAW-STROY";
     public static readonly Vector2 Resolution = new Vector2(1280, 720);
     Theme theme;
     EntryScreen es;
@@ -38,7 +38,16 @@ class Game
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100),1);
     Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100,100),1);
     
-     
+    //powerup vars
+    bool powerUp1Engaged = false;
+    bool powerUp2Engaged = false;
+    bool powerUp3Engaged = false;
+
+    //additional constants
+    public double shotCoolDownTime = 0.3;
+    public float shotBoundSizeFactor = 10;
+
+    public float powerUpCounter = 0;
 
     //game vars
     bool spawnAst = true;
@@ -52,6 +61,7 @@ class Game
     {
         List<String> startBackgrounds = new List<String>() { "startBackgroundD.png", "startBackgroundL.png", "startBackgroundDG.png", "startBackgroundLG.png" };
         List<String> gameBackgrounds = new List<String>() { "gameBackgroundD.png", "gameBackgroundL.png", "gameBackgroundDG.png", "gameBackgroundLG.png" };
+        List<String> endBackgrounds = new List<String>() { "endBackgroundD.png", "endBackgroundL.png" };
         List<String> rocketShips = new List<String>() { "rocketshipD.png", "rocketshipL.png" };
         List<String> asteroids = new List<String>() {"awhite.png", "ablack.png"};
         List<String> powerups = new List<String>() { "pwhite.png", "pblack.png" };
@@ -96,6 +106,62 @@ class Game
         powerupTime += Engine.TimeDelta;
         Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
 
+        //powerup checks
+        if(!powerUp1Engaged && !powerUp2Engaged && !powerUp3Engaged)
+        {
+            powerUpCounter = 0;
+        } else
+        {
+            powerUpCounter ++;
+            if(powerUpCounter > 1000)
+            {
+                powerUp1Engaged = false;
+                powerUp2Engaged = false;
+                powerUp3Engaged = false;
+                powerUpCounter = 0;
+            }
+        }
+
+        // UPON PICKUP CONDITION:
+        Random rnd = new Random();
+        int whichPowerUp = rnd.Next(1, 4);
+        if (whichPowerUp == 1)
+        {
+            powerUp1Engaged = true;
+        }
+        else if (whichPowerUp == 2)
+        {
+            powerUp2Engaged = true;
+        }
+        else
+        {
+            powerUp3Engaged = true;
+        }
+
+        if (powerUp1Engaged)
+        {
+            shotCoolDownTime = 0.15;
+        } else
+        {
+            shotCoolDownTime = 0.3;
+        }
+
+        if (powerUp2Engaged)
+        {
+            shotBoundSizeFactor = 15;
+        } else
+        {
+            shotBoundSizeFactor = 15;
+        }
+
+        if (powerUp3Engaged)
+        {
+            Asteroid.asteroidMovFactor = 1;
+        } else
+        {
+            Asteroid.asteroidMovFactor = 2;
+        }
+
         if (entry)
         {
             es.draw();
@@ -105,7 +171,7 @@ class Game
             }
         } else if (end)
         {
-            Engine.DrawString("game over",new Vector2 (640,360) , Color.White, Engine.LoadFont("Starjedi.ttf", 72), TextAlignment.Center);
+            Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
             Engine.DrawString("Score: " + score, new Vector2(640, 450), Color.White, Engine.LoadFont("Starjedi.ttf", 40), TextAlignment.Center);
             Engine.DrawString("SPACE to exit game", new Vector2(640, 320), Color.White, Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
             if (Engine.GetKeyDown(Key.Space))
@@ -123,8 +189,8 @@ class Game
             //Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
             theme.drawRocketShip(mov, 100, rot);
             //creates a set of bounds simulating the shots for hitboxes
-            shotBounds = new Bounds2(smov, new Vector2(10, 10));
-            Engine.DrawTexture(shot, smov, size: new Vector2(10, 10));
+            shotBounds = new Bounds2(smov, new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
+            Engine.DrawTexture(shot, smov, size: new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
 
             
             AsteroidCollection.handleAsteroidSpawning();
@@ -152,7 +218,7 @@ class Game
             smov = new Vector2(mov.X+50,mov.Y+50);
         }
 
-        if (time > 0.3 && shoot)
+        if (time > shotCoolDownTime && shoot)
         {
             shoot = false;
             smov = mov;
