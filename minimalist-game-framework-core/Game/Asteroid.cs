@@ -9,6 +9,8 @@
 		private bool spawn;
 		Texture asteroid = Engine.LoadTexture("awhite.png");
 
+		public static float asteroidMovFactor = 2;
+
 	// splitting vars
 	int stage;
     
@@ -78,7 +80,7 @@
 	//moves the asteroid by a factor of 2
 	public void handleMoves()
 	{
-        setMov(Game.getDirectionalVector(getMov(), rotation, 2));
+        setMov(Game.getDirectionalVector(getMov(), rotation, asteroidMovFactor));
         wraparound();
     }
 
