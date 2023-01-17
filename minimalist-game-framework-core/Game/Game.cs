@@ -31,9 +31,7 @@ class Game
     Bounds2 shotBounds = new Bounds2(400,400, 100, 100);
 
     //powerup vars
-    float delay = 10;
-    Vector2 pPos = new Vector2(300, 300);
-
+    
     //asteroid inits
     Asteroid a = new Asteroid( new Vector2(600, 600),100,new Vector2(100,100),1);
     Asteroid b = new Asteroid(new Vector2(400, 800), 60, new Vector2(100,100),1);
@@ -42,11 +40,14 @@ class Game
     bool powerUp1Engaged = false;
     bool powerUp2Engaged = false;
     bool powerUp3Engaged = false;
+    float delay = 10;
+    Vector2 pPos = new Vector2(300, 300);
+    Bounds2 pBounds = new Bounds2(300,300,100,100);
+    Boolean pVis = true;
 
     //additional constants
     public double shotCoolDownTime = 0.3;
     public float shotBoundSizeFactor = 10;
-
     public float powerUpCounter = 0;
 
     //game vars
@@ -106,62 +107,7 @@ class Game
         powerupTime += Engine.TimeDelta;
         Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
 
-        //powerup checks
-        if(!powerUp1Engaged && !powerUp2Engaged && !powerUp3Engaged)
-        {
-            powerUpCounter = 0;
-        } else
-        {
-            powerUpCounter ++;
-            if(powerUpCounter > 1000)
-            {
-                powerUp1Engaged = false;
-                powerUp2Engaged = false;
-                powerUp3Engaged = false;
-                powerUpCounter = 0;
-            }
-        }
-
-        // UPON PICKUP CONDITION:
-        Random rnd = new Random();
-        int whichPowerUp = rnd.Next(1, 4);
-        if (whichPowerUp == 1)
-        {
-            powerUp1Engaged = true;
-        }
-        else if (whichPowerUp == 2)
-        {
-            powerUp2Engaged = true;
-        }
-        else
-        {
-            powerUp3Engaged = true;
-        }
-
-        if (powerUp1Engaged)
-        {
-            shotCoolDownTime = 0.15;
-        } else
-        {
-            shotCoolDownTime = 0.3;
-        }
-
-        if (powerUp2Engaged)
-        {
-            shotBoundSizeFactor = 15;
-        } else
-        {
-            shotBoundSizeFactor = 15;
-        }
-
-        if (powerUp3Engaged)
-        {
-            Asteroid.asteroidMovFactor = 1;
-        } else
-        {
-            Asteroid.asteroidMovFactor = 2;
-        }
-
+       
         if (entry)
         {
             es.draw();
@@ -317,17 +263,83 @@ class Game
         {
             powerupTime = 0;
             delay = rd.Next(10, 20);
-            pPos = new Vector2(rd.Next(100, 1180), rd.Next(100, 620)); ;
+            pPos = new Vector2(rd.Next(100, 1180), rd.Next(100, 620));
+            pBounds = new Bounds2(pPos, new Vector2(100,100));
+            pVis = true;
             spawnPowerup(theme,pPos);
-        } else
+        } else if(pVis)
         {
             spawnPowerup(theme, pPos);
+        }
+
+        //powerup checks
+        if (!powerUp1Engaged && !powerUp2Engaged && !powerUp3Engaged)
+        {
+            powerUpCounter = 0;
+        }
+        else
+        {
+            powerUpCounter++;
+            if (powerUpCounter > 1000)
+            {
+                powerUp1Engaged = false;
+                powerUp2Engaged = false;
+                powerUp3Engaged = false;
+                powerUpCounter = 0;
+            }
+        }
+
+        // UPON PICKUP CONDITION:
+        if (shipBounds.Overlaps(pBounds))
+        {
+            pVis = false;
+            Random rnd = new Random();
+            int whichPowerUp = rnd.Next(1, 4);
+            if (whichPowerUp == 1)
+            {
+                powerUp1Engaged = true;
+            }
+            else if (whichPowerUp == 2)
+            {
+                powerUp2Engaged = true;
+            }
+            else
+            {
+                powerUp3Engaged = true;
+            }
+
+            if (powerUp1Engaged)
+            {
+                shotCoolDownTime = 0.15;
+            }
+            else
+            {
+                shotCoolDownTime = 0.3;
+            }
+
+            if (powerUp2Engaged)
+            {
+                shotBoundSizeFactor = 15;
+            }
+            else
+            {
+                shotBoundSizeFactor = 15;
+            }
+
+            if (powerUp3Engaged)
+            {
+                Asteroid.asteroidMovFactor = 1;
+            }
+            else
+            {
+                Asteroid.asteroidMovFactor = 2;
+            }
         }
     }
 
 
 
-     
+
     //returns a new vector with movement in a direction of choice
     public static Vector2 getDirectionalVector(Vector2 cur, float rotation, float moveFactor)
     {
