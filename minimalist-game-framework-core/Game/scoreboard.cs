@@ -126,6 +126,8 @@ public class scoreboard
 
 
         String resp = p1.ToString();
+        System.Diagnostics.Debug.WriteLine("RESP");
+        System.Diagnostics.Debug.WriteLine(resp);
         Dictionary<String, String> respDict = JsonConvert.DeserializeObject<Dictionary<String, String>>(resp);
 
 
