@@ -63,6 +63,7 @@ class Game
     bool entry = true;
     bool end = false;
     int score = 0;
+    int spawnDelay = 5;
 
     Random rd = new Random();
 
@@ -285,11 +286,22 @@ class Game
         }
 
         //ASTEROID RESPAWNING//
-        if (asteroidTime > 5)
+        if (asteroidTime > spawnDelay)
         {
             System.Diagnostics.Debug.WriteLine("This is a log");
             AsteroidCollection.spawn();
             asteroidTime = 0;
+        }
+
+        if (score > 30)
+        {
+            spawnDelay=2;
+        } else if (score > 20)
+        {
+            spawnDelay = 3;
+        } else if (score > 10)
+        {
+            spawnDelay = 4;
         }
 
         // POWERUP HANDLING //
