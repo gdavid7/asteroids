@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 class Game
 {
-    public static readonly string Title = "Minimalist Game Framework";
+    public static readonly string Title = "DRAW-STROY";
     public static readonly Vector2 Resolution = new Vector2(1280, 720);
     Theme theme;
     EntryScreen es;
@@ -163,7 +163,7 @@ class Game
             }
         } else if (end)
         {
-            Engine.DrawString("game over",new Vector2 (640,360) , Color.White, Engine.LoadFont("Starjedi.ttf", 72), TextAlignment.Center);
+            Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
             Engine.DrawString("Score: " + score, new Vector2(640, 450), Color.White, Engine.LoadFont("Starjedi.ttf", 40), TextAlignment.Center);
             Engine.DrawString("SPACE to exit game", new Vector2(640, 320), Color.White, Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
             if (Engine.GetKeyDown(Key.Space))
