@@ -1,4 +1,4 @@
-﻿xusing System;
+﻿using System;
 using System.Collections.Generic;
 
 class Game
@@ -51,7 +51,7 @@ class Game
     float delay = 10;
     Vector2 pPos = new Vector2(300, 300);
     Bounds2 pBounds = new Bounds2(300,300,100,100);
-    Boolean pVis = true;
+    bool pVis = true;
 
     //additional constants
     public double shotCoolDownTime = 0.3;
@@ -115,65 +115,7 @@ class Game
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
         invinTime += Engine.TimeDelta;
-        
-
-        //powerup checks
-        if(!powerUp1Engaged && !powerUp2Engaged && !powerUp3Engaged)
-        {
-            powerUpCounter = 0;
-        } else
-        {
-            powerUpCounter ++;
-            if(powerUpCounter > 1000)
-            {
-                powerUp1Engaged = false;
-                powerUp2Engaged = false;
-                powerUp3Engaged = false;
-                powerUpCounter = 0;
-            }
-        }
-
-        // UPON PICKUP CONDITION:
-        Random rnd = new Random();
-        int whichPowerUp = rnd.Next(1, 4);
-        if (whichPowerUp == 1)
-        {
-            powerUp1Engaged = true;
-        }
-        else if (whichPowerUp == 2)
-        {
-            powerUp2Engaged = true;
-        }
-        else
-        {
-            powerUp3Engaged = true;
-        }
-
-        if (powerUp1Engaged)
-        {
-            shotCoolDownTime = 0.15;
-        } else
-        {
-            shotCoolDownTime = 0.3;
-        }
-
-        if (powerUp2Engaged)
-        {
-            shotBoundSizeFactor = 15;
-        } else
-        {
-            shotBoundSizeFactor = 15;
-        }
-
-        if (powerUp3Engaged)
-        {
-            Asteroid.asteroidMovFactor = 1;
-        } else
-        {
-            Asteroid.asteroidMovFactor = 2;
-        }
         powerupTime += Engine.TimeDelta;
-        Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
 
        
         if (entry)
