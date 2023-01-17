@@ -5,9 +5,13 @@ class Game
 {
     public static readonly string Title = "DRAW-STROY";
     public static readonly Vector2 Resolution = new Vector2(1280, 720);
+
+    scoreboard s = new scoreboard();
+
     Theme theme;
     EntryScreen es;
     
+
 
     Texture shot = Engine.LoadTexture("projectile.png");
     Texture bg = Engine.LoadTexture("background.png");
@@ -67,7 +71,7 @@ class Game
         es = new EntryScreen(Resolution, theme);
     }
 
-
+    /*
     public void log(int score)
     {
         // log score, print top 10 highest scores, print score history of user
@@ -90,7 +94,7 @@ class Game
 
 
     }
-
+    */
     public void Update()
     {
         theme.drawGameBackground();
