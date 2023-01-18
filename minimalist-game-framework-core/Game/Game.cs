@@ -71,7 +71,7 @@ class Game
 
     bool scoreDisplay = false;
     String name = "";
-
+    bool leaderboardRefreshed = false;
 
     public Game()
     {
@@ -95,65 +95,6 @@ class Game
         hs = new highscorescreen(Resolution, s.getScoreboard());
 
     }
-
-    /*
-    public void log(int score)
-    {
-        // log score, print top 10 highest scores, print score history of user
-
-
-        System.Diagnostics.Debug.WriteLine("Your Score is: " + score + ". If you would like to save your score, please enter your name in the console. If not, type N.");
-        String name = Console.ReadLine();
-        if(name.Equals("N") == false)
-        {
-            scoreboard.append(name, score.ToString());
-            System.Diagnostics.Debug.WriteLine(name + "'s Scores:");
-            System.Diagnostics.Debug.WriteLine(scoreboard.retrieve(name));
-        }
-        System.Diagnostics.Debug.WriteLine("HIGH SCORES: ");
-        String[] scores = scoreboard.getScoreboard();
-        for(int i = 0; i <scores.Length; i++)
-        {
-            System.Diagnostics.Debug.WriteLine(scores[i]);
-        }
-
-
-    }
-    */
-
-    // ENDING SCREEN - Enter Username
-
-    /*
-    // HIGH SCORES SCREEN
-    public void highScores()
-    {
-        Dictionary<String, String> board = s.getScoreboard();
-        foreach (KeyValuePair<string, string> entry in board)
-        {
-            // do something with entry.Value or entry.Key
-            String value = entry.Value;
-            String place = entry.Key; // 1, 2, 3, 4...
-            String score = value.Split(";")[0];
-            String name = value.Split(";")[1];
-            String date = timestamp_to_string(value.Split(";")[2]);
-        }
-    }
-
-    public String timestamp_to_string(String timestamp)
-    {
-        Double ts;
-        if(Double.TryParse(timestamp, out ts) == true)
-        {
-            System.DateTime dat_Time = new System.DateTime(1965, 1, 1, 0, 0, 0, 0);
-            dat_Time = dat_Time.AddSeconds(ts);
-            string print_the_Date = dat_Time.ToShortDateString() + " " + dat_Time.ToShortTimeString();
-            return print_the_Date;
-        }
-        return "EMPTY";
-    }
-
-
-    */
 
     public void Update()
     {
@@ -179,9 +120,16 @@ class Game
 
         }else if (highScore)
         {
+            if(leaderboardRefreshed == false)
+            {
+                // refresh
+                hs.refresh(s.getScoreboard());
+                leaderboardRefreshed = true;
+            }
             hs.draw();
             if (hs.isGridClicked())
             {
+                leaderboardRefreshed = false;
                 highScore = false;
                 entry = true;
             }
@@ -192,35 +140,37 @@ class Game
             //Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
             Engine.DrawString("Score: " + score, Vector2.Zero, Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 40));
             Engine.DrawString("SPACE to exit game", new Vector2(640, 280), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
-            Engine.DrawString("name + BACKSPACE to save score", new Vector2(960, 100), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
+            Engine.DrawString("username + [BACKSPACE] to save score", new Vector2(1000, 25), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             i.drawTextBox();
             String t = i.getLatestInput();
-            Engine.DrawString(t, new Vector2(960, 180), Color.Black, Engine.LoadFont("Starjedi.ttf", 40));
+            Engine.DrawString(t, new Vector2(800, 70), Theme.altColor(), Engine.LoadFont("Starjedi.ttf", 40));
             if (Engine.GetKeyDown(Key.Backspace) && scoreDisplay == false)
             {
+
                 scoreDisplay = true;
 
                 // display past scores below text box
                 name = i.getLatestInput();
-                s.updateUser(name, timestamp.get_time(), score.ToString());
+                s.updateUser(name.ToLower(), timestamp.get_time(), score.ToString());
             }
             if(scoreDisplay == true)
             {
                 // display past scores
                 Dictionary<String, String> userScores = s.retrieveUser(name);
-                int y = 300;
+                int y = 120;
                 foreach (KeyValuePair<string, string> entry in userScores)
                 {
                     //String time = hs.timestamp_to_string(entry.Key);
                     String time = timestamp.convert(entry.Key);
                     String score = entry.Value;
-                    Engine.DrawString(time + " | " + score, new Vector2(960, y), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 15), TextAlignment.Center);
+                    Engine.DrawString(time + " | " + score, new Vector2(1000, y), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 15), TextAlignment.Center);
                     y = y + 30;
                 }
 
             }
             if (Engine.GetKeyDown(Key.Space))
             {
+                i.text = "";
                 scoreDisplay = false;
                 end = false;
                 entry = true;
