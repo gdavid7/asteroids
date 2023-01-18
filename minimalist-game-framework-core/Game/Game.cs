@@ -87,11 +87,6 @@ class Game
         List<String> projectiles = new List<String>() { "projectileD.png", "projectileL.png" }; 
 
        Theme.setUp(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups, projectiles);
-
-
-
-
-
         es = new EntryScreen(Resolution);
         hs = new highscorescreen(Resolution, s.getScoreboard());
 
@@ -99,12 +94,13 @@ class Game
 
     public void Update()
     {
-        
+        //timers to handle different game elements
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
         invinTime += Engine.TimeDelta;
         powerupTime += Engine.TimeDelta;
 
+        // screen switching code
        
         if (entry)
         {
@@ -138,9 +134,10 @@ class Game
         else if (end)
         {
             Theme.drawEndBackground();
-            //Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
             Engine.DrawString("Score: " + score, Vector2.Zero, Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 40));
             Engine.DrawString("SPACE to exit game", new Vector2(640, 280), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
+
+            // score saving
             Engine.DrawString("username + [BACKSPACE] to save score", new Vector2(1000, 25), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             i.drawTextBox();
             String t = i.getLatestInput();
@@ -172,6 +169,8 @@ class Game
                 }
 
             }
+
+            //resets game and game vars for replay
             if (Engine.GetKeyDown(Key.Space))
             {
                 i.text = "";
@@ -187,6 +186,8 @@ class Game
             }
         } else
         {
+            //game play screen drawing
+
             Theme.drawGameBackground();
             Engine.DrawString("Lives: " + lives, new Vector2(100, 50), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             Engine.DrawString("Score: " + score, new Vector2(100, 10), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
