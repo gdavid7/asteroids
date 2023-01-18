@@ -179,7 +179,8 @@ class highscorescreen
             String place = entry.Key; // 1, 2, 3, 4...
             String score = value.Split(";")[0];
             String name = value.Split(";")[1];
-            String date = timestamp_to_string(value.Split(";")[2]);
+            //String date = timestamp_to_string(value.Split(";")[2]);
+            String date = timestamp.convert(value.Split(";")[2]);
             // draw the string
             String drawThis = place + ") " + score + " | " + date + " | " + name;
             //System.Diagnostics.Debug.WriteLine(drawThis);
@@ -203,18 +204,6 @@ class highscorescreen
 
     }
 
-    public String timestamp_to_string(String timestamp)
-    {
-        Double ts;
-        if (Double.TryParse(timestamp, out ts) == true)
-        {
-            System.DateTime dat_Time = new System.DateTime(1965, 1, 1, 0, 0, 0, 0);
-            dat_Time = dat_Time.AddSeconds(ts);
-            string print_the_Date = dat_Time.ToShortDateString() + " " + dat_Time.ToShortTimeString();
-            return print_the_Date;
-        }
-        return "EMPTY";
-    }
 
 
     public Boolean isHighScoreClicked()

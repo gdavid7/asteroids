@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 class Game
 {
@@ -7,7 +8,7 @@ class Game
     public static readonly Vector2 Resolution = new Vector2(1280, 720);
 
     scoreboard s = new scoreboard();
-
+    inputText i = new inputText();
     Theme theme;
     EntryScreen es;
     highscorescreen hs;
@@ -67,6 +68,10 @@ class Game
     int spawnDelay = 5;
 
     Random rd = new Random();
+
+    bool scoreDisplay = false;
+    String name = "";
+
 
     public Game()
     {
@@ -187,8 +192,36 @@ class Game
             //Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
             Engine.DrawString("Score: " + score, Vector2.Zero, Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 40));
             Engine.DrawString("SPACE to exit game", new Vector2(640, 280), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
+            Engine.DrawString("name + BACKSPACE to save score", new Vector2(960, 100), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
+            i.drawTextBox();
+            String t = i.getLatestInput();
+            Engine.DrawString(t, new Vector2(960, 180), Color.Black, Engine.LoadFont("Starjedi.ttf", 40));
+            if (Engine.GetKeyDown(Key.Backspace) && scoreDisplay == false)
+            {
+                scoreDisplay = true;
+
+                // display past scores below text box
+                name = i.getLatestInput();
+                s.updateUser(name, timestamp.get_time(), score.ToString());
+            }
+            if(scoreDisplay == true)
+            {
+                // display past scores
+                Dictionary<String, String> userScores = s.retrieveUser(name);
+                int y = 300;
+                foreach (KeyValuePair<string, string> entry in userScores)
+                {
+                    //String time = hs.timestamp_to_string(entry.Key);
+                    String time = timestamp.convert(entry.Key);
+                    String score = entry.Value;
+                    Engine.DrawString(time + " | " + score, new Vector2(960, y), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 15), TextAlignment.Center);
+                    y = y + 30;
+                }
+
+            }
             if (Engine.GetKeyDown(Key.Space))
             {
+                scoreDisplay = false;
                 end = false;
                 entry = true;
                 score = 0;
