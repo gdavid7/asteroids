@@ -98,7 +98,13 @@ class Game
 
        Theme.setUp(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups, projectiles);
 
+
+
+        // CONTROLLER & KEYBOARD BINDINGS: EDIT TO CUSTOMIZE AND CONFIGURE, ALSO EDIT TEXTS
+
+
        controller = SDL.SDL_GameControllerOpen(0);
+
 
         keyboard_bindings["Shoot"] = Key.Space;
         keyboard_bindings["Left"] = Key.Left;
@@ -119,6 +125,7 @@ class Game
         controller_bindings["Theme"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
         controller_bindings["Start"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_Y;
         controller_bindings["HighScore"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_A;
+
         es = new EntryScreen(Resolution);
         hs = new highscorescreen(Resolution, s.getScoreboard());
 
