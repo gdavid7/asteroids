@@ -78,8 +78,9 @@ class Game
         List<String> asteroidsL = new List<String>() { "asteroidL1.png", "asteroidL2.png", "asteroidL3.png", "asteroidL4.png" };
         List<List<String>> asteroids = new List<List<String>>() {asteroidsD, asteroidsL};
         List<String> powerups = new List<String>() { "powerupD.png", "powerupL.png"};
-        
-       Theme.setUp(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups);
+        List<String> projectiles = new List<String>() { "projectileD.png", "projectileL.png" }; 
+
+       Theme.setUp(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups, projectiles);
 
 
 
@@ -204,9 +205,12 @@ class Game
             shipBounds = new Bounds2(mov, new Vector2(100, 100));
             Theme.drawRocketShip(mov, 100, rot);
             //creates a set of bounds simulating the shots for hitboxes
-            shotBounds = new Bounds2(smov, new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
-            Engine.DrawTexture(shot, smov, size: new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
-
+            if (shoot)
+            {
+                shotBounds = new Bounds2(smov, new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
+                Theme.drawProjectile(smov, shotBoundSizeFactor);
+            }
+            
             
             AsteroidCollection.handleAsteroidSpawning();
         }

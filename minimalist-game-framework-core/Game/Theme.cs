@@ -16,7 +16,9 @@ class Theme
     static List<Texture> rocketShips;
     static List<List<Texture>> asteroids;
     static List<Texture> powerups;
+    static List<Texture> projectiles;
     static List<Color> colors = new List<Color>() {Color.White, Color.Black};
+
 
     static Font f = Engine.LoadFont("Starjedi.ttf", 48);
 
@@ -33,7 +35,7 @@ class Theme
     /// <param name="rocketShips"> a list of filenames for rocketships, order D, L</param>
     /// <param name="asteroids"> a list of filenames for asteroids, order D, L</param>
     /// <param name="powerups"> a list of filenames for powerups</param>
-    public static void setUp(Vector2 resolutionT, List<String> startBackgroundsT, List<String> gameBackgroundsT, List<String> endBackgroundsT, List<String> rocketShipsT, List<List<String>> asteroidsT, List<String> powerupsT)
+    public static void setUp(Vector2 resolutionT, List<String> startBackgroundsT, List<String> gameBackgroundsT, List<String> endBackgroundsT, List<String> rocketShipsT, List<List<String>> asteroidsT, List<String> powerupsT, List<String> projectilesT)
     {
         resolution = resolutionT;
 
@@ -43,6 +45,7 @@ class Theme
         rocketShips = loadTextures(rocketShipsT);
         asteroids = new List<List<Texture>>() { loadTextures(asteroidsT[0]), loadTextures(asteroidsT[1]) };
         powerups = loadTextures(powerupsT);
+        projectiles = loadTextures(projectilesT);
     }
 
     /// <summary>
@@ -126,6 +129,11 @@ class Theme
     public static void drawPowerup(Vector2 position, int radius, float rotationDegrees = 0)
     {
         Engine.DrawTexture(powerups[darkMode], position, null, new Vector2(radius, radius), rotationDegrees);
+    }
+
+    public static void drawProjectile(Vector2 position, float radius, float rotationDegrees = 0)
+    {
+        Engine.DrawTexture(projectiles[darkMode], position, null, new Vector2(radius, radius), rotationDegrees);
     }
 
     
