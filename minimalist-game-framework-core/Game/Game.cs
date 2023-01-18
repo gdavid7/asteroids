@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
+using SDL2;
 
 class Game
 {
@@ -12,6 +13,11 @@ class Game
     Theme theme;
     EntryScreen es;
     highscorescreen hs;
+    public static IntPtr controller;
+
+    public static Dictionary<String, Key> keyboard_bindings = new Dictionary<String, Key>();
+    public static Dictionary<String,SDL.SDL_GameControllerButton> controller_bindings = new Dictionary<String, SDL.SDL_GameControllerButton>();
+
 
 
     Texture shot = Engine.LoadTexture("projectile.png");
@@ -91,11 +97,15 @@ class Game
         List<String> projectiles = new List<String>() { "projectileD.png", "projectileL.png" }; 
 
        Theme.setUp(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups, projectiles);
-<<<<<<< Updated upstream
-=======
+
+
+
+        // CONTROLLER & KEYBOARD BINDINGS: EDIT TO CUSTOMIZE AND CONFIGURE, ALSO EDIT TEXTS
+
 
        controller = SDL.SDL_GameControllerOpen(0);
-        // CONTROLLER & KEYBOARD BINDINGS: EDIT TO CUSTOMIZE AND CONFIGURE, ALSO EDIT TEXTS
+
+
         keyboard_bindings["Shoot"] = Key.Space;
         keyboard_bindings["Left"] = Key.Left;
         keyboard_bindings["Right"] = Key.Right;
@@ -115,7 +125,7 @@ class Game
         controller_bindings["Theme"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
         controller_bindings["Start"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_Y;
         controller_bindings["HighScore"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_A;
->>>>>>> Stashed changes
+
         es = new EntryScreen(Resolution);
         hs = new highscorescreen(Resolution, s.getScoreboard());
 
@@ -164,21 +174,20 @@ class Game
         {
             Theme.drawEndBackground();
             Engine.DrawString("Score: " + score, Vector2.Zero, Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 40));
-            Engine.DrawString("SPACE to exit game", new Vector2(640, 280), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
-
-            // score saving
-            Engine.DrawString("username + [BACKSPACE] to save score", new Vector2(1000, 25), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
+            Engine.DrawString("L_SHIFT to exit game [CON-X]", new Vector2(640, 280), Theme.getColor(), Engine.LoadFont("Oswald-Regular.ttf",25), TextAlignment.Center);
+            Engine.DrawString("username + [BACKSPACE] to save score [CON-B]", new Vector2(1000, 25), Theme.getColor(), Engine.LoadFont("Oswald-Regular.ttf", 20), TextAlignment.Center);
             i.drawTextBox();
             String t = i.getLatestInput();
             Engine.DrawString(t, new Vector2(800, 70), Theme.altColor(), Engine.LoadFont("Starjedi.ttf", 40));
-            if (Engine.GetKeyDown(Key.Backspace) && scoreDisplay == false)
+            if ((Engine.GetKeyDown(keyboard_bindings["SaveScore"]) || SDL.SDL_GameControllerGetButton(controller, controller_bindings["SaveScore"]) > 0) && scoreDisplay == false)
             {
 
                 scoreDisplay = true;
-
+                userScores = null;
                 // display past scores below text box
                 name = i.getLatestInput();
                 s.updateUser(name.ToLower(), timestamp.get_time(), score.ToString());
+                
             }
             if(scoreDisplay == true)
             {
@@ -198,9 +207,7 @@ class Game
                 }
 
             }
-
-            //resets game and game vars for replay
-            if (Engine.GetKeyDown(Key.Space))
+            if ((Engine.GetKeyDown(keyboard_bindings["ExitGame"]) || SDL.SDL_GameControllerGetButton(controller, controller_bindings["ExitGame"]) > 0))
             {
                 i.text = "";
                 scoreDisplay = false;
@@ -238,7 +245,7 @@ class Game
 
         // SHOT SHOOTING //
 
-        if (Engine.GetKeyDown(Key.Space) && !shoot)
+        if ((Engine.GetKeyDown(keyboard_bindings["Shoot"]) || SDL.SDL_GameControllerGetButton(controller, controller_bindings["Shoot"]) > 0) && !shoot)
         {
             shoot = true;
             rotLock = rot;
@@ -268,25 +275,25 @@ class Game
 
         //moves ship with intertia
 
-        if (Engine.GetKeyHeld(Key.Left))
+        if (Engine.GetKeyHeld(keyboard_bindings["Left"]) || SDL.SDL_GameControllerGetButton(controller, controller_bindings["Left"]) > 0)
         {
             rot -= 7;
 
         }
 
-        else if (Engine.GetKeyHeld(Key.Right))
+        else if (Engine.GetKeyHeld(Key.Right) || SDL.SDL_GameControllerGetButton(controller, controller_bindings["Right"]) > 0)
         {
             rot += 7;
         }
 
-        if (Engine.GetKeyHeld(Key.Up))
+        if (Engine.GetKeyHeld(Key.Up)|| SDL.SDL_GameControllerGetButton(controller, controller_bindings["Up"]) > 0)
         {
             mov = getDirectionalVector(mov, rot, 10);
 
         }
 
         //starts inertia when up is released
-        if (Engine.GetKeyUp(Key.Up))
+        if (Engine.GetKeyUp(keyboard_bindings["Up"]) || SDL.SDL_GameControllerGetButton(controller, controller_bindings["Up"]) > 0)
         {
 
             fly = true;
