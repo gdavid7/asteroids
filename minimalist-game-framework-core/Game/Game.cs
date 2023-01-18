@@ -179,11 +179,13 @@ class Game
             i.drawTextBox();
             String t = i.getLatestInput();
             Engine.DrawString(t, new Vector2(800, 70), Theme.altColor(), Engine.LoadFont("Starjedi.ttf", 40));
+            Engine.DrawString("Made with Firebase & Newtonsoft", new Vector2(50, 680), Theme.altColor(), Engine.LoadFont("Oswald-Regular.ttf", 20), TextAlignment.Left);
             if ((Engine.GetKeyDown(keyboard_bindings["SaveScore"]) || SDL.SDL_GameControllerGetButton(controller, controller_bindings["SaveScore"]) > 0) && scoreDisplay == false)
             {
 
                 scoreDisplay = true;
                 userScores = null;
+                
                 // display past scores below text box
                 name = i.getLatestInput();
                 s.updateUser(name.ToLower(), timestamp.get_time(), score.ToString());
@@ -196,7 +198,7 @@ class Game
                 {
                     userScores = s.retrieveUser(name);
                 }
-                int y = 120;
+                int y = 200;
                 foreach (KeyValuePair<string, string> entry in userScores)
                 {
                     //String time = hs.timestamp_to_string(entry.Key);
