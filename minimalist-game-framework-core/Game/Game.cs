@@ -72,6 +72,7 @@ class Game
     bool scoreDisplay = false;
     String name = "";
     bool leaderboardRefreshed = false;
+    Dictionary<String, String> userScores = null;
 
     public Game()
     {
@@ -156,7 +157,10 @@ class Game
             if(scoreDisplay == true)
             {
                 // display past scores
-                Dictionary<String, String> userScores = s.retrieveUser(name);
+                if(userScores == null)
+                {
+                    userScores = s.retrieveUser(name);
+                }
                 int y = 120;
                 foreach (KeyValuePair<string, string> entry in userScores)
                 {
@@ -172,6 +176,7 @@ class Game
             {
                 i.text = "";
                 scoreDisplay = false;
+                userScores = null;
                 end = false;
                 entry = true;
                 score = 0;
