@@ -15,13 +15,12 @@ class Game
 
 
     Texture shot = Engine.LoadTexture("projectile.png");
-    Texture bg = Engine.LoadTexture("background.png");
 
     float time = 0;
     float asteroidTime = 0;
     float invinTime = 0;
     float powerupTime = 0;
-
+        
     //ship vars
     float rot = 180;
     Vector2 mov = new Vector2(100, 100);
@@ -69,6 +68,11 @@ class Game
 
     Random rd = new Random();
 
+    //font & location for powerup ui notifs
+    Font buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 20);
+    Vector2 location = new Vector2(10, Resolution.Y* 10/11);
+    
+    //score vars
     bool scoreDisplay = false;
     String name = "";
     bool leaderboardRefreshed = false;
@@ -374,7 +378,20 @@ class Game
         else
         {
             powerUpCounter++;
-            if (powerUpCounter > 1000)
+
+            //ui display for powerup info
+            if (powerUp1Engaged && !powerUp2Engaged && !powerUp3Engaged)
+            {
+                Engine.DrawString("Powerup Activated: FASTER SHOOTING", location, Theme.getColor(), buttonFont, TextAlignment.Left);
+            } else if (powerUp2Engaged && !powerUp1Engaged && !powerUp3Engaged)
+            {
+                Engine.DrawString("Powerup Activated: BIGGER HITS", location, Theme.getColor(), buttonFont, TextAlignment.Left);
+            } else if (powerUp3Engaged && !powerUp2Engaged && !powerUp2Engaged)
+            {
+                Engine.DrawString("Powerup Activated: SLOWDOWN", location, Theme.getColor(), buttonFont, TextAlignment.Left);
+            }
+
+            if (powerUpCounter > 400)
             {
                 powerUp1Engaged = false;
                 powerUp2Engaged = false;
@@ -387,33 +404,41 @@ class Game
         if (shipBounds.Overlaps(pBounds))
         {
             pVis = false;
+            pBounds = new Bounds2(0, 0, 0, 0);
             Random rnd = new Random();
             int whichPowerUp = rnd.Next(1, 4);
             if (whichPowerUp == 1)
             {
                 powerUp1Engaged = true;
+                powerUp2Engaged = false;
+                powerUp3Engaged = false;
             }
             else if (whichPowerUp == 2)
             {
                 powerUp2Engaged = true;
+                powerUp1Engaged = false;
+                powerUp3Engaged = false;
             }
             else
             {
                 powerUp3Engaged = true;
+                powerUp1Engaged = false;
+                powerUp2Engaged = false;
             }
+        }
 
             if (powerUp1Engaged)
             {
-                shotCoolDownTime = 0.15;
+                shotCoolDownTime = 0.25;
             }
-            else
+            else 
             {
-                shotCoolDownTime = 0.3;
+                shotCoolDownTime = 0.4;
             }
 
             if (powerUp2Engaged)
             {
-                shotBoundSizeFactor = 15;
+                shotBoundSizeFactor = 25;
             }
             else
             {
@@ -424,11 +449,11 @@ class Game
             {
                 Asteroid.asteroidMovFactor = 1;
             }
-            else
+            else 
             {
                 Asteroid.asteroidMovFactor = 2;
             }
-        }
+        
     }
 
 
