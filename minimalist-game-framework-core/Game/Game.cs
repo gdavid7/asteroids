@@ -61,6 +61,7 @@ class Game
 
     Random rd = new Random();
 
+    //font & location for powerup ui notifs
     Font buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 20);
     Vector2 location = new Vector2(10, Resolution.Y* 10/11);
 
