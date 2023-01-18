@@ -9,7 +9,7 @@ class EntryScreen
     Vector2 startLocation;
     Vector2 highLocation;
     Vector2 gridLocation;
-
+    Vector2 darkModeLocation;
     
     Bounds2 startBounds;
     Bounds2 highBounds;
@@ -24,9 +24,10 @@ class EntryScreen
     {
         this.resolution = resolution;
         color = Theme.getColor();
-        startLocation = new Vector2(resolution.X / 2, resolution.Y / 2);
+        startLocation = new Vector2(resolution.X / 2, resolution.Y * 11 / 21);
         highLocation = new Vector2(resolution.X / 2, resolution.Y * 2 / 3);
-        gridLocation = new Vector2(0, resolution.Y * 10/11);
+        gridLocation = new Vector2(25, resolution.Y * 9/10);
+        darkModeLocation = new Vector2(20, 17);
 
         startBounds = Engine.DrawString("START", startLocation, color, buttonFont, TextAlignment.Center);
         highBounds = Engine.DrawString("HIGH SCORE", highLocation, color, buttonFont, TextAlignment.Center);
@@ -62,11 +63,11 @@ class EntryScreen
         // draws button for changing color mode
         if (Theme.isDarkMode())
         {
-            darkModeBounds = Engine.DrawString("Dark Mode", Vector2.Zero, color, buttonFont);
+            darkModeBounds = Engine.DrawString("Dark Mode", darkModeLocation, color, buttonFont);
         }
         else
         {
-            darkModeBounds = Engine.DrawString("Light Mode", Vector2.Zero, color, buttonFont);
+            darkModeBounds = Engine.DrawString("Light Mode", darkModeLocation, color, buttonFont);
         }
         if (isDarkModeClicked())
         {
@@ -78,6 +79,7 @@ class EntryScreen
 
 
     }
+
 
     public Boolean isStartClicked()
     {

@@ -21,7 +21,7 @@ public class scoreboard
      *  adds a score to the database. Make sure that the time is in the form of a timestamp: DateTime.Now.ToString("yyyyMMddHHmmssffff")
      *  
      * getScoreboard()
-     *  returns the top 5 high scores in a dictionary form: {"01": "score/name/timestamp", "02":"score/name/timestamp"...}
+     *  returns the top 5 high scores in a dictionary form: {"01": "score;name;timestamp", "02":"score;name;timestamp"...}
      *  
      *  
      *  retrieveUser(String name):
@@ -56,7 +56,7 @@ public class scoreboard
     }
 
     // add a score instance to the realtime database
-    public static void updateUser(String name, String time, String score)
+    public void updateUser(String name, String time, String score)
     {
 
 
@@ -66,7 +66,7 @@ public class scoreboard
     }
     // DO NOT call this method - it is used in update user
     // Keeps a list of the top 10 high scores
-    public static void updateScoreboard(String name, String time, String score)
+    public void updateScoreboard(String name, String time, String score)
     {
 
 
@@ -81,27 +81,32 @@ public class scoreboard
         // update score if needed - add scores to a queue then copy the first 5 elements into the dictionary
         bool scoreAdded = false;
         Queue<String> q = new Queue<String>();
-        
+        Dictionary<String, String> updateScoreboard = new Dictionary<string, string>();
         
         foreach (KeyValuePair<string, string> entry in respDict)
         {
-            // do something with entry.Value or entry.Key
-            String value = entry.Value;
-            int currentScore = Int16.Parse(value.Split(";")[0]);
-            //nd.Add(currentScore, value);
-            if(Int16.Parse(score) > currentScore && scoreAdded == false)
+            if(updateScoreboard.Count < 5)
             {
-                q.Enqueue(score + ";" + name + ";" + time);
-                scoreAdded = true;
+                // do something with entry.Value or entry.Key
+                String value = entry.Value;
+                int currentScore = Int16.Parse(value.Split(";")[0]);
+                //nd.Add(currentScore, value);
+                if (Int16.Parse(score) > currentScore && scoreAdded == false)
+                {
+                    q.Enqueue(score + ";" + name + ";" + time);
+                    scoreAdded = true;
+                }
+                q.Enqueue(value);
+                updateScoreboard.Add(entry.Key, q.Dequeue());
+                //respDict[entry.Key] = q.Dequeue();
             }
-            q.Enqueue(value);
-            respDict[entry.Key] = q.Dequeue();
+
         }
-        SetResponse updateBoard = client.Set<Dictionary<String, String>>("scoreboard", respDict);
+        SetResponse updateBoard = client.Set<Dictionary<String, String>>("scoreboard", updateScoreboard);
         System.Diagnostics.Debug.WriteLine("SCOREBOARD UPDATED");
     }
 
-    public static Dictionary<String, String> getScoreboard()
+    public Dictionary<String, String> getScoreboard()
     {
         FirebaseResponse response = client.Get("scoreboard");
         var p1 = response.GetType().GetProperties().First(o => o.Name == "Body").GetValue(response, null);
@@ -116,7 +121,7 @@ public class scoreboard
 
 
 
-    public static Dictionary<String, String> retrieveUser(String name)
+    public Dictionary<String, String> retrieveUser(String name)
     {
         FirebaseResponse response = client.Get("users/" + name);
         //Dictionary<String, int> r = response.ResultAs<Dictionary<String, int>>();
@@ -126,6 +131,8 @@ public class scoreboard
 
 
         String resp = p1.ToString();
+        System.Diagnostics.Debug.WriteLine("RESP");
+        System.Diagnostics.Debug.WriteLine(resp);
         Dictionary<String, String> respDict = JsonConvert.DeserializeObject<Dictionary<String, String>>(resp);
 
 

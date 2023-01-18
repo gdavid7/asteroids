@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 class Game
 {
@@ -7,16 +8,17 @@ class Game
     public static readonly Vector2 Resolution = new Vector2(1280, 720);
 
     scoreboard s = new scoreboard();
-
+    inputText i = new inputText();
     Theme theme;
     EntryScreen es;
-    
+    highscorescreen hs;
 
 
     Texture shot = Engine.LoadTexture("projectile.png");
 
     float time = 0;
     float asteroidTime = 0;
+    float invinTime = 0;
     float powerupTime = 0;
         
     //ship vars
@@ -25,6 +27,9 @@ class Game
     float inertia = 100;
     bool fly = false;
     Bounds2 shipBounds = new Bounds2(100, 100, 100, 100);
+    int lives = 3;
+    bool invincible = false;
+
 
 
     //shot variables
@@ -46,7 +51,7 @@ class Game
     float delay = 10;
     Vector2 pPos = new Vector2(300, 300);
     Bounds2 pBounds = new Bounds2(300,300,100,100);
-    Boolean pVis = true;
+    bool pVis = true;
 
     //additional constants
     public double shotCoolDownTime = 0.3;
@@ -56,14 +61,22 @@ class Game
     //game vars
     bool spawnAst = true;
     bool entry = true;
+    bool highScore = false;
     bool end = false;
     int score = 0;
+    int spawnDelay = 5;
 
     Random rd = new Random();
 
     //font & location for powerup ui notifs
     Font buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 20);
     Vector2 location = new Vector2(10, Resolution.Y* 10/11);
+    
+    //score vars
+    bool scoreDisplay = false;
+    String name = "";
+    bool leaderboardRefreshed = false;
+    Dictionary<String, String> userScores = null;
 
     public Game()
     {
@@ -75,46 +88,26 @@ class Game
         List<String> asteroidsL = new List<String>() { "asteroidL1.png", "asteroidL2.png", "asteroidL3.png", "asteroidL4.png" };
         List<List<String>> asteroids = new List<List<String>>() {asteroidsD, asteroidsL};
         List<String> powerups = new List<String>() { "powerupD.png", "powerupL.png"};
-        
-       Theme.setUp(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups);
+        List<String> projectiles = new List<String>() { "projectileD.png", "projectileL.png" }; 
 
-        
-        
+       Theme.setUp(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups, projectiles);
+
+
+
+
 
         es = new EntryScreen(Resolution);
-    }
-
-    /*
-    public void log(int score)
-    {
-        // log score, print top 10 highest scores, print score history of user
-
-
-        System.Diagnostics.Debug.WriteLine("Your Score is: " + score + ". If you would like to save your score, please enter your name in the console. If not, type N.");
-        String name = Console.ReadLine();
-        if(name.Equals("N") == false)
-        {
-            scoreboard.append(name, score.ToString());
-            System.Diagnostics.Debug.WriteLine(name + "'s Scores:");
-            System.Diagnostics.Debug.WriteLine(scoreboard.retrieve(name));
-        }
-        System.Diagnostics.Debug.WriteLine("HIGH SCORES: ");
-        String[] scores = scoreboard.getScoreboard();
-        for(int i = 0; i <scores.Length; i++)
-        {
-            System.Diagnostics.Debug.WriteLine(scores[i]);
-        }
-
+        hs = new highscorescreen(Resolution, s.getScoreboard());
 
     }
-    */
+
     public void Update()
     {
         
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
+        invinTime += Engine.TimeDelta;
         powerupTime += Engine.TimeDelta;
-        Engine.DrawString("Score: " + score, new Vector2(100, 10), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
 
        
         if (entry)
@@ -122,19 +115,76 @@ class Game
             es.draw();
             if (es.isStartClicked())
             {
-                entry = false;
+            entry = false;
             }
-        } else if (end)
+            if (es.isHighScoreClicked())
+            {
+                entry = false;
+                highScore = true;
+            }
+
+        }else if (highScore)
+        {
+            if(leaderboardRefreshed == false)
+            {
+                // refresh
+                hs.refresh(s.getScoreboard());
+                leaderboardRefreshed = true;
+            }
+            hs.draw();
+            if (hs.isGridClicked())
+            {
+                leaderboardRefreshed = false;
+                highScore = false;
+                entry = true;
+            }
+        }
+        else if (end)
         {
             Theme.drawEndBackground();
             //Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
             Engine.DrawString("Score: " + score, Vector2.Zero, Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 40));
             Engine.DrawString("SPACE to exit game", new Vector2(640, 280), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 30), TextAlignment.Center);
+            Engine.DrawString("username + [BACKSPACE] to save score", new Vector2(1000, 25), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
+            i.drawTextBox();
+            String t = i.getLatestInput();
+            Engine.DrawString(t, new Vector2(800, 70), Theme.altColor(), Engine.LoadFont("Starjedi.ttf", 40));
+            if (Engine.GetKeyDown(Key.Backspace) && scoreDisplay == false)
+            {
+
+                scoreDisplay = true;
+
+                // display past scores below text box
+                name = i.getLatestInput();
+                s.updateUser(name.ToLower(), timestamp.get_time(), score.ToString());
+            }
+            if(scoreDisplay == true)
+            {
+                // display past scores
+                if(userScores == null)
+                {
+                    userScores = s.retrieveUser(name);
+                }
+                int y = 120;
+                foreach (KeyValuePair<string, string> entry in userScores)
+                {
+                    //String time = hs.timestamp_to_string(entry.Key);
+                    String time = timestamp.convert(entry.Key);
+                    String score = entry.Value;
+                    Engine.DrawString(time + " | " + score, new Vector2(1000, y), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 15), TextAlignment.Center);
+                    y = y + 30;
+                }
+
+            }
             if (Engine.GetKeyDown(Key.Space))
             {
+                i.text = "";
+                scoreDisplay = false;
+                userScores = null;
                 end = false;
                 entry = true;
                 score = 0;
+                lives = 3;
                 AsteroidCollection.clearAll();
                 AsteroidCollection.spawn();
 
@@ -142,14 +192,17 @@ class Game
         } else
         {
             Theme.drawGameBackground();
+            Engine.DrawString("Lives: " + lives, new Vector2(100, 50), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             Engine.DrawString("Score: " + score, new Vector2(100, 10), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             shipBounds = new Bounds2(mov, new Vector2(100, 100));
-            //Engine.DrawTexture(ship, mov, size: new Vector2(100, 100), rotation: rot);
             Theme.drawRocketShip(mov, 100, rot);
             //creates a set of bounds simulating the shots for hitboxes
-            shotBounds = new Bounds2(smov, new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
-            Engine.DrawTexture(shot, smov, size: new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
-
+            if (shoot)
+            {
+                shotBounds = new Bounds2(smov, new Vector2(shotBoundSizeFactor, shotBoundSizeFactor));
+                Theme.drawProjectile(smov, shotBoundSizeFactor);
+            }
+            
             
             AsteroidCollection.handleAsteroidSpawning();
         }
@@ -170,7 +223,7 @@ class Game
         if (shoot)
         {
             smov = getDirectionalVector(smov, rotLock, 30);
-            
+           
         } else
         {
             smov = new Vector2(mov.X+50,mov.Y+50);
@@ -258,20 +311,52 @@ class Game
 
         if (AsteroidCollection.handleAsteroidShipCollisions(shipBounds))
         {
-            end = true;
+            if (!invincible)
+            {
+                lives--;
+                invincible = true;
+                if (lives <= 0)
+                {
+                    end = true;
+                }
+            }
+            
+            
+        }
+
+        if (invincible)
+        {
+            mov = new Vector2(640, 360);
+            if (invinTime > 5)
+            {
+                invinTime = 0;
+                invincible = false;
+                
+            }
         }
 
         //ASTEROID RESPAWNING//
-        if (asteroidTime > 5)
+        if (asteroidTime > spawnDelay && !highScore && !entry)
         {
             System.Diagnostics.Debug.WriteLine("This is a log");
             AsteroidCollection.spawn();
             asteroidTime = 0;
         }
 
+        if (score > 30)
+        {
+            spawnDelay=2;
+        } else if (score > 20)
+        {
+            spawnDelay = 3;
+        } else if (score > 10)
+        {
+            spawnDelay = 4;
+        }
+
         // POWERUP HANDLING //
         
-        if (powerupTime > delay)
+        if (powerupTime > delay && !end && !entry && !highScore)
         {
             powerupTime = 0;
             delay = rd.Next(10, 20);
@@ -279,7 +364,7 @@ class Game
             pBounds = new Bounds2(pPos, new Vector2(100,100));
             pVis = true;
             spawnPowerup(pPos);
-        } else if(pVis)
+        } else if(pVis && !end && !entry && !highScore)
         {
             spawnPowerup(pPos);
         }
