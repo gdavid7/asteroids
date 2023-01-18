@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SDL2;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -68,7 +69,7 @@ class highscorescreen
             //highLocation.Y = highLocation.Y + (resolution.Y * 1 / 6);
         }
         // draws button for changing grid layout
-        gridBounds = Engine.DrawString("BACK", gridLocation, Theme.getColor(), buttonFont);
+        gridBounds = Engine.DrawString("BACK [CON-X]", gridLocation, Theme.getColor(), buttonFont);
         //if (isGridClicked())
         //{
           //  theme.drawStartBackground();
@@ -84,14 +85,10 @@ class highscorescreen
 
 
 
-    public Boolean isHighScoreClicked()
-    {
-        return Engine.GetMouseButtonDown(MouseButton.Left) && highBounds.Contains(Engine.MousePosition);
-    }
 
     public Boolean isGridClicked()
     {
-        return Engine.GetMouseButtonDown(MouseButton.Left) && gridBounds.Contains(Engine.MousePosition);
+        return (Engine.GetMouseButtonDown(MouseButton.Left) && gridBounds.Contains(Engine.MousePosition)) || SDL.SDL_GameControllerGetButton(Game.controller, Game.controller_bindings["HighScore_Back"]) > 0;
     }
 
 
