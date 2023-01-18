@@ -188,7 +188,7 @@ class Game
         } else
         {
             Theme.drawGameBackground();
-            Engine.DrawString("Lives: " + lives, new Vector2(100, 50), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
+            Engine.DrawString("Lives: " + lives, new Vector2(100, 50), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             Engine.DrawString("Score: " + score, new Vector2(100, 10), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             shipBounds = new Bounds2(mov, new Vector2(100, 100));
             Theme.drawRocketShip(mov, 100, rot);
