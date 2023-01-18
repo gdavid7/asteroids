@@ -91,6 +91,31 @@ class Game
         List<String> projectiles = new List<String>() { "projectileD.png", "projectileL.png" }; 
 
        Theme.setUp(Resolution, startBackgrounds, gameBackgrounds, endBackgrounds, rocketShips, asteroids, powerups, projectiles);
+<<<<<<< Updated upstream
+=======
+
+       controller = SDL.SDL_GameControllerOpen(0);
+        // CONTROLLER & KEYBOARD BINDINGS: EDIT TO CUSTOMIZE AND CONFIGURE, ALSO EDIT TEXTS
+        keyboard_bindings["Shoot"] = Key.Space;
+        keyboard_bindings["Left"] = Key.Left;
+        keyboard_bindings["Right"] = Key.Right;
+        keyboard_bindings["Up"] = Key.Up;
+        keyboard_bindings["SaveScore"] = Key.Backspace;
+        keyboard_bindings["ExitGame"] = Key.LeftShift;
+
+
+        controller_bindings["Shoot"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_A;
+        controller_bindings["Left"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_DPAD_LEFT;
+        controller_bindings["Right"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_DPAD_RIGHT;
+        controller_bindings["Up"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_Y;
+        controller_bindings["SaveScore"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_B;
+        controller_bindings["ExitGame"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_X;
+        controller_bindings["HighScore_Back"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_X;
+        controller_bindings["Grid"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_LEFTSHOULDER;
+        controller_bindings["Theme"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
+        controller_bindings["Start"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_Y;
+        controller_bindings["HighScore"] = SDL.SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_A;
+>>>>>>> Stashed changes
         es = new EntryScreen(Resolution);
         hs = new highscorescreen(Resolution, s.getScoreboard());
 
