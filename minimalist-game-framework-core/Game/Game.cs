@@ -126,12 +126,13 @@ class Game
 
     public void Update()
     {
-        
+        //timers to handle different game elements
         time += Engine.TimeDelta;
         asteroidTime += Engine.TimeDelta;
         invinTime += Engine.TimeDelta;
         powerupTime += Engine.TimeDelta;
 
+        // screen switching code
        
         if (entry)
         {
@@ -165,7 +166,6 @@ class Game
         else if (end)
         {
             Theme.drawEndBackground();
-            //Engine.DrawString("GAME OVER",new Vector2 (640,200) , Color.White, Engine.LoadFont("Starjedi.ttf", 77), TextAlignment.Center);
             Engine.DrawString("Score: " + score, Vector2.Zero, Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 40));
             Engine.DrawString("L_SHIFT to exit game [CON-X]", new Vector2(640, 280), Theme.getColor(), Engine.LoadFont("Oswald-Regular.ttf",25), TextAlignment.Center);
             Engine.DrawString("username + [BACKSPACE] to save score [CON-B]", new Vector2(1000, 25), Theme.getColor(), Engine.LoadFont("Oswald-Regular.ttf", 20), TextAlignment.Center);
@@ -215,8 +215,10 @@ class Game
             }
         } else
         {
+            //game play screen drawing
+
             Theme.drawGameBackground();
-            Engine.DrawString("Lives: " + lives, new Vector2(100, 50), Color.White, Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
+            Engine.DrawString("Lives: " + lives, new Vector2(100, 50), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             Engine.DrawString("Score: " + score, new Vector2(100, 10), Theme.getColor(), Engine.LoadFont("Starjedi.ttf", 20), TextAlignment.Center);
             shipBounds = new Bounds2(mov, new Vector2(100, 100));
             Theme.drawRocketShip(mov, 100, rot);
