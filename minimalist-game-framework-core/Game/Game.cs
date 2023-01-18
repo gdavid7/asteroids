@@ -390,7 +390,7 @@ class Game
                 Engine.DrawString("Powerup Activated: SLOWDOWN", location, Theme.getColor(), buttonFont, TextAlignment.Left);
             }
 
-            if (powerUpCounter > 1000)
+            if (powerUpCounter > 400)
             {
                 powerUp1Engaged = false;
                 powerUp2Engaged = false;
@@ -424,6 +424,7 @@ class Game
                 powerUp1Engaged = false;
                 powerUp2Engaged = false;
             }
+        }
 
             if (powerUp1Engaged)
             {
@@ -451,7 +452,7 @@ class Game
             {
                 Asteroid.asteroidMovFactor = 2;
             }
-        }
+        
     }
 
 
