@@ -6,7 +6,7 @@ class highscorescreen
 {
     Dictionary<String, String> dict;
     Vector2 resolution;
-    Font buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 48);
+    Font buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 30);
     Vector2 startLocation;
     Vector2 highLocation;
     Vector2 gridLocation;

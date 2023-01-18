@@ -332,7 +332,7 @@ class Game
         }
 
         //ASTEROID RESPAWNING//
-        if (asteroidTime > spawnDelay)
+        if (asteroidTime > spawnDelay && !highScore && !entry)
         {
             System.Diagnostics.Debug.WriteLine("This is a log");
             AsteroidCollection.spawn();
@@ -352,7 +352,7 @@ class Game
 
         // POWERUP HANDLING //
         
-        if (powerupTime > delay)
+        if (powerupTime > delay && !end && !entry && !highScore)
         {
             powerupTime = 0;
             delay = rd.Next(10, 20);
@@ -360,7 +360,7 @@ class Game
             pBounds = new Bounds2(pPos, new Vector2(100,100));
             pVis = true;
             spawnPowerup(pPos);
-        } else if(pVis)
+        } else if(pVis && !end && !entry && !highScore)
         {
             spawnPowerup(pPos);
         }
