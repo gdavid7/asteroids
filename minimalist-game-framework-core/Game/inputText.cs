@@ -12,7 +12,7 @@ public class inputText
 	}
 	public String getLatestInput()
 	{
-		text = text + Engine.TypedText;
+		text = (text + Engine.TypedText).Replace(" ", "");
 		// display text
 		
 		return text;
