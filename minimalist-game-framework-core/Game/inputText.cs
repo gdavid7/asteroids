@@ -4,7 +4,7 @@ using System.Collections;
 public class inputText
 {
 	// Get user input as a string of text
-	String text;
+	public String text;
 	int y;
 	public inputText()
 	{
@@ -20,7 +20,7 @@ public class inputText
 	public void drawTextBox()
 	{
 		// Enter name to save score
-		Engine.DrawRectSolid(new Bounds2(960, 180, 250, 50), Theme.getColor());
+		Engine.DrawRectSolid(new Bounds2(800, 70, 400, 100), Theme.getColor());
 	}
 
 }

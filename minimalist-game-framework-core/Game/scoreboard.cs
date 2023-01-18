@@ -81,23 +81,28 @@ public class scoreboard
         // update score if needed - add scores to a queue then copy the first 5 elements into the dictionary
         bool scoreAdded = false;
         Queue<String> q = new Queue<String>();
-        
+        Dictionary<String, String> updateScoreboard = new Dictionary<string, string>();
         
         foreach (KeyValuePair<string, string> entry in respDict)
         {
-            // do something with entry.Value or entry.Key
-            String value = entry.Value;
-            int currentScore = Int16.Parse(value.Split(";")[0]);
-            //nd.Add(currentScore, value);
-            if(Int16.Parse(score) > currentScore && scoreAdded == false)
+            if(updateScoreboard.Count < 5)
             {
-                q.Enqueue(score + ";" + name + ";" + time);
-                scoreAdded = true;
+                // do something with entry.Value or entry.Key
+                String value = entry.Value;
+                int currentScore = Int16.Parse(value.Split(";")[0]);
+                //nd.Add(currentScore, value);
+                if (Int16.Parse(score) > currentScore && scoreAdded == false)
+                {
+                    q.Enqueue(score + ";" + name + ";" + time);
+                    scoreAdded = true;
+                }
+                q.Enqueue(value);
+                updateScoreboard.Add(entry.Key, q.Dequeue());
+                //respDict[entry.Key] = q.Dequeue();
             }
-            q.Enqueue(value);
-            respDict[entry.Key] = q.Dequeue();
+
         }
-        SetResponse updateBoard = client.Set<Dictionary<String, String>>("scoreboard", respDict);
+        SetResponse updateBoard = client.Set<Dictionary<String, String>>("scoreboard", updateScoreboard);
         System.Diagnostics.Debug.WriteLine("SCOREBOARD UPDATED");
     }
 

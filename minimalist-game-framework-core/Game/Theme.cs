@@ -142,6 +142,19 @@ class Theme
         return colors[darkMode];
     }
 
+    public static Color altColor()
+    {
+        // return the alternate color (for text in text box)
+        if (getColor().Equals(Color.Black))
+        {
+            return Color.White ;
+        }
+        else
+        {
+            return Color.Black;
+        }
+    }
+
     public static Boolean isGridOn()
     {
         return gridOn == 2;
