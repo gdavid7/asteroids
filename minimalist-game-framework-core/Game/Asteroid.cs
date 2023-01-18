@@ -52,31 +52,14 @@
 		return stage;
 	}
 
-	public Boolean getSpawn()
-	{
-		if (!spawn)
-		{
-			killBounds();
-		}
-		return spawn;
-	}
-
-	public void setSpawn(Boolean a)
-	{
-		spawn = a;
-	}
-
+	
 	//spawns the asteroid every frame in its new position
 	public void handleSpawns()
 	{
-        if (getSpawn())
-        {
             resetBounds();
 			
             //Engine.DrawTexture(asteroid, getMov(), size:getSize());
 			Theme.drawAsteroid(getMov(), assetNum, getSize());
-
-        }
     }
 
 	//moves the asteroid by a factor of 2
@@ -109,7 +92,6 @@
 	{
         if (getBounds().Overlaps(shot))
         {
-            setSpawn(false);
 			return true;
         }
 		return false;

@@ -52,7 +52,6 @@ using System.Collections;
         return false;
         }
 
-
     public static void add(Asteroid a)
 		{
 			collection.Add(a);
