@@ -37,8 +37,6 @@
 	public void handleSpawns()
 	{
             resetBounds();
-		Console.WriteLine("hit");
-		Console.WriteLine(getSize());
 			Theme.drawAsteroid(getPos(), assetNum, getSize());
     }
 

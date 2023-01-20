@@ -32,6 +32,16 @@
     {
         size = new Vector2(s, s);
     }
+
+    public Bounds2 getBounds()
+    {
+        return bounds;
+    }
+
+    public void setBounds(Bounds2 bounds)
+    {
+        this.bounds = bounds;
+    }
 }
 
 	

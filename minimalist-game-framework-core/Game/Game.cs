@@ -59,6 +59,7 @@ class Game
     Vector2 pPos = new Vector2(300, 300);
     Bounds2 pBounds = new Bounds2(300,300,100,100);
     bool pVis = true;
+    Powerup powerup = new Powerup(new Vector2(0, 0), new Vector2(100, 100));
 
     //additional constants
     public double shotCoolDownTime = 0.3;
@@ -71,13 +72,12 @@ class Game
     bool highScore = false;
     bool end = false;
     int score = 0;
-    int spawnDelay = 5;
+    int spawnDelay = 7;
 
     Random rd = new Random();
 
     //font & location for powerup ui notifs
-    Font buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 20);
-    Vector2 location = new Vector2(10, Resolution.Y* 10/11);
+    public static readonly Font buttonFont = Engine.LoadFont("Oswald-Regular.ttf", 20);
     
     //score vars
     bool scoreDisplay = false;
@@ -374,18 +374,17 @@ class Game
         //ASTEROID RESPAWNING//
         if (asteroidTime > spawnDelay && !highScore && !entry)
         {
-            System.Diagnostics.Debug.WriteLine("This is a log");
             AsteroidCollection.spawn();
             asteroidTime = 0;
         }
 
-        if (score > 30)
+        if (score > 50)
         {
             spawnDelay=2;
-        } else if (score > 20)
+        } else if (score > 30)
         {
             spawnDelay = 3;
-        } else if (score > 10)
+        } else if (score > 20)
         {
             spawnDelay = 4;
         }
@@ -396,73 +395,37 @@ class Game
         {
             powerupTime = 0;
             delay = rd.Next(10, 20);
-            pPos = new Vector2(rd.Next(100, 1180), rd.Next(100, 620));
-            pBounds = new Bounds2(pPos, new Vector2(100,100));
-            pVis = true;
-            spawnPowerup(pPos);
-        } else if(pVis && !end && !entry && !highScore)
+            powerup.handleRespawn();
+        } else if(powerup.isVis() && !end && !entry && !highScore)
         {
-            spawnPowerup(pPos);
+            powerup.staticSpawn();
         }
 
         //powerup checks
-        if (!powerUp1Engaged && !powerUp2Engaged && !powerUp3Engaged)
+        if (powerup.isAllDisengaged())
         {
             powerUpCounter = 0;
         }
         else
         {
             powerUpCounter++;
-
-            //ui display for powerup info
-            if (powerUp1Engaged && !powerUp2Engaged && !powerUp3Engaged)
-            {
-                Engine.DrawString("Powerup Activated: FASTER SHOOTING", location, Theme.getColor(), buttonFont, TextAlignment.Left);
-            } else if (powerUp2Engaged && !powerUp1Engaged && !powerUp3Engaged)
-            {
-                Engine.DrawString("Powerup Activated: BIGGER HITS", location, Theme.getColor(), buttonFont, TextAlignment.Left);
-            } else if (powerUp3Engaged && !powerUp2Engaged && !powerUp2Engaged)
-            {
-                Engine.DrawString("Powerup Activated: SLOWDOWN", location, Theme.getColor(), buttonFont, TextAlignment.Left);
-            }
-
+            powerup.displayUI();
+     
             if (powerUpCounter > 400)
             {
-                powerUp1Engaged = false;
-                powerUp2Engaged = false;
-                powerUp3Engaged = false;
+                powerup.disengageAll();
                 powerUpCounter = 0;
             }
         }
 
         // UPON PICKUP CONDITION:
-        if (shipBounds.Overlaps(pBounds))
+        if (shipBounds.Overlaps(powerup.getBounds()))
         {
-            pVis = false;
-            pBounds = new Bounds2(0, 0, 0, 0);
-            Random rnd = new Random();
-            int whichPowerUp = rnd.Next(1, 4);
-            if (whichPowerUp == 1)
-            {
-                powerUp1Engaged = true;
-                powerUp2Engaged = false;
-                powerUp3Engaged = false;
-            }
-            else if (whichPowerUp == 2)
-            {
-                powerUp2Engaged = true;
-                powerUp1Engaged = false;
-                powerUp3Engaged = false;
-            }
-            else
-            {
-                powerUp3Engaged = true;
-                powerUp1Engaged = false;
-                powerUp2Engaged = false;
-            }
+        
+            powerup.handleCollection();
         }
 
-            if (powerUp1Engaged)
+            if (powerup.oneEngaged)
             {
                 shotCoolDownTime = 0.25;
             }
@@ -471,7 +434,7 @@ class Game
                 shotCoolDownTime = 0.4;
             }
 
-            if (powerUp2Engaged)
+            if (powerup.twoEngaged)
             {
                 shotBoundSizeFactor = 25;
             }
@@ -480,7 +443,7 @@ class Game
                 shotBoundSizeFactor = 15;
             }
 
-            if (powerUp3Engaged)
+            if (powerup.threeEngaged)
             {
                 Asteroid.asteroidMovFactor = 1;
             }
@@ -514,11 +477,7 @@ class Game
     }
 
 
-    public static void spawnPowerup( Vector2 pos)
-    {
-        
-        Theme.drawPowerup(pos, 100, 0);
-    }
+   
 
 }
 
