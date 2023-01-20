@@ -69,8 +69,8 @@ using System.Collections;
     {
         if (stage < 2)
         {
-            add(new Asteroid(new Vector2(ast.getMov().X+50, ast.getMov().Y+50), 100, new Vector2(100 / (stage+1), 100 / (stage+1)),stage+1));
-            add(new Asteroid(new Vector2(ast.getMov().X - 50, ast.getMov().Y - 50), 20, new Vector2(100 / (stage+1), 100 / (stage+1)),stage+1));
+            add(new Asteroid(new Vector2(ast.getPos().X+50, ast.getPos().Y+50), 100, new Vector2(100 / (stage+1), 100 / (stage+1)),stage+1));
+            add(new Asteroid(new Vector2(ast.getPos().X - 50, ast.getPos().Y - 50), 20, new Vector2(100 / (stage+1), 100 / (stage+1)),stage+1));
         }       
     }
 

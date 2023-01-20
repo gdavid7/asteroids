@@ -45,13 +45,7 @@ public class scoreboard
         if (client != null)
         {
             System.Diagnostics.Debug.WriteLine("Firebase Connection is Established");
-            /*
-            updateUser("Nigerian", DateTime.Now.ToString("yyyyMMddHHmmssffff"), "54");
-            updateUser("Nigerian", DateTime.Now.ToString("yyyyMMddHHmmssffff"), "57");
-            Dictionary<String, String> r = retrieveUser("Nigerian");
-            System.Diagnostics.Debug.WriteLine(string.Join(Environment.NewLine, r));
-            */
-
+            
         }
     }
 
@@ -124,10 +118,8 @@ public class scoreboard
     public Dictionary<String, String> retrieveUser(String name)
     {
         FirebaseResponse response = client.Get("users/" + name);
-        //Dictionary<String, int> r = response.ResultAs<Dictionary<String, int>>();
-        //System.Diagnostics.Debug.WriteLine("Data Retrieved");
+        
         var p1 =  response.GetType().GetProperties().First(o => o.Name == "Body").GetValue(response, null);
-        // https://stackoverflow.com/questions/4144778/get-properties-and-values-from-unknown-object ^^
 
 
         String resp = p1.ToString();
@@ -140,89 +132,4 @@ public class scoreboard
     }
 
 
-    /*
-
-
-
-    public static void append(String name, String score)
-        {
-            // [NAME, SCORE, DATE]
-            // profile/name/
-
-
-            ArrayList newArr = new ArrayList();// pasted into the txt file at the end
-            // Adding stuff to txt document
-            var scores = getScoreboard();
-            bool scoreAdded = false;
-
-            if (scores[0] == "" || scores == null) // if array is empty
-            {
-                newArr.Add(name + "/" + score);
-            }
-
-            else
-            {
-                for (int i = 0; i < scores.Length; i++)
-                {
-                    String scoreInstance = scores[i];
-                    int numberScore = int.Parse(scoreInstance.Split("/")[1]);
-
-                    if (numberScore <= int.Parse(score) && scoreAdded == false) //if score instance is lower than the new score, put the mew score in front.
-                    {
-                        newArr.Add(name + "/" + score);
-                        scoreAdded = true;
-                    }
-                    newArr.Add(scoreInstance);
-                }
-            }
-
-        // inserting scores into txt file
-        String finalScores = String.Join(",", newArr.Cast<string>().ToArray());
-        String directory = Directory.GetCurrentDirectory();
-        String filePath = System.IO.Path.Combine(directory, _FILE);
-        System.IO.File.WriteAllText(filePath, finalScores);
-        Console.WriteLine(name + " successfully added!");
-
-    }
-
-
-
-    public static string[] getScoreboard()
-    {
-        // get an STRING array of all the scores in order
-        // FORMAT: ["NAME/SCORE", "NAME2/SCORE2", "NAME3/SCORE3"...]
-
-        String directory = Directory.GetCurrentDirectory();
-        String filePath = System.IO.Path.Combine(directory, _FILE);
-        string[] scores = System.IO.File.ReadAllText(filePath).Split(",");
-        return scores;
-    }
-
-    public static string retrieve(String name)
-    {
-        // searches for name and retrieves score, returns NULL if name not found.
-        string[] scores = getScoreboard();
-        for (int i = 0; i < scores.Length; i++)
-        {
-            if (scores[i].Split("/")[0].Equals(name))
-            {
-                return scores[i].Split("/")[1];
-            }
-        }
-        return null;
-    }
-
-
-    public static void clear()
-    {
-        //Clear the entire scoreboard
-        String directory = Directory.GetCurrentDirectory();
-        String filePath = System.IO.Path.Combine(directory, _FILE);
-        System.IO.File.WriteAllText(filePath, null);
-    }
-    public static String getTime()
-    {
-        return DateTime.Now.ToString("h:mm:ss tt");
-    }
-    */
 }
