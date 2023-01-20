@@ -1,14 +1,9 @@
 ﻿using System;
 
-	class Asteroid
+	class Asteroid : Sprite
 	{
-		private Vector2 move;
 		private float rotation;
-		private Vector2 size;
-		private Bounds2 bounds;
-		private bool spawn;
 		private int assetNum = new Random().Next(0,4);
-		//Texture asteroid = Engine.LoadTexture("awhite.png");
 
 		public static float asteroidMovFactor = 2;
 
@@ -16,36 +11,21 @@
 	int stage;
     
 
-    public Asteroid(Vector2 move, float rot, Vector2 size, int stage)
+    public Asteroid(Vector2 pos, float rot, Vector2 size, int stage) : base( pos,size)
 		{
-		this.move = move;
 		this.rotation = rot;
-		this.size = size;
-		this.bounds = new Bounds2(move,size);
-		this.spawn = true;
 		this.stage = stage;
 		AsteroidCollection.add(this);
 		}
 		
-		public Vector2 getMov()
-	{
-		return move;
-	}
-
-		public void setMov(Vector2 v)
-	{
-		move = v;
-	}
+		
+	
 
 		public float getRot()
 	{
 		return rotation;
 	}
 
-		public Vector2 getSize()
-	{
-		return size;
-	}
 
 	public int getStage()
 	{
@@ -57,15 +37,15 @@
 	public void handleSpawns()
 	{
             resetBounds();
-			
-            //Engine.DrawTexture(asteroid, getMov(), size:getSize());
-			Theme.drawAsteroid(getMov(), assetNum, getSize());
+		Console.WriteLine("hit");
+		Console.WriteLine(getSize());
+			Theme.drawAsteroid(getPos(), assetNum, getSize());
     }
 
 	//moves the asteroid by a factor of 2
 	public void handleMoves()
 	{
-        setMov(Game.getDirectionalVector(getMov(), rotation, asteroidMovFactor));
+        setPos(Game.getDirectionalVector(getPos(), rotation, asteroidMovFactor));
         wraparound();
     }
 
@@ -78,7 +58,7 @@
 	//resets bounds to asteroid position
 	public void resetBounds()
 	{
-		bounds = new Bounds2(move, size);
+		bounds = new Bounds2(pos, size);
 	}
 
 	//deletes the bound
@@ -110,23 +90,23 @@
     public void wraparound()
 	{
         //x wraparound asteroid
-        if (this.getMov().X <= -80)
+        if (this.getPos().X <= -80)
         {
-            this.setMov(new Vector2(1170, this.getMov().Y));
+            this.setPos(new Vector2(1170, this.getPos().Y));
         }
-        else if (this.getMov().X >= 1180)
+        else if (this.getPos().X >= 1180)
         {
-            this.setMov(new Vector2(-50, this.getMov().Y));
+            this.setPos(new Vector2(-50, this.getPos().Y));
         }
 
         //y wraparound asteroid 
-        if (this.getMov().Y <= -80)
+        if (this.getPos().Y <= -80)
         {
-            this.setMov(new Vector2(this.getMov().X, 610));
+            this.setPos(new Vector2(this.getPos().X, 610));
         }
-        else if (this.getMov().Y >= 620)
+        else if (this.getPos().Y >= 620)
         {
-            this.setMov(new Vector2(this.getMov().X, -50));
+            this.setPos(new Vector2(this.getPos().X, -50));
         }
 
     }
